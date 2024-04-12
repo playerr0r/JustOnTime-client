@@ -104,7 +104,7 @@ class Login(QtWidgets.QDialog, Ui_Login):
             print('error')
 
     def open_sign_in(self):
-        self.sign_in = sign_in()
+        self.sign_in = SignIn()
         self.sign_in.show()
         self.close()
 
@@ -231,7 +231,7 @@ class DropArea(QWidget):
             self.card_moved_signal.moved.emit(event.mimeData().text(), self)
             event.acceptProposedAction()
     
-class profile(QWidget):
+class Profile(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -276,11 +276,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         # self.new_project_button.clicked.connect(self.open_new_project)
         # self.new_task_button.clicked.connect(self.open_new_task)
             
-        # print(app_dir)
-            
-        # TODO: блюр фона для виджетов
-        blur_effect = QGraphicsBlurEffect()
-        blur_effect.setBlurRadius(2)
+        # print(app_dir)   
 
         self.left_menu.setStyleSheet("background-color: rgba(235, 235, 235, 255);")
         self.widget_4.setStyleSheet("")
@@ -377,7 +373,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.darkening_widget = QWidget(self)
         self.darkening_widget.hide()
-        self.profile_window = profile()
+        self.profile_window = Profile()
         self.profile_window.hide()
 
     def dragEnterEvent(self, event):
@@ -431,8 +427,10 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.User_task_worker_pic.setScaledContents(True)
                     mask = QRegion(self.User_task_worker_pic.rect(), QRegion.Ellipse)
                     self.User_task_worker_pic.setMask(mask)
-            else:
-                print(f'Request failed with status code {response.status_code}')
+        else:
+            self.User_task_worker.setText('Назначить себя')
+            self.User_task_worker_pic.setStyleSheet("background-color: rgba(255, 255, 255, 255);")
+
 
     def card_moved(self, task_id, dropped_in_column):
         if dropped_in_column is not None:
@@ -574,7 +572,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             print(f'Request failed with status code {response.status_code}')
 
-        if empl_id is not None:
+        if empl_id != '':
             url = 'http://localhost:8080/profile/' + str(empl_id)
 
             response = requests.get(url)
@@ -600,8 +598,12 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.User_task_worker_pic.setScaledContents(True)
                     mask = QRegion(self.User_task_worker_pic.rect(), QRegion.Ellipse)
                     self.User_task_worker_pic.setMask(mask)
-            else:
-                print(f'Request failed with status code {response.status_code}')
+        else:
+            self.User_task_worker.setText('Назначить себя')
+            self.User_task_worker_pic.setText('')
+            self.User_task_worker.setStyleSheet("text-align: center; border: none; color: rgb(7, 71, 166); text-decoration: underline; background-color: rgba(255, 255, 255, 0);")
+            self.User_task_worker_pic.setStyleSheet("background-color: rgba(255, 255, 255, 0); color: rgb(0, 0, 0, 0);")
+            self.User_task_worker.clicked.connect(lambda: self.assign_to_task(self.id, task_id))
 
         if self.widget_5_on_screen == False:
             self.animation = QtCore.QPropertyAnimation(self.widget_5, b"geometry")
@@ -632,6 +634,17 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             self.group.addAnimation(self.animation3)
             self.group.addAnimation(self.animation4)
             self.group.start()
+
+    def assign_to_task(self, id, task_id):
+        url = 'http://localhost:8080/tasks/' + task_id + '/assign/' + '?empl_id=' + str(id)
+        response = requests.post(url)
+
+        if response.status_code == 200:
+            print(response.json())
+            self.show_card_info(task_id)
+        else:
+            print(f'Request failed with status code {response.status_code}')
+
 
     def clear_column(self, layout):
         for i in reversed(range(layout.count())):
@@ -832,14 +845,28 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             pass  # Если не было подключений, disconnect() вызовет TypeError
 
         # Подключаем сигнал
-        adder_task.new_task_name.returnPressed.connect(lambda: self.add_new_task(adder_task.new_task_name.text(), adder_task))
+        adder_task.new_task_name.returnPressed.connect(lambda: self.add_new_task(adder_task.new_task_name.text(), adder_task, project_id, status))
 
-    def add_new_task(self, name, adder_task):
+    def add_new_task(self, name, adder_task, project_id, status):
         print(name)
-        # TODO: отправить запрос на сервер
-        adder_task.new_task_name.setText('')
-        adder_task.new_task_name.hide()
-        adder_task.new_task_button.show()
+        
+        data = {
+            'name': name,
+            'status': status,
+            'project_id': project_id,
+            'date': datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+        }
+
+        response = requests.post('http://localhost:8080/tasks/new', json=data)
+
+        if response.status_code == 200:
+            adder_task.new_task_name.setText('')
+            adder_task.new_task_name.hide()
+            adder_task.new_task_button.show()
+            print(response.json())
+            self.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
         
 # class reports_backlog(QtWidgets.QDialog, Ui_ReportsWindow):
 #     def __init__(self, mode, id_project):
@@ -1094,7 +1121,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 #         con.commit()
 #         self.close()
         
-class sign_in(QtWidgets.QDialog, Ui_SignIn):
+class SignIn(QtWidgets.QDialog, Ui_SignIn):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -1308,7 +1335,8 @@ class sign_in(QtWidgets.QDialog, Ui_SignIn):
 # TestApp().test_main_win()
 # TestApp().test_stats()
 
-app = QtWidgets.QApplication([])
-window = Login()   
-window.show()
-sys.exit(app.exec_())
+if __name__ == '__main__':
+    app = QtWidgets.QApplication([])
+    window = Login()
+    window.show()
+    sys.exit(app.exec_())
