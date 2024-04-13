@@ -112,7 +112,8 @@ class NewTask(QWidget):
     def __init__(self):
         super().__init__()
         uic.loadUi(app_dir + 'new_task.ui', self)
-        self.new_task_button.setStyleSheet("background-color: rgb(7, 71, 166); color: white; border: none; border-radius: 3px;")
+        self.new_task_button.setStyleSheet("background-color: rgb(7, 71, 166);\n"
+        "color: white; border: none; border-radius: 3px;")
         self.new_task_name.hide()
         # self.show()
 
@@ -169,7 +170,8 @@ class Card(QWidget):
     def mouseMoveEvent(self, event):
         if not (event.buttons() & Qt.LeftButton):
             return
-        if self.drag_start_position is not None and (event.pos() - self.drag_start_position).manhattanLength() < QApplication.startDragDistance():
+        if self.drag_start_position is not None and (event.pos() \
+                - self.drag_start_position).manhattanLength() < QApplication.startDragDistance():
             return
         drag = QDrag(self)
         mimedata = QMimeData()
@@ -281,7 +283,9 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.left_menu.setStyleSheet("background-color: rgba(235, 235, 235, 255);")
         self.widget_4.setStyleSheet("")
         self.widget_4.setObjectName("widget_4")
-        self.widget_4.setStyleSheet("#widget_4 { background-image: url(" + app_dir + "resources/main_background.jpg); background-repeat: no-repeat; background-size: cover; }")
+        self.widget_4.setStyleSheet("#widget_4 { background-image: \
+                    url(" + app_dir + "resources/main_background.jpg);\
+                    background-repeat: no-repeat; background-size: cover; }")
 
         self.widget_6.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
         self.widget_7.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
@@ -389,6 +393,12 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         url = 'http://localhost:8080/tasks/' + task_id
         response = requests.get(url)
 
+        try:
+            self.User_task_worker.clicked.disconnect()
+        except TypeError:
+            pass
+
+
         if response.status_code == 200:
             data = response.json()
             print(data)
@@ -429,6 +439,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.User_task_worker_pic.setMask(mask)
         else:
             self.User_task_worker.setText('Назначить себя')
+            self.User_task_worker_pic.setPixmap(None)
             self.User_task_worker_pic.setStyleSheet("background-color: rgba(255, 255, 255, 255);")
 
 
@@ -442,8 +453,11 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
                     widget = item.widget()
                     if widget is not None and isinstance(widget, Card) and widget.task_id.text() == task_id:
                         layout.takeAt(i)
-                        if self.widget_5_on_screen == True and self.project_name_task_id.text().split(' / ')[1].split('-')[1] == task_id.split('-')[1]:
-                            QTimer.singleShot(100, lambda: self.refresh_card_info(task_id.split('-')[1]))
+                        if self.widget_5_on_screen == True and \
+                            self.project_name_task_id.text().split(' / ')[1].split('-')[1] \
+                                == task_id.split('-')[1]:
+                            QTimer.singleShot(100, lambda: \
+                                              self.refresh_card_info(task_id.split('-')[1]))
                     
                         widget.setParent(None)
                         if dropped_in_column == self.scroll_content:
@@ -543,16 +557,23 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             self.scrollArea_3.update()
             self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
 
-    def show_card_info(self, card):
+    def show_card_info(self, card = None, task_id = None):
         self.widget_6.setGeometry(250, 30, 301, 868)
         self.widget_7.setGeometry(580, 30, 301, 868)
         self.widget_8.setGeometry(910, 30, 301, 868)
 
         empl_id = None
 
-        task_id = card.task_id.text().split('-')[1]
+        try:
+            self.User_task_worker.clicked.disconnect()
+        except TypeError:
+            pass
+        
+        if card is not None:
+            task_id = card.task_id.text().split('-')[1]
 
-        self.project_name_task_id.setText(self.projectname_combo_box.currentText() + ' / task-' + task_id)
+        self.project_name_task_id.setText(self.projectname_combo_box.currentText() \
+                                          + ' / task-' + task_id)
 
         url = 'http://localhost:8080/tasks/' + task_id
 
@@ -581,7 +602,9 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
                 data = response.json()
                 print(data)
                 data = data['user']
-                self.User_task_worker.setStyleSheet("text-align: left; border: none; color: rgb(7, 71, 166); text-decoration: underline;")
+                self.User_task_worker.setStyleSheet("text-align: left; \
+                                                    border: none; color: rgb(7, 71, 166); \
+                                                    text-decoration: underline;")
                 self.User_task_worker.setText(data['name'])
                 self.User_task_worker.clicked.connect(lambda: self.open_profile(empl_id))
                 avatar = data['avatar']
@@ -601,8 +624,12 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.User_task_worker.setText('Назначить себя')
             self.User_task_worker_pic.setText('')
-            self.User_task_worker.setStyleSheet("text-align: center; border: none; color: rgb(7, 71, 166); text-decoration: underline; background-color: rgba(255, 255, 255, 0);")
-            self.User_task_worker_pic.setStyleSheet("background-color: rgba(255, 255, 255, 0); color: rgb(0, 0, 0, 0);")
+            self.User_task_worker.setStyleSheet("text-align: center; border: none;\
+                                                 color: rgb(7, 71, 166); text-decoration: underline;\
+                                                 background-color: rgba(255, 255, 255, 0);")
+            self.User_task_worker_pic.clear()
+            self.User_task_worker_pic.setStyleSheet("background-color: rgba(255, 255, 255, 0);\
+                                                     color: rgb(0, 0, 0, 0);")
             self.User_task_worker.clicked.connect(lambda: self.assign_to_task(self.id, task_id))
 
         if self.widget_5_on_screen == False:
@@ -641,7 +668,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if response.status_code == 200:
             print(response.json())
-            self.show_card_info(task_id)
+            self.show_card_info(task_id=task_id)
+            self.refresh_lists()
         else:
             print(f'Request failed with status code {response.status_code}')
 
@@ -692,7 +720,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         except TypeError:
             pass
 
-        self.profile_window.profileCloseButton.clicked.connect(lambda: self.close_profile(self.profile_window, self.darkening_widget))
+        self.profile_window.profileCloseButton.clicked.connect(lambda: \
+                    self.close_profile(self.profile_window, self.darkening_widget))
 
         # Создание виджета для затемнения
 
@@ -802,7 +831,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cards_layout.update()
         self.scrollArea.update()
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-        adder_task.new_task_button.clicked.connect(lambda: self.new_task(adder_task, self.project_id, 'todo'))
+        adder_task.new_task_button.clicked.connect(lambda:\
+                    self.new_task(adder_task, self.project_id, 'todo'))
 
         adder_task2 = NewTask()
         self.cards_layout2.addWidget(adder_task2, self.cards_layout2.rowCount(), 0)
@@ -813,7 +843,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cards_layout2.update()
         self.scrollArea_2.update()
         self.scrollArea_2.verticalScrollBar().setValue(self.scrollArea_2.verticalScrollBar().maximum())
-        adder_task2.new_task_button.clicked.connect(lambda: self.new_task(adder_task2, self.project_id, 'in progress'))
+        adder_task2.new_task_button.clicked.connect(lambda:\
+                     self.new_task(adder_task2, self.project_id, 'in progress'))
 
         adder_task3 = NewTask()
         self.cards_layout3.addWidget(adder_task3, self.cards_layout3.rowCount(), 0)
@@ -824,7 +855,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cards_layout3.update()
         self.scrollArea_3.update()
         self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
-        adder_task3.new_task_button.clicked.connect(lambda: self.new_task(adder_task3, self.project_id, 'done'))
+        adder_task3.new_task_button.clicked.connect(lambda:\
+                     self.new_task(adder_task3, self.project_id, 'done'))
 
         self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
@@ -845,7 +877,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             pass  # Если не было подключений, disconnect() вызовет TypeError
 
         # Подключаем сигнал
-        adder_task.new_task_name.returnPressed.connect(lambda: self.add_new_task(adder_task.new_task_name.text(), adder_task, project_id, status))
+        adder_task.new_task_name.returnPressed.connect(lambda:\
+                     self.add_new_task(adder_task.new_task_name.text(), adder_task, project_id, status))
 
     def add_new_task(self, name, adder_task, project_id, status):
         print(name)
@@ -854,8 +887,10 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             'name': name,
             'status': status,
             'project_id': project_id,
-            'date': datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+            'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
+
+        print(data['date'])
 
         response = requests.post('http://localhost:8080/tasks/new', json=data)
 
@@ -1126,7 +1161,10 @@ class SignIn(QtWidgets.QDialog, Ui_SignIn):
         super().__init__()
         self.setupUi(self)
         self.widget.setObjectName("widget")
-        self.widget.setStyleSheet("#widget { background-image: url(" + app_dir + "resources/sign_in_background.png); background-repeat: no-repeat; background-position: center; background-size: cover; }")
+        self.widget.setStyleSheet("#widget { background-image:\
+                 url(" + app_dir + "resources/sign_in_background.png);\
+                 background-repeat: no-repeat; background-position: center;\
+                 background-size: cover; }")
         self.setWindowIcon(QtGui.QIcon(app_dir + 'resources/winicon.png'))
         self.setWindowTitle('Just on time')
         self.signin_button.clicked.connect(self.input_checker)
@@ -1165,7 +1203,11 @@ class SignIn(QtWidgets.QDialog, Ui_SignIn):
                 "border-radius: 3px;")
             else:
                 url = 'http://localhost:8080/register'
-                data = {'name': self.name_input.text(), 'login': self.login_input.text(), 'password': self.password, 'role': 'employee', 'code': self.empl_code_input.text()}
+                data = {'name': self.name_input.text(),
+                        'login': self.login_input.text(), 
+                        'password': self.password, 
+                        'role': 'employee', 
+                        'code': self.empl_code_input.text()}
                 response = requests.post(url, json=data)
                 if response.status_code == 200:
                     print(response.json())
