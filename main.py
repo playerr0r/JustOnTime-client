@@ -54,8 +54,6 @@ class Login(QtWidgets.QDialog, Ui_Login):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        # releative path to icon
-        # set background image for widget_3 only
         self.widget_3.setObjectName("widget_3")
         self.widget_3.setStyleSheet("#widget_3 { background-image: url(" + app_dir + "resources/login_background.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; }")
 
@@ -182,11 +180,6 @@ class Card(QWidget):
         # Create a pixmap of the card
         pixmap = self.grab()
 
-        # Make the pixmap semi-transparent
-        # mask = pixmap.createMaskFromColor(QColor(0, 0, 0), Qt.MaskInColor)
-        # pixmap.fill(QColor(0, 0, 0, 127))
-        # pixmap.setMask(mask)
-
         # Set the pixmap for the drag object
         drag.setPixmap(pixmap)
 
@@ -247,11 +240,13 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setWindowIcon(QtGui.QIcon(app_dir + 'resources/winicon.png'))
         self.setWindowTitle('Just on time')
+
         self.role = role
         self.id = id
         self.code = code
         self.projects_ids = projects_ids
         self.avatar = avatar
+
         self.avatar = base64.b64decode(self.avatar)
         self.avatar = base64.b64decode(self.avatar)
         byte_array = QByteArray(self.avatar)
@@ -268,37 +263,12 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             self.profile_button.setIconSize(QtCore.QSize(40, 40))
             mask = QRegion(self.profile_button.rect(), QRegion.Ellipse)
             self.profile_button.setMask(mask)
-        # self.stats_button.clicked.connect(self.open_stats)
-        # self.refresh_button.clicked.connect(self.refresh)
-        # self.reports_button.clicked.connect(self.open_reports)
-        # self.search_button.clicked.connect(self.open_search)
+
         if self.role != 'admin':
             self.new_project_button.hide()
             self.new_task_button.hide()
-        # self.new_project_button.clicked.connect(self.open_new_project)
-        # self.new_task_button.clicked.connect(self.open_new_task)
-            
-        # print(app_dir)   
 
-        self.left_menu.setStyleSheet("background-color: rgba(235, 235, 235, 255);")
-        self.widget_4.setStyleSheet("")
-        self.widget_4.setObjectName("widget_4")
-        self.widget_4.setStyleSheet("#widget_4 { background-image: \
-                    url(" + app_dir + "resources/main_background.jpg);\
-                    background-repeat: no-repeat; background-size: cover; }")
-
-        self.widget_6.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
-        self.widget_7.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
-        self.widget_8.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
-        self.widget_5.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
-
-        self.scrollArea.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
-        self.scrollArea_2.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
-        self.scrollArea_3.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
-        # self.widget_5.setGraphicsEffect(blur_effect)
-        # self.widget_6.setGraphicsEffect(blur_effect)
-        # self.widget_7.setGraphicsEffect(blur_effect)
-        # self.widget_8.setGraphicsEffect(blur_effect)
+        self.widgets_stylesheet_setter()
 
         # TODO: добавить функционал для кнопок
         self.reports_button.hide()
@@ -380,6 +350,23 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.profile_window = Profile()
         self.profile_window.hide()
 
+    def widgets_stylesheet_setter(self):
+        self.left_menu.setStyleSheet("background-color: rgba(235, 235, 235, 255);")
+        self.widget_4.setStyleSheet("")
+        self.widget_4.setObjectName("widget_4")
+        self.widget_4.setStyleSheet("#widget_4 { background-image: \
+                    url(" + app_dir + "resources/main_background.jpg);\
+                    background-repeat: no-repeat; background-size: cover; }")
+
+        self.widget_6.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
+        self.widget_7.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
+        self.widget_8.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
+        self.widget_5.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
+
+        self.scrollArea.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
+        self.scrollArea_2.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
+        self.scrollArea_3.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
+
     def dragEnterEvent(self, event):
         if event.mimeData().hasText():
             event.acceptProposedAction()
@@ -387,61 +374,6 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
     def dragMoveEvent(self, event):
         if event.mimeData().hasText():
             event.acceptProposedAction()
-
-    def refresh_card_info(self, task_id):
-        print("refreshing card info")
-        url = 'http://localhost:8080/tasks/' + task_id
-        response = requests.get(url)
-
-        try:
-            self.User_task_worker.clicked.disconnect()
-        except TypeError:
-            pass
-
-
-        if response.status_code == 200:
-            data = response.json()
-            print(data)
-            data = data['task']
-            # self.project_name.setText(self.projectname_combo_box.currentText() + ' / task-' + data['id'])
-            self.task_name.setText(data['name'])
-            self.descr_2.setText(data['descr'])
-            self.task_status.setText(data['status'])
-            date = data['date'].split('T')[0]
-            self.task_date.setText(date)
-            empl_id = data['empl_id']
-        else:
-            print(f'Request failed with status code {response.status_code}')
-
-        if empl_id is not None:
-            url = 'http://localhost:8080/profile/' + str(empl_id)
-
-            response = requests.get(url)
-
-            if response.status_code == 200:
-                data = response.json()
-                print(data)
-                data = data['user']
-                self.User_task_worker.setText(data['name'])
-                avatar = data['avatar']
-                avatar = base64.b64decode(avatar)
-                byte_array = QByteArray(avatar)
-                buffer = QBuffer(byte_array)
-                buffer.open(QIODevice.ReadOnly)
-
-                user_avatar = QPixmap()
-                if not user_avatar.loadFromData(buffer.readAll()):
-                    print("Failed to load the image.")
-                else:
-                    self.User_task_worker_pic.setPixmap(user_avatar)
-                    self.User_task_worker_pic.setScaledContents(True)
-                    mask = QRegion(self.User_task_worker_pic.rect(), QRegion.Ellipse)
-                    self.User_task_worker_pic.setMask(mask)
-        else:
-            self.User_task_worker.setText('Назначить себя')
-            self.User_task_worker_pic.setPixmap(None)
-            self.User_task_worker_pic.setStyleSheet("background-color: rgba(255, 255, 255, 255);")
-
 
     def card_moved(self, task_id, dropped_in_column):
         if dropped_in_column is not None:
@@ -457,7 +389,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.project_name_task_id.text().split(' / ')[1].split('-')[1] \
                                 == task_id.split('-')[1]:
                             QTimer.singleShot(100, lambda: \
-                                              self.refresh_card_info(task_id.split('-')[1]))
+                                              self.show_card_info(task_id=task_id.split('-')[1]))
                     
                         widget.setParent(None)
                         if dropped_in_column == self.scroll_content:
@@ -526,7 +458,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         # Создайте новую карточку
         card = Card(name, status, task_id, avatar, show=False)
         QApplication.processEvents()
-        card.clicked.connect(lambda: self.show_card_info(card))
+        card.clicked.connect(lambda: self.show_card_info(card = card))
         # Добавьте карточку в макет
 
         if status == 'todo':
@@ -673,7 +605,6 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             print(f'Request failed with status code {response.status_code}')
 
-
     def clear_column(self, layout):
         for i in reversed(range(layout.count())):
             item = layout.itemAt(i)
@@ -744,35 +675,6 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         profile_window.hide()
         darkening_widget.hide()
 
-    # def open_stats(self):
-    #     self.stats = stats(self.id, self.role, self.project_id, self.code)
-    #     self.stats.show()
-    #     self.close()
-
-    # def refresh(self):
-    #     self.main_win = main_win(self.role, self.id, self.code)
-    #     self.main_win.show()
-    #     self.close()
-
-    # # def open_reports(self):
-    # #     self.mode = 'reports'
-    # #     self.reports = reports_backlog(self.mode, self.project_id)
-    # #     self.reports.show()
-
-    # def open_search(self):
-    #     ...
-    #     # self.mode = 'backlog'
-    #     # self.backlog = reports_backlog(self.mode, self.project_id)
-    #     # self.backlog.show()
-
-    # def open_new_project(self):
-    #     self.new_project = new_project()
-    #     self.new_project.show()
-
-    # def open_new_task(self):
-    #     self.new_project = new_task(self.project_id, self.id)
-    #     self.new_project.show()
-
     def refresh_lists(self):
         # self.widget_5.hide()
         print('REFRESHING LISTS')
@@ -814,15 +716,6 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.add_card(task['name'], task['status'], task['id'], None)
 
         adder_task = NewTask()
-        #         # Создаем новый горизонтальный лейаут
-        # h_layout = QHBoxLayout()
-
-        # # Добавляем в него лейаут с карточками и виджет NewTask
-        # h_layout.addLayout(self.cards_layout)
-        # h_layout.addWidget(adder_task)
-
-        # # Заменяем старый лейаут новым
-        # self.setLayout(h_layout)
         self.cards_layout.addWidget(adder_task, self.cards_layout.rowCount(), 0)
         adder_task.show()
         adder_task.lower()
@@ -870,13 +763,11 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         adder_task.new_task_button.hide()
         adder_task.new_task_name.show()
 
-        # Отключаем предыдущие подключения
         try:
             adder_task.new_task_name.returnPressed.disconnect()
         except TypeError:
-            pass  # Если не было подключений, disconnect() вызовет TypeError
+            pass
 
-        # Подключаем сигнал
         adder_task.new_task_name.returnPressed.connect(lambda:\
                      self.add_new_task(adder_task.new_task_name.text(), adder_task, project_id, status))
 
