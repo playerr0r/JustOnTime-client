@@ -268,13 +268,12 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             self.new_project_button.hide()
             self.new_task_button.hide()
 
-        self.widgets_stylesheet_setter()
 
         # TODO: добавить функционал для кнопок
         self.reports_button.hide()
         self.search_button.hide()
             
-        self.profile_button.clicked.connect(lambda: self.open_profile(self.id))
+        self.widget_5.hide()
 
         self.projects_ids = ','.join(map(str, projects_ids))
 
@@ -292,10 +291,21 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.project_name = self.projectname_combo_box.currentText()
         self.project_id = self.projects[0]
 
+        self.widgets_stylesheet_setter()
+        self.cards_area_setter()
+
+        self.refresh_lists()
+
         self.pushButton.clicked.connect(lambda: self.close_card_info())
+        self.profile_button.clicked.connect(lambda: self.open_profile(self.id))
+        self.projectname_combo_box.currentTextChanged.connect(self.refresh_lists)
 
-        self.widget_5.hide()
+        self.darkening_widget = QWidget(self)
+        self.darkening_widget.hide()
+        self.profile_window = Profile()
+        self.profile_window.hide()
 
+    def cards_area_setter(self):
         # Создайте новый виджет для содержимого прокрутки
         self.scroll_content = DropArea()
         self.scroll_content2 = DropArea()
@@ -340,15 +350,6 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cards_layout3.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         self.widget_5_on_screen = False
-
-        self.refresh_lists()
-
-        self.projectname_combo_box.currentTextChanged.connect(self.refresh_lists)
-
-        self.darkening_widget = QWidget(self)
-        self.darkening_widget.hide()
-        self.profile_window = Profile()
-        self.profile_window.hide()
 
     def widgets_stylesheet_setter(self):
         self.left_menu.setStyleSheet("background-color: rgba(235, 235, 235, 255);")
@@ -454,7 +455,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.group.addAnimation(self.animation4)
         self.group.start()
 
-    def add_card(self, name, status, task_id, avatar):
+    def add_card(self, name, status, task_id, avatar = None):
         # Создайте новую карточку
         card = Card(name, status, task_id, avatar, show=False)
         QApplication.processEvents()
@@ -695,25 +696,10 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         if response.status_code == 200:
             data = response.json()
             print(data)
+            for data in data['tasks']:
+                self.add_card(data['name'], data['status'], data['id'], data['avatar'])
         else:
             print(f'Request failed with status code {response.status_code}')
-
-        if 'tasks' in data and data['tasks'] is not None:
-            for task in data['tasks']:
-                if task['empl_id'] != "":
-                    url = 'http://localhost:8080/profile/' + str(task['empl_id'])
-
-                    response = requests.get(url)
-
-                    if response.status_code == 200:
-                        data = response.json()
-                        print(data)
-                        data = data['user']
-                        self.add_card(task['name'], task['status'], task['id'], data['avatar'])
-                    else:
-                        print(f'Request failed with status code {response.status_code}')
-                else:
-                    self.add_card(task['name'], task['status'], task['id'], None)
 
         adder_task = NewTask()
         self.cards_layout.addWidget(adder_task, self.cards_layout.rowCount(), 0)
