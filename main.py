@@ -1256,6 +1256,28 @@ class SignIn(QtWidgets.QDialog, Ui_SignIn):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])
+    app.setStyleSheet("""
+    QScrollBar:vertical {
+        background: rgba(128, 128, 128, 255); /* Полупрозрачный серый фон */
+        width: 8px; /* Ширина скроллбара */
+    }
+
+    QScrollBar::handle:vertical {
+        background: rgba(255, 255, 255, 210); /* Полупрозрачная белая ручка */
+        border-radius: 4px; /* Скругление углов */
+        min-height: 20px; /* Минимальная высота ручки */
+    }
+
+    QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+        background: none; /* Убираем кнопки вверху и внизу скроллбара */
+    }
+
+    QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,
+    QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+        width: 0px; height: 0px; /* Убираем стрелки и неиспользуемые элементы */
+        background: none;
+    }
+    """)
     window = Login()
     window.show()
     sys.exit(app.exec_())
