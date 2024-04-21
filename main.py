@@ -71,7 +71,7 @@ class Login(QtWidgets.QDialog, Ui_Login):
         print(self.password)
         print(len(self.password))
 
-        url = 'http://localhost:8080/login'
+        url = 'http://localhost:8080/auth/login'
         data = {'login': self.login, 'password': self.password}
         
         response = requests.post(url, json=data)
@@ -1050,7 +1050,7 @@ class SignIn(QtWidgets.QDialog, Ui_SignIn):
 
     def input_checker(self):
         login = self.login_input.text()
-        url = 'http://localhost:8080/register/check/' + login
+        url = 'http://localhost:8080/auth/register/check/' + login
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
@@ -1079,7 +1079,7 @@ class SignIn(QtWidgets.QDialog, Ui_SignIn):
                 "border-style: outset;\n"
                 "border-radius: 3px;")
             else:
-                url = 'http://localhost:8080/register'
+                url = 'http://localhost:8080/auth/register'
                 data = {'name': self.name_input.text(),
                         'login': self.login_input.text(), 
                         'password': self.password, 
