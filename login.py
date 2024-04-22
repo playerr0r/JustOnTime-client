@@ -37,7 +37,6 @@ class Ui_Login(object):
         self.label = QtWidgets.QLabel(self.widget_3)
         self.label.setGeometry(QtCore.QRect(70, 210, 341, 51))
         font = QtGui.QFont()
-        font.setFamily("Tahoma")
         font.setPointSize(40)
         self.label.setFont(font)
         self.label.setStyleSheet("background-color: rgb(255, 255, 255, 0);\n"
@@ -46,7 +45,6 @@ class Ui_Login(object):
         self.label_2 = QtWidgets.QLabel(self.widget_3)
         self.label_2.setGeometry(QtCore.QRect(70, 270, 251, 41))
         font = QtGui.QFont()
-        font.setFamily("Tahoma")
         font.setPointSize(16)
         self.label_2.setFont(font)
         self.label_2.setStyleSheet("background-color: rgb(255, 255, 255, 0);\n"
@@ -55,7 +53,6 @@ class Ui_Login(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.widget_3)
         self.pushButton_3.setGeometry(QtCore.QRect(30, 652, 35, 25))
         font = QtGui.QFont()
-        font.setFamily("Tahoma")
         font.setPointSize(10)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setStyleSheet("background-color: rgb(255, 255, 255);\n"
@@ -65,18 +62,11 @@ class Ui_Login(object):
         self.widget_2.setGeometry(QtCore.QRect(610, 0, 481, 711))
         self.widget_2.setMinimumSize(QtCore.QSize(421, 651))
         self.widget_2.setMaximumSize(QtCore.QSize(10000, 10000))
-        font = QtGui.QFont()
-        font.setFamily("Tahoma")
-        self.widget_2.setFont(font)
         self.widget_2.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-radius: 0px;")
         self.widget_2.setObjectName("widget_2")
         self.login_input = QtWidgets.QLineEdit(self.widget_2)
         self.login_input.setGeometry(QtCore.QRect(100, 240, 281, 31))
-        font = QtGui.QFont()
-        font.setFamily("Tahoma")
-        font.setPointSize(12)
-        self.login_input.setFont(font)
         self.login_input.setStyleSheet("border: 1px;\n"
 "border-color: rgb(7, 71, 166);\n"
 "border-style: outset;\n"
@@ -85,48 +75,27 @@ class Ui_Login(object):
         self.login_input.setObjectName("login_input")
         self.label_3 = QtWidgets.QLabel(self.widget_2)
         self.label_3.setGeometry(QtCore.QRect(100, 210, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Tahoma")
-        font.setPointSize(12)
-        self.label_3.setFont(font)
         self.label_3.setStyleSheet("background-color: rgb(255, 255, 255, 0);\n"
 "color: rgb(7, 71, 166);")
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(self.widget_2)
         self.label_4.setGeometry(QtCore.QRect(100, 290, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Tahoma")
-        font.setPointSize(12)
-        self.label_4.setFont(font)
         self.label_4.setStyleSheet("background-color: rgb(255, 255, 255, 0);\n"
 "color:  rgb(7, 71, 166);")
         self.label_4.setObjectName("label_4")
         self.login_button = QtWidgets.QPushButton(self.widget_2)
         self.login_button.setGeometry(QtCore.QRect(160, 430, 161, 31))
-        font = QtGui.QFont()
-        font.setFamily("Tahoma")
-        font.setPointSize(12)
-        self.login_button.setFont(font)
         self.login_button.setStyleSheet("background-color:  rgb(7, 71, 166);\n"
 "color: rgb(255, 255, 255);\n"
 "border-radius: 2px;")
         self.login_button.setObjectName("login_button")
         self.create_acc_button = QtWidgets.QPushButton(self.widget_2)
         self.create_acc_button.setGeometry(QtCore.QRect(160, 460, 161, 31))
-        font = QtGui.QFont()
-        font.setFamily("Tahoma")
-        font.setPointSize(12)
-        font.setUnderline(True)
-        self.create_acc_button.setFont(font)
         self.create_acc_button.setStyleSheet("")
         self.create_acc_button.setFlat(True)
         self.create_acc_button.setObjectName("create_acc_button")
         self.pass_input = QtWidgets.QLineEdit(self.widget_2)
         self.pass_input.setGeometry(QtCore.QRect(100, 320, 281, 31))
-        font = QtGui.QFont()
-        font.setFamily("Tahoma")
-        font.setPointSize(12)
-        self.pass_input.setFont(font)
         self.pass_input.setStyleSheet("border: 1px;\n"
 "border-color: rgb(7, 71, 166);\n"
 "border-style: outset;\n"
@@ -136,8 +105,6 @@ class Ui_Login(object):
         self.create_acc_button_2 = QtWidgets.QPushButton(self.widget_2)
         self.create_acc_button_2.setGeometry(QtCore.QRect(100, 360, 101, 21))
         font = QtGui.QFont()
-        font.setFamily("Tahoma")
-        font.setPointSize(10)
         font.setUnderline(True)
         self.create_acc_button_2.setFont(font)
         self.create_acc_button_2.setStyleSheet("color: rgb(0, 0, 0);")

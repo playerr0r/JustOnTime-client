@@ -75,7 +75,6 @@
     </property>
     <property name="font">
      <font>
-      <family>Tahoma</family>
       <pointsize>40</pointsize>
      </font>
     </property>
@@ -98,7 +97,6 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Tahoma</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -121,7 +119,6 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Tahoma</family>
       <pointsize>10</pointsize>
      </font>
     </property>
@@ -155,11 +152,6 @@ border-radius: 8px;</string>
      <height>10000</height>
     </size>
    </property>
-   <property name="font">
-    <font>
-     <family>Tahoma</family>
-    </font>
-   </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 0px;</string>
@@ -172,12 +164,6 @@ border-radius: 0px;</string>
       <width>281</width>
       <height>31</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>12</pointsize>
-     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border: 1px;
@@ -198,12 +184,6 @@ border-radius: 3px;</string>
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255, 0);
 color: rgb(7, 71, 166);</string>
@@ -221,12 +201,6 @@ color: rgb(7, 71, 166);</string>
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255, 0);
 color:  rgb(7, 71, 166);</string>
@@ -243,12 +217,6 @@ color:  rgb(7, 71, 166);</string>
       <width>161</width>
       <height>31</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>12</pointsize>
-     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:  rgb(7, 71, 166);
@@ -268,13 +236,6 @@ border-radius: 2px;</string>
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>12</pointsize>
-      <underline>true</underline>
-     </font>
-    </property>
     <property name="styleSheet">
      <string notr="true"/>
     </property>
@@ -293,12 +254,6 @@ border-radius: 2px;</string>
       <width>281</width>
       <height>31</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>12</pointsize>
-     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border: 1px;
@@ -321,8 +276,6 @@ border-radius: 3px;</string>
     </property>
     <property name="font">
      <font>
-      <family>Tahoma</family>
-      <pointsize>10</pointsize>
       <underline>true</underline>
      </font>
     </property>

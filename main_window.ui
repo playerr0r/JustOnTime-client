@@ -239,7 +239,6 @@ border-radius: 2px;</string>
      </property>
      <property name="font">
       <font>
-       <family>Tahoma</family>
        <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -250,7 +249,7 @@ border-radius: 2px;</string>
 border-radius: 9px;</string>
      </property>
      <property name="text">
-      <string>?</string>
+      <string>Дашборд</string>
      </property>
      <property name="flat">
       <bool>true</bool>
@@ -306,7 +305,7 @@ border-radius: 9px;</string>
 border-radius: 9px;</string>
      </property>
      <property name="text">
-      <string>New project</string>
+      <string>Новый проект</string>
      </property>
      <property name="flat">
       <bool>true</bool>
@@ -349,7 +348,6 @@ border-radius: 9px;</string>
       </property>
       <property name="font">
        <font>
-        <family>Tahoma</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -360,41 +358,13 @@ border-radius: 9px;</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Нужно сделать&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="new_task_button">
-      <property name="geometry">
-       <rect>
-        <x>84</x>
-        <y>834</y>
-        <width>109</width>
-        <height>28</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Tahoma</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 9px;</string>
-      </property>
-      <property name="text">
-       <string>New task</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QScrollArea" name="scrollArea">
       <property name="geometry">
        <rect>
         <x>12</x>
         <y>51</y>
         <width>280</width>
-        <height>748</height>
+        <height>790</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -406,7 +376,7 @@ border-radius: 9px;</string>
          <x>0</x>
          <y>0</y>
          <width>278</width>
-         <height>746</height>
+         <height>788</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -438,7 +408,6 @@ border-radius: 9px;</string>
       </property>
       <property name="font">
        <font>
-        <family>Tahoma</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -455,7 +424,7 @@ border-radius: 9px;</string>
         <x>12</x>
         <y>51</y>
         <width>280</width>
-        <height>748</height>
+        <height>790</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -467,7 +436,7 @@ border-radius: 9px;</string>
          <x>0</x>
          <y>0</y>
          <width>278</width>
-         <height>746</height>
+         <height>788</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -499,7 +468,6 @@ border-radius: 9px;</string>
       </property>
       <property name="font">
        <font>
-        <family>Tahoma</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -516,7 +484,7 @@ border-radius: 9px;</string>
         <x>12</x>
         <y>51</y>
         <width>280</width>
-        <height>748</height>
+        <height>790</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -528,7 +496,7 @@ border-radius: 9px;</string>
          <x>0</x>
          <y>0</y>
          <width>278</width>
-         <height>746</height>
+         <height>788</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -554,7 +522,7 @@ border-radius: 9px;</string>
        <rect>
         <x>10</x>
         <y>450</y>
-        <width>81</width>
+        <width>85</width>
         <height>21</height>
        </rect>
       </property>
@@ -565,29 +533,10 @@ border-radius: 9px;</string>
        <string>Выполнить до</string>
       </property>
      </widget>
-     <widget class="QLabel" name="descr_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>550</y>
-        <width>281</width>
-        <height>221</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Описание задачи</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-      </property>
-     </widget>
      <widget class="QLabel" name="User_task_creator_pic">
       <property name="geometry">
        <rect>
-        <x>255</x>
+        <x>258</x>
         <y>342</y>
         <width>30</width>
         <height>30</height>
@@ -604,7 +553,7 @@ border-radius: 15px;</string>
      <widget class="QLabel" name="task_status">
       <property name="geometry">
        <rect>
-        <x>60</x>
+        <x>75</x>
         <y>180</y>
         <width>221</width>
         <height>21</height>
@@ -671,7 +620,7 @@ border-radius: 15px;</string>
      <widget class="QLabel" name="status_3">
       <property name="geometry">
        <rect>
-        <x>80</x>
+        <x>93</x>
         <y>200</y>
         <width>151</width>
         <height>21</height>
@@ -751,7 +700,7 @@ border-radius: 15px;</string>
      <widget class="QLabel" name="User_task_worker_pic">
       <property name="geometry">
        <rect>
-        <x>255</x>
+        <x>258</x>
         <y>300</y>
         <width>30</width>
         <height>30</height>
@@ -768,9 +717,9 @@ border-radius: 15px;</string>
      <widget class="QLabel" name="task_date">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>102</x>
         <y>450</y>
-        <width>81</width>
+        <width>103</width>
         <height>21</height>
        </rect>
       </property>
@@ -848,9 +797,9 @@ border-radius: 15px;</string>
      <widget class="QPushButton" name="User_task_worker">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>99</x>
         <y>303</y>
-        <width>154</width>
+        <width>151</width>
         <height>23</height>
        </rect>
       </property>
@@ -864,9 +813,9 @@ border-radius: 15px;</string>
      <widget class="QPushButton" name="User_task_creator">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>99</x>
         <y>345</y>
-        <width>154</width>
+        <width>151</width>
         <height>23</height>
        </rect>
       </property>
@@ -877,6 +826,38 @@ border-radius: 15px;</string>
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QPushButton" name="delete_task_button">
+      <property name="geometry">
+       <rect>
+        <x>227</x>
+        <y>21</y>
+        <width>58</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Удалить</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPlainTextEdit" name="descr_2">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>552</y>
+        <width>286</width>
+        <height>190</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+     </widget>
     </widget>
    </widget>
    <zorder>widget_4</zorder>
@@ -885,8 +866,8 @@ border-radius: 15px;</string>
   </widget>
  </widget>
  <resources>
-  <include location="../../../../Users/clirr/OneDrive/Рабочий стол/Main window.qrc"/>
-  <include location="resources.qrc"/>
+  <include location="../../../Users/clirr/OneDrive/Рабочий стол/Main window.qrc"/>
+  <include location="../kur/ui/resources.qrc"/>
  </resources>
  <connections/>
  <designerdata>

@@ -36,6 +36,7 @@ from PyQt5 import QtGui
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from sympy import N
 
 from login import Ui_Login
 from main_window import Ui_MainWindow
@@ -266,7 +267,6 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if self.role != 'admin':
             self.new_project_button.hide()
-            self.new_task_button.hide()
 
 
         # TODO: добавить функционал для кнопок
@@ -518,7 +518,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             data = data['task']
             # self.project_name.setText(self.projectname_combo_box.currentText() + ' / task-' + data['id'])
             self.task_name.setText(data['name'])
-            self.descr_2.setText(data['descr'])
+            # descr_2 is QPlainTextEdit
+            self.descr_2.setPlainText(data['descr'])
             self.task_status.setText(data['status'])
             date = data['date'].split('T')[0]
             self.task_date.setText(date)
@@ -696,8 +697,9 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         if response.status_code == 200:
             data = response.json()
             print(data)
-            for data in data['tasks']:
-                self.add_card(data['name'], data['status'], data['id'], data['avatar'])
+            if data['tasks'] != None:
+                for data in data['tasks']:
+                    self.add_card(data['name'], data['status'], data['id'], data['avatar'])
         else:
             print(f'Request failed with status code {response.status_code}')
 
@@ -1278,6 +1280,16 @@ if __name__ == '__main__':
         background: none;
     }
     """)
+    fontId = QtGui.QFontDatabase.addApplicationFont(app_dir + "resources/Rubik-Regular.ttf")
+    if fontId != -1:
+        # Шрифт успешно загружен, получаем его семейство
+        fontFamilies = QtGui.QFontDatabase.applicationFontFamilies(fontId)
+        if fontFamilies:
+            font = QtGui.QFont(fontFamilies[0], 10)
+            app.setFont(font)
+    else:
+        print("Failed to load font")
+
     window = Login()
     window.show()
     sys.exit(app.exec_())
