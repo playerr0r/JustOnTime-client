@@ -50,6 +50,7 @@ from new_project import Ui_NewProject
 
 # app dir pat in windows
 app_dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
+url = "https://justontime-backend.onrender.com/"
 
 class Login(QtWidgets.QDialog, Ui_Login):
     def __init__(self):
@@ -69,13 +70,9 @@ class Login(QtWidgets.QDialog, Ui_Login):
 
         self.password = hashlib.sha256(self.password.encode()).hexdigest()
 
-        print(self.password)
-        print(len(self.password))
-
-        url = 'http://localhost:8080/auth/login'
         data = {'login': self.login, 'password': self.password}
         
-        response = requests.post(url, json=data)
+        response = requests.post(url+"auth/login", json=data)
         
         if response.status_code == 200:
             user_data = response.json()['user']
@@ -85,7 +82,6 @@ class Login(QtWidgets.QDialog, Ui_Login):
             self.projects_ids = user_data['projects_ids']
             self.name = user_data['name']
             self.avatar = user_data['avatar']
-            print(self.avatar)
             print('Login successful')
             self.main_win = MainWin(self.role, self.id, self.code, self.projects_ids, self.name, self.avatar)
             self.main_win.show()
@@ -132,8 +128,6 @@ class Card(QWidget):
         super().__init__()
 
         self.drag_start_position = None
-
-        print(avatar)
 
         # Загрузите шаблон из файла .ui
         uic.loadUi(app_dir + 'card.ui', self)
@@ -277,10 +271,9 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.projects_ids = ','.join(map(str, projects_ids))
 
-        response = requests.get(f'http://localhost:8080/projects/?ids={self.projects_ids}')
+        response = requests.get(url + "projects/?ids=" + self.projects_ids)
         if response.status_code == 200:
             data = response.json()
-            print(data)
         else:
             print(f'Request failed with status code {response.status_code}')
 
@@ -288,6 +281,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             self.projectname_combo_box.addItem(name)
 
         self.projects = list(data['projects'].keys())
+        print(self.projects)
         self.project_name = self.projectname_combo_box.currentText()
         self.project_id = self.projects[0]
 
@@ -378,7 +372,6 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def card_moved(self, task_id, dropped_in_column):
         if dropped_in_column is not None:
-            url = 'http://localhost:8080/tasks/' + task_id.split('-')[1] + '/updateStatus'
             # Найдите карточку и переместите ее в новый столбец
             for layout in [self.cards_layout, self.cards_layout2, self.cards_layout3]:
                 for i in range(layout.count()):
@@ -395,7 +388,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
                         widget.setParent(None)
                         if dropped_in_column == self.scroll_content:
                             data = {'status': 'todo'}
-                            response = requests.post(url, json=data)
+                            response = requests.post(url + "tasks/" + task_id.split('-')[1] + "/updateStatus", json=data)
 
                             if response.status_code == 200:
                                 print(response.json())
@@ -405,7 +398,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
                         elif dropped_in_column == self.scroll_content2:
                             data = {'status': 'in progress'}
-                            response = requests.post(url, json=data)
+                            response = requests.post(url + "tasks/" + task_id.split('-')[1] + "/updateStatus", json=data)
 
                             if response.status_code == 200:
                                 print(response.json())
@@ -415,7 +408,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
                         elif dropped_in_column == self.scroll_content3:
                             data = {'status': 'done'}
-                            response = requests.post(url, json=data)
+                            response = requests.post(url + "tasks/" + task_id.split('-')[1] + "/updateStatus", json=data)
 
                             if response.status_code == 200:
                                 print(response.json())
@@ -508,9 +501,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.project_name_task_id.setText(self.projectname_combo_box.currentText() \
                                           + ' / task-' + task_id)
 
-        url = 'http://localhost:8080/tasks/' + task_id
-
-        response = requests.get(url)
+        response = requests.get(url + "tasks/" + task_id)
 
         if response.status_code == 200:
             data = response.json()
@@ -528,9 +519,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             print(f'Request failed with status code {response.status_code}')
 
         if empl_id != '':
-            url = 'http://localhost:8080/profile/' + str(empl_id)
-
-            response = requests.get(url)
+            response = requests.get(url + "profile/" + str(empl_id))
 
             if response.status_code == 200:
                 data = response.json()
@@ -597,8 +586,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             self.group.start()
 
     def assign_to_task(self, id, task_id):
-        url = 'http://localhost:8080/tasks/' + task_id + '/assign/' + '?empl_id=' + str(id)
-        response = requests.post(url)
+        response = requests.post(url + "tasks/" + task_id + "/assign/" + "?empl_id=" + str(id))
 
         if response.status_code == 200:
             print(response.json())
@@ -622,9 +610,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.profile_window.show()
         self.darkening_widget.show()
 
-        url = 'http://localhost:8080/profile/' + str(id)
-
-        response = requests.get(url)
+        response = requests.get(url + "profile/" + str(id))
 
         if response.status_code == 200:
             data = response.json()
@@ -690,13 +676,13 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         # query for tasks of project
         self.project_name = self.projectname_combo_box.currentText()
         self.project_id = self.projects[self.projectname_combo_box.currentIndex()]
-        response = requests.get(f'http://localhost:8080/projects/{self.project_id}/tasks')
+        print(self.project_name + " " + self.project_id)
+        response = requests.get(url+ "projects/" + self.project_id + "/tasks")
 
         data = {}
 
         if response.status_code == 200:
             data = response.json()
-            print(data)
             if data['tasks'] != None:
                 for data in data['tasks']:
                     self.add_card(data['name'], data['status'], data['id'], data['avatar'])
@@ -757,27 +743,23 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             pass
 
         adder_task.new_task_name.returnPressed.connect(lambda:\
-                     self.add_new_task(adder_task.new_task_name.text(), adder_task, project_id, status))
+                     self.add_new_task(adder_task.new_task_name.text(), adder_task, self.project_id, status))
 
     def add_new_task(self, name, adder_task, project_id, status):
-        print(name)
         
         data = {
             'name': name,
             'status': status,
-            'project_id': project_id,
+            'project_id': self.project_id,
             'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
-        print(data['date'])
-
-        response = requests.post('http://localhost:8080/tasks/new', json=data)
+        response = requests.post(url+ "tasks/new", json=data)
 
         if response.status_code == 200:
             adder_task.new_task_name.setText('')
             adder_task.new_task_name.hide()
             adder_task.new_task_button.show()
-            print(response.json())
             self.refresh_lists()
         else:
             print(f'Request failed with status code {response.status_code}')
@@ -1052,12 +1034,11 @@ class SignIn(QtWidgets.QDialog, Ui_SignIn):
 
     def input_checker(self):
         login = self.login_input.text()
-        url = 'http://localhost:8080/auth/register/check/' + login
-        response = requests.get(url)
+        response = requests.get(url + "auth/register/check/" + login)
         if response.status_code == 200:
             data = response.json()
             print(data)
-            self.password = self.pass_input.text()
+            self.password = self.pass_input_2.text()
             self.password = hashlib.sha256(self.password.encode()).hexdigest()
             if data['message'] == 'Login exists' or self.login_input.text() == '':
                 self.login_input.setStyleSheet("border: 1px;\n"
@@ -1081,13 +1062,12 @@ class SignIn(QtWidgets.QDialog, Ui_SignIn):
                 "border-style: outset;\n"
                 "border-radius: 3px;")
             else:
-                url = 'http://localhost:8080/auth/register'
                 data = {'name': self.name_input.text(),
                         'login': self.login_input.text(), 
                         'password': self.password, 
                         'role': 'employee', 
                         'code': self.empl_code_input.text()}
-                response = requests.post(url, json=data)
+                response = requests.post(url + "auth/register", json=data)
                 if response.status_code == 200:
                     print(response.json())
                     self.open_login()
