@@ -190,11 +190,6 @@ background-color: rgba(0, 0, 0, 0);
        <height>28</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-      </font>
-     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
      </property>
@@ -210,7 +205,6 @@ background-color: rgba(0, 0, 0, 0);
      </property>
      <property name="font">
       <font>
-       <family>Tahoma</family>
        <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -266,7 +260,6 @@ border-radius: 9px;</string>
      </property>
      <property name="font">
       <font>
-       <family>Tahoma</family>
        <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -294,7 +287,6 @@ border-radius: 9px;</string>
      </property>
      <property name="font">
       <font>
-       <family>Tahoma</family>
        <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -522,7 +514,7 @@ border-radius: 9px;</string>
        <rect>
         <x>10</x>
         <y>450</y>
-        <width>85</width>
+        <width>73</width>
         <height>21</height>
        </rect>
       </property>
@@ -530,7 +522,7 @@ border-radius: 9px;</string>
        <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
       </property>
       <property name="text">
-       <string>Выполнить до</string>
+       <string>Создано:</string>
       </property>
      </widget>
      <widget class="QLabel" name="User_task_creator_pic">
@@ -606,7 +598,7 @@ border-radius: 15px;</string>
        <rect>
         <x>10</x>
         <y>345</y>
-        <width>81</width>
+        <width>88</width>
         <height>21</height>
        </rect>
       </property>
@@ -670,7 +662,7 @@ border-radius: 15px;</string>
        <rect>
         <x>10</x>
         <y>200</y>
-        <width>67</width>
+        <width>76</width>
         <height>21</height>
        </rect>
       </property>
@@ -717,9 +709,9 @@ border-radius: 15px;</string>
      <widget class="QLabel" name="task_date">
       <property name="geometry">
        <rect>
-        <x>102</x>
+        <x>93</x>
         <y>450</y>
-        <width>103</width>
+        <width>190</width>
         <height>21</height>
        </rect>
       </property>
@@ -735,7 +727,7 @@ border-radius: 15px;</string>
        <rect>
         <x>10</x>
         <y>180</y>
-        <width>41</width>
+        <width>52</width>
         <height>21</height>
        </rect>
       </property>
@@ -783,7 +775,7 @@ border-radius: 15px;</string>
        <rect>
         <x>10</x>
         <y>305</y>
-        <width>79</width>
+        <width>91</width>
         <height>21</height>
        </rect>
       </property>

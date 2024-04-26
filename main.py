@@ -36,7 +36,6 @@ from PyQt5 import QtGui
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from sympy import N
 
 from login import Ui_Login
 from main_window import Ui_MainWindow
@@ -50,8 +49,8 @@ from new_project import Ui_NewProject
 
 # app dir pat in windows
 app_dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
-# url = "https://justontime-backend.onrender.com/"
-url = "http://localhost:8080/"
+url = "https://justontime-backend.onrender.com/"
+# url = "http://localhost:8080/"
 
 class Login(QtWidgets.QDialog, Ui_Login):
     def __init__(self):
@@ -321,15 +320,15 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Установите scroll_content в качестве виджета прокрутки для scrollArea
         self.scrollArea.setWidget(self.scroll_content)
-        # self.scrollArea.setFrameShape(QFrame.NoFrame)
+        self.scrollArea.setFrameShape(QFrame.NoFrame)
         self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollArea_2.setWidget(self.scroll_content2)
-        # self.scrollArea_2.setFrameShape(QFrame.NoFrame)
+        self.scrollArea_2.setFrameShape(QFrame.NoFrame)
         self.scrollArea_2.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollArea_3.setWidget(self.scroll_content3)
-        # self.scrollArea_3.setFrameShape(QFrame.NoFrame)
+        self.scrollArea_3.setFrameShape(QFrame.NoFrame)
         self.scrollArea_3.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scrollArea.setWidgetResizable(True)
@@ -426,6 +425,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.animation.setDuration(150)
         self.animation.setStartValue(QtCore.QRect(1255, -3, 301, 916))
         self.animation.setEndValue(QtCore.QRect(1557, -3, 301, 916))
+        self.delete_task_button.clicked.disconnect()
         self.widget_5_on_screen = False
 
         self.animation2 = QtCore.QPropertyAnimation(self.widget_6, b"geometry")
@@ -491,6 +491,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
         empl_id = None
 
+        self.delete_task_button.clicked.connect(lambda: self.delete_task(task_id))
+
         try:
             self.User_task_worker.clicked.disconnect()
         except TypeError:
@@ -513,8 +515,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             # descr_2 is QPlainTextEdit
             self.descr_2.setPlainText(data['descr'])
             self.task_status.setText(data['status'])
-            date = data['date'].split('T')[0]
-            self.task_date.setText(date)
+            date = data['date'].split('T')
+            self.task_date.setText(date[0] + " " + date[1])
             empl_id = data['empl_id']
         else:
             print(f'Request failed with status code {response.status_code}')
@@ -585,6 +587,16 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             self.group.addAnimation(self.animation3)
             self.group.addAnimation(self.animation4)
             self.group.start()
+
+    def delete_task(self, task_id):
+        response = requests.delete(url + "tasks/" + task_id)
+
+        if response.status_code == 200:
+            print(response.json())
+            self.close_card_info()
+            self.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
 
     def assign_to_task(self, id, task_id):
         response = requests.post(url + "tasks/" + task_id + "/assign/" + "?empl_id=" + str(id))
