@@ -236,11 +236,13 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setWindowIcon(QtGui.QIcon(app_dir + 'resources/winicon.png'))
         self.setWindowTitle('Just on time')
 
+
         self.role = role
         self.id = id
         self.code = code
         self.projects_ids = projects_ids
         self.avatar = avatar
+        self.projects = []
 
         self.avatar = base64.b64decode(self.avatar)
         self.avatar = base64.b64decode(self.avatar)
@@ -250,14 +252,19 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
         user_avatar = QPixmap()
 
+        self.setupUi(self)
         if not user_avatar.loadFromData(buffer.readAll()):
             print("Failed to load the image.")
         else:
-            self.setupUi(self)
             self.profile_button.setIcon(QtGui.QIcon(user_avatar))
             self.profile_button.setIconSize(QtCore.QSize(40, 40))
             mask = QRegion(self.profile_button.rect(), QRegion.Ellipse)
             self.profile_button.setMask(mask)
+
+        self.loading_movie = QtGui.QMovie(app_dir + 'resources/22.gif')
+        self.loading_movie_2 = QtGui.QMovie(app_dir + 'resources/22.gif')
+        self.loading_label.setMovie(self.loading_movie)
+        self.loading_label_2.setMovie(self.loading_movie_2)
 
         if self.role != 'admin':
             self.new_project_button.hide()
@@ -269,21 +276,21 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             
         self.widget_5.hide()
 
-        self.projects_ids = ','.join(map(str, projects_ids))
+        if self.projects_ids:
+            self.projects_ids = ','.join(map(str, projects_ids))
+            response = requests.get(url + "projects/?ids=" + self.projects_ids)
+            if response.status_code == 200:
+                data = response.json()
+            else:
+                print(f'Request failed with status code {response.status_code}')
 
-        response = requests.get(url + "projects/?ids=" + self.projects_ids)
-        if response.status_code == 200:
-            data = response.json()
-        else:
-            print(f'Request failed with status code {response.status_code}')
+            for id, name in data['projects'].items():
+                self.projectname_combo_box.addItem(name)
 
-        for id, name in data['projects'].items():
-            self.projectname_combo_box.addItem(name)
-
-        self.projects = list(data['projects'].keys())
-        print(self.projects)
-        self.project_name = self.projectname_combo_box.currentText()
-        self.project_id = self.projects[0]
+            self.projects = list(data['projects'].keys())
+            print(self.projects)
+            self.project_name = self.projectname_combo_box.currentText()
+            self.project_id = self.projects[0]
 
         self.widgets_stylesheet_setter()
         self.cards_area_setter()
@@ -516,7 +523,7 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
             self.descr_2.setPlainText(data['descr'])
             self.task_status.setText(data['status'])
             date = data['date'].split('T')
-            self.task_date.setText(date[0] + " " + date[1])
+            self.task_date.setText(date[0] + " " + date[1][:-1])
             empl_id = data['empl_id']
         else:
             print(f'Request failed with status code {response.status_code}')
@@ -678,6 +685,8 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def refresh_lists(self):
         # self.widget_5.hide()
+        self.loading_label.show()
+        self.loading_movie.start()
         print('REFRESHING LISTS')
         self.scroll_content.hide()
         self.scroll_content2.hide()
@@ -687,64 +696,67 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         self.clear_column(self.cards_layout3)
 
         # query for tasks of project
-        self.project_name = self.projectname_combo_box.currentText()
-        self.project_id = self.projects[self.projectname_combo_box.currentIndex()]
-        print(self.project_name + " " + self.project_id)
-        response = requests.get(url+ "projects/" + self.project_id + "/tasks")
+        if self.projectname_combo_box.currentIndex() != -1:
+            self.project_name = self.projectname_combo_box.currentText()
+            self.project_id = self.projects[self.projectname_combo_box.currentIndex()]
+            print(self.project_name + " " + self.project_id)
+            response = requests.get(url+ "projects/" + self.project_id + "/tasks")
 
-        data = {}
+            data = {}
 
-        if response.status_code == 200:
-            data = response.json()
-            if data['tasks'] != None:
-                for data in data['tasks']:
-                    self.add_card(data['name'], data['status'], data['id'], data['avatar'])
-        else:
-            print(f'Request failed with status code {response.status_code}')
+            if response.status_code == 200:
+                data = response.json()
+                if data['tasks'] != None:
+                    for data in data['tasks']:
+                        self.add_card(data['name'], data['status'], data['id'], data['avatar'])
+            else:
+                print(f'Request failed with status code {response.status_code}')
 
-        adder_task = NewTask()
-        self.cards_layout.addWidget(adder_task, self.cards_layout.rowCount(), 0)
-        adder_task.show()
-        adder_task.lower()
-        self.scroll_content.updateGeometry()
-        self.scroll_content.adjustSize()
-        self.cards_layout.update()
-        self.scrollArea.update()
-        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-        adder_task.new_task_button.clicked.connect(lambda:\
-                    self.new_task(adder_task, self.project_id, 'todo'))
+            adder_task = NewTask()
+            self.cards_layout.addWidget(adder_task, self.cards_layout.rowCount(), 0)
+            adder_task.show()
+            adder_task.lower()
+            self.scroll_content.updateGeometry()
+            self.scroll_content.adjustSize()
+            self.cards_layout.update()
+            self.scrollArea.update()
+            self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+            adder_task.new_task_button.clicked.connect(lambda:\
+                        self.new_task(adder_task, self.project_id, 'todo'))
 
-        adder_task2 = NewTask()
-        self.cards_layout2.addWidget(adder_task2, self.cards_layout2.rowCount(), 0)
-        adder_task2.show()
-        adder_task2.lower()
-        self.scroll_content2.updateGeometry()
-        self.scroll_content2.adjustSize()
-        self.cards_layout2.update()
-        self.scrollArea_2.update()
-        self.scrollArea_2.verticalScrollBar().setValue(self.scrollArea_2.verticalScrollBar().maximum())
-        adder_task2.new_task_button.clicked.connect(lambda:\
-                     self.new_task(adder_task2, self.project_id, 'in progress'))
+            adder_task2 = NewTask()
+            self.cards_layout2.addWidget(adder_task2, self.cards_layout2.rowCount(), 0)
+            adder_task2.show()
+            adder_task2.lower()
+            self.scroll_content2.updateGeometry()
+            self.scroll_content2.adjustSize()
+            self.cards_layout2.update()
+            self.scrollArea_2.update()
+            self.scrollArea_2.verticalScrollBar().setValue(self.scrollArea_2.verticalScrollBar().maximum())
+            adder_task2.new_task_button.clicked.connect(lambda:\
+                        self.new_task(adder_task2, self.project_id, 'in progress'))
 
-        adder_task3 = NewTask()
-        self.cards_layout3.addWidget(adder_task3, self.cards_layout3.rowCount(), 0)
-        adder_task3.show()
-        adder_task3.lower()
-        self.scroll_content3.updateGeometry()
-        self.scroll_content3.adjustSize()
-        self.cards_layout3.update()
-        self.scrollArea_3.update()
-        self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
-        adder_task3.new_task_button.clicked.connect(lambda:\
-                     self.new_task(adder_task3, self.project_id, 'done'))
+            adder_task3 = NewTask()
+            self.cards_layout3.addWidget(adder_task3, self.cards_layout3.rowCount(), 0)
+            adder_task3.show()
+            adder_task3.lower()
+            self.scroll_content3.updateGeometry()
+            self.scroll_content3.adjustSize()
+            self.cards_layout3.update()
+            self.scrollArea_3.update()
+            self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
+            adder_task3.new_task_button.clicked.connect(lambda:\
+                        self.new_task(adder_task3, self.project_id, 'done'))
 
-        self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        self.cards_layout3.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+            self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+            self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+            self.cards_layout3.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         self.scroll_content.show()
         self.scroll_content2.show()
         self.scroll_content3.show()
+        self.loading_movie.stop()
+        self.loading_label.hide()
 
     def new_task(self, adder_task, project_id, status):
         adder_task.new_task_button.hide()
