@@ -50,7 +50,8 @@ from new_project import Ui_NewProject
 
 # app dir pat in windows
 app_dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
-url = "https://justontime-backend.onrender.com/"
+# url = "https://justontime-backend.onrender.com/"
+url = "http://localhost:8080/"
 
 class Login(QtWidgets.QDialog, Ui_Login):
     def __init__(self):
@@ -750,9 +751,11 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
         data = {
             'name': name,
             'status': status,
-            'project_id': self.project_id,
+            'projectId': int(self.project_id),
             'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
+
+        print(data)
 
         response = requests.post(url+ "tasks/new", json=data)
 
