@@ -37,14 +37,14 @@ from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as Navigati
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-from login import Ui_Login
-from main_window import Ui_MainWindow
-from sign_in import Ui_SignIn
-from stats import Ui_Stats
-from reports_backlog import Ui_ReportsWindow
-from new_task import Ui_NewTask
-from task import Ui_TaskWindow
-from new_project import Ui_NewProject
+# from login import Ui_Login
+# from main_window import Ui_MainWindow
+# from sign_in import Ui_SignIn
+# from stats import Ui_Stats
+# from reports_backlog import Ui_ReportsWindow
+# from new_task import Ui_NewTask
+# from task import Ui_TaskWindow
+# from new_project import Ui_NewProject
 
 
 # app dir pat in windows
@@ -52,10 +52,10 @@ app_dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
 url = "https://justontime-backend.onrender.com/"
 # url = "http://localhost:8080/"
 
-class Login(QtWidgets.QDialog, Ui_Login):
+class Login(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
-        self.setupUi(self)
+        uic.loadUi(app_dir + 'ui/login.ui', self)
         self.widget_3.setObjectName("widget_3")
         self.widget_3.setStyleSheet("#widget_3 { background-image: url(" + app_dir + "resources/login_background.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; }")
 
@@ -106,7 +106,7 @@ class Login(QtWidgets.QDialog, Ui_Login):
 class NewTask(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi(app_dir + 'new_task.ui', self)
+        uic.loadUi(app_dir + 'ui/new_task.ui', self)
         self.new_task_button.setStyleSheet("background-color: rgb(7, 71, 166);\n"
         "color: white; border: none; border-radius: 3px;")
         self.new_task_name.hide()
@@ -130,7 +130,7 @@ class Card(QWidget):
         self.drag_start_position = None
 
         # Загрузите шаблон из файла .ui
-        uic.loadUi(app_dir + 'card.ui', self)
+        uic.loadUi(app_dir + 'ui/card.ui', self)
 
         self.label.setText(name)
         self.label_2.setText(status)
@@ -225,14 +225,16 @@ class Profile(QWidget):
     def __init__(self):
         super().__init__()
 
-        uic.loadUi(app_dir + 'profile.ui', self)
+        uic.loadUi(app_dir + 'ui/profile.ui', self)
         self.setStyleSheet("QWidget { border-radius: 3px; }")
         self.profileCloseButton.setText('✖')
         self.show()
 
-class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
+class MainWin(QtWidgets.QMainWindow):
     def __init__(self, role, id, code, projects_ids, user_name, avatar):
         super().__init__()
+
+        uic.loadUi(app_dir + 'ui/main_window.ui', self)
         self.setWindowIcon(QtGui.QIcon(app_dir + 'resources/winicon.png'))
         self.setWindowTitle('Just on time')
 
@@ -252,7 +254,6 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 
         user_avatar = QPixmap()
 
-        self.setupUi(self)
         if not user_avatar.loadFromData(buffer.readAll()):
             print("Failed to load the image.")
         else:
@@ -1044,10 +1045,10 @@ class MainWin(QtWidgets.QMainWindow, Ui_MainWindow):
 #         con.commit()
 #         self.close()
         
-class SignIn(QtWidgets.QDialog, Ui_SignIn):
+class SignIn(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
-        self.setupUi(self)
+        uic.loadUi(app_dir + 'ui/sign_in.ui', self)
         self.widget.setObjectName("widget")
         self.widget.setStyleSheet("#widget { background-image:\
                  url(" + app_dir + "resources/sign_in_background.png);\
