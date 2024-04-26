@@ -79,7 +79,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255, 0);
+     <string notr="true">background-color: rgba(255, 255, 255, 0);
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
@@ -101,7 +101,7 @@ color: rgb(255, 255, 255);</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255, 0);
+     <string notr="true">background-color: rgba(255, 255, 255, 0);
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
@@ -185,7 +185,7 @@ border-radius: 3px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255, 0);
+     <string notr="true">background-color: rgba(255, 255, 255, 0);
 color: rgb(7, 71, 166);</string>
     </property>
     <property name="text">
@@ -202,7 +202,7 @@ color: rgb(7, 71, 166);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255, 0);
+     <string notr="true">background-color: rgba(255, 255, 255, 0);
 color:  rgb(7, 71, 166);</string>
     </property>
     <property name="text">

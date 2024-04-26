@@ -191,7 +191,7 @@ background-color: rgba(0, 0, 0, 0);
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+      <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
      </property>
     </widget>
     <widget class="QPushButton" name="active_sprints_button">
@@ -239,7 +239,7 @@ border-radius: 2px;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(131, 180, 255, 0);
+      <string notr="true">background-color: rgba(131, 180, 255, 0);
 border-radius: 9px;</string>
      </property>
      <property name="text">
@@ -266,7 +266,7 @@ border-radius: 9px;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(131, 180, 255, 0);
+      <string notr="true">background-color: rgba(131, 180, 255, 0);
 border-radius: 9px;</string>
      </property>
      <property name="text">
@@ -293,7 +293,7 @@ border-radius: 9px;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(131, 180, 255, 0);
+      <string notr="true">background-color: rgba(131, 180, 255, 0);
 border-radius: 9px;</string>
      </property>
      <property name="text">
@@ -344,7 +344,7 @@ border-radius: 9px;</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Нужно сделать&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -404,7 +404,7 @@ border-radius: 9px;</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;В процессе&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -464,7 +464,7 @@ border-radius: 9px;</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Выполнено&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -507,7 +507,7 @@ border-radius: 9px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(217, 217, 217, 165);</string>
+      <string notr="true">background-color: rgba(217, 217, 217, 165);</string>
      </property>
      <widget class="QLabel" name="date_2">
       <property name="geometry">
@@ -519,7 +519,7 @@ border-radius: 9px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Создано:</string>
@@ -552,7 +552,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Task_status</string>
@@ -571,7 +571,7 @@ border-radius: 15px;</string>
        <bool>false</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Дата</string>
@@ -587,7 +587,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Project_name / task_id</string>
@@ -603,7 +603,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Создатель:</string>
@@ -619,7 +619,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Task_priotity</string>
@@ -635,7 +635,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Люди</string>
@@ -667,7 +667,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Приоритет:</string>
@@ -683,7 +683,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Детали</string>
@@ -716,7 +716,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Task_date</string>
@@ -732,7 +732,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Статус:</string>
@@ -748,7 +748,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Task name</string>
@@ -764,7 +764,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Описание</string>
@@ -780,7 +780,7 @@ border-radius: 15px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
       </property>
       <property name="text">
        <string>Назначенный:</string>
@@ -889,10 +889,6 @@ border-radius: 15px;</string>
    <zorder>top_menu</zorder>
   </widget>
  </widget>
- <resources>
-  <include location="../../../Users/clirr/OneDrive/Рабочий стол/Main window.qrc"/>
-  <include location="../kur/ui/resources.qrc"/>
- </resources>
  <connections/>
  <designerdata>
   <property name="gridDeltaX">

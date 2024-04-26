@@ -236,6 +236,10 @@ class MainWin(QtWidgets.QMainWindow):
 
         uic.loadUi(app_dir + 'ui/main_window.ui', self)
         self.setWindowIcon(QtGui.QIcon(app_dir + 'resources/winicon.png'))
+        self.homepage_button.setStyleSheet(f"image: url({app_dir}/resources/homepage.svg);")
+        self.stats_button.setStyleSheet(f"image: url({app_dir}/resources/stats.svg);")
+        self.refresh_button.setStyleSheet(f"image: url({app_dir}/resources/refresh.svg);")
+        self.profile_button.setStyleSheet(f"image: url({app_dir}/resources/profile.svg);")
         self.setWindowTitle('Just on time')
 
 
