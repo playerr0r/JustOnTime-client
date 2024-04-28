@@ -37,16 +37,6 @@ from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as Navigati
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-# from login import Ui_Login
-# from main_window import Ui_MainWindow
-# from sign_in import Ui_SignIn
-# from stats import Ui_Stats
-# from reports_backlog import Ui_ReportsWindow
-# from new_task import Ui_NewTask
-# from task import Ui_TaskWindow
-# from new_project import Ui_NewProject
-
-
 # app dir pat in windows
 app_dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
 url = "https://justontime-backend.onrender.com/"
@@ -242,7 +232,6 @@ class MainWin(QtWidgets.QMainWindow):
         self.profile_button.setStyleSheet(f"image: url({app_dir}/resources/profile.svg);")
         self.setWindowTitle('Just on time')
 
-
         self.role = role
         self.id = id
         self.code = code
@@ -273,7 +262,6 @@ class MainWin(QtWidgets.QMainWindow):
 
         if self.role != 'admin':
             self.new_project_button.hide()
-
 
         # TODO: добавить функционал для кнопок
         self.reports_button.hide()
@@ -361,9 +349,9 @@ class MainWin(QtWidgets.QMainWindow):
         self.left_menu.setStyleSheet("background-color: rgba(235, 235, 235, 255);")
         self.widget_4.setStyleSheet("")
         self.widget_4.setObjectName("widget_4")
-        self.widget_4.setStyleSheet("#widget_4 { background-image: \
-                    url(" + app_dir + "resources/main_background.jpg);\
-                    background-repeat: no-repeat; background-size: cover; }")
+        # self.widget_4.setStyleSheet("#widget_4 { background-image: \
+                    # url(" + app_dir + "resources/main_background.jpg);\
+                    # background-repeat: no-repeat; background-size: cover; }")
 
         self.widget_6.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
         self.widget_7.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
@@ -465,7 +453,7 @@ class MainWin(QtWidgets.QMainWindow):
         # Создайте новую карточку
         card = Card(name, status, task_id, avatar, show=False)
         QApplication.processEvents()
-        card.clicked.connect(lambda: self.show_card_info(card = card))
+        card.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id))
         # Добавьте карточку в макет
 
         if status == 'todo':
@@ -501,7 +489,13 @@ class MainWin(QtWidgets.QMainWindow):
         self.widget_7.setGeometry(580, 30, 301, 868)
         self.widget_8.setGeometry(910, 30, 301, 868)
 
+        try:
+            self.delete_task_button.disconnect()
+        except TypeError:
+            pass
+        
         empl_id = None
+        print(task_id)
 
         self.delete_task_button.clicked.connect(lambda: self.delete_task(task_id))
 
@@ -602,6 +596,7 @@ class MainWin(QtWidgets.QMainWindow):
 
     def delete_task(self, task_id):
         response = requests.delete(url + "tasks/" + task_id)
+        print(task_id)
 
         if response.status_code == 200:
             print(response.json())
