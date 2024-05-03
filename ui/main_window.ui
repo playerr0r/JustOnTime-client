@@ -39,190 +39,23 @@
   <property name="toolTipDuration">
    <number>-1</number>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="top_menu" native="true">
-    <property name="geometry">
-     <rect>
-      <x>-3</x>
-      <y>-3</y>
-      <width>1564</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(7, 71, 166);</string>
-    </property>
-    <widget class="QWidget" name="widget_2" native="true">
-     <property name="geometry">
-      <rect>
-       <x>18</x>
-       <y>3</y>
-       <width>58</width>
-       <height>58</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(1, 46, 134);</string>
-     </property>
-     <widget class="QPushButton" name="homepage_button">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>9</y>
-        <width>43</width>
-        <height>40</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">image: url(:/resources/resources/9075873_list_checklist_menu_note_document_icon 2.svg);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QPushButton" name="stats_button">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>12</y>
-       <width>40</width>
-       <height>37</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">image: url(:/resources/resources/1.svg);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="refresh_button">
-     <property name="geometry">
-      <rect>
-       <x>153</x>
-       <y>12</y>
-       <width>40</width>
-       <height>37</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">image: url(:/resources/resources/Layer 2.svg);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="profile_button">
-     <property name="geometry">
-      <rect>
-       <x>1500</x>
-       <y>12</y>
-       <width>40</width>
-       <height>37</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">image: url(:/resources/resources/4092564_profile_about_mobile ui_user_icon 2.svg);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </widget>
    <widget class="QWidget" name="left_menu" native="true">
     <property name="geometry">
      <rect>
       <x>-3</x>
-      <y>57</y>
+      <y>0</y>
       <width>205</width>
-      <height>916</height>
+      <height>973</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgba(217, 217, 217, 220);</string>
+     <string notr="true">background-color: rgba(217, 217, 217, 255);</string>
     </property>
-    <widget class="Line" name="line">
-     <property name="geometry">
-      <rect>
-       <x>18</x>
-       <y>66</y>
-       <width>172</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0,0,0);
-background-color: rgba(0, 0, 0, 0);
-</string>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="projectname_combo_box">
-     <property name="geometry">
-      <rect>
-       <x>18</x>
-       <y>30</y>
-       <width>175</width>
-       <height>28</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="active_sprints_button">
-     <property name="geometry">
-      <rect>
-       <x>18</x>
-       <y>87</y>
-       <width>169</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(7, 71, 166);
-color : rgb(255, 255, 255);
-border-radius: 2px;</string>
-     </property>
-     <property name="text">
-      <string>Доска</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="reports_button">
+    <widget class="QPushButton" name="kanban_button">
      <property name="geometry">
       <rect>
        <x>18</x>
@@ -234,8 +67,34 @@ border-radius: 2px;</string>
      <property name="font">
       <font>
        <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(131, 180, 255, 0);</string>
+     </property>
+     <property name="text">
+      <string>Доска</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="dashboard_button">
+     <property name="geometry">
+      <rect>
+       <x>18</x>
+       <y>81</y>
+       <width>169</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -261,8 +120,8 @@ border-radius: 9px;</string>
      <property name="font">
       <font>
        <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -276,11 +135,11 @@ border-radius: 9px;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="new_project_button">
+    <widget class="QPushButton" name="logout_button">
      <property name="geometry">
       <rect>
        <x>18</x>
-       <y>870</y>
+       <y>924</y>
        <width>169</width>
        <height>34</height>
       </rect>
@@ -288,8 +147,8 @@ border-radius: 9px;</string>
      <property name="font">
       <font>
        <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -297,602 +156,753 @@ border-radius: 9px;</string>
 border-radius: 9px;</string>
      </property>
      <property name="text">
-      <string>Новый проект</string>
+      <string>Выход из аккаунта</string>
      </property>
      <property name="flat">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>21</x>
+       <y>18</y>
+       <width>169</width>
+       <height>46</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(7, 71, 166);</string>
+     </property>
+     <property name="text">
+      <string>Just on Time</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>186</x>
+       <y>75</y>
+       <width>9</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(7, 17, 166);
+border-radius: 2px;</string>
      </property>
     </widget>
    </widget>
    <widget class="QWidget" name="widget_4" native="true">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>54</y>
-      <width>1552</width>
-      <height>919</height>
+      <x>201</x>
+      <y>0</y>
+      <width>1351</width>
+      <height>973</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
-    <widget class="QWidget" name="widget_6" native="true">
+    <widget class="QStackedWidget" name="stackedWidget">
      <property name="geometry">
       <rect>
-       <x>351</x>
-       <y>33</y>
-       <width>301</width>
-       <height>868</height>
+       <x>0</x>
+       <y>57</y>
+       <width>1351</width>
+       <height>913</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(235, 235, 235);
-</string>
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>18</x>
-        <y>15</y>
-        <width>139</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="dashboard_page"/>
+     <widget class="QWidget" name="kanban_page">
       <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
       </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Нужно сделать&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="geometry">
-       <rect>
-        <x>12</x>
-        <y>51</y>
-        <width>280</width>
-        <height>790</height>
-       </rect>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
+      <widget class="QWidget" name="widget_5" native="true">
        <property name="geometry">
         <rect>
-         <x>0</x>
+         <x>990</x>
          <y>0</y>
-         <width>278</width>
-         <height>788</height>
+         <width>361</width>
+         <height>970</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true">background-color: rgba(217, 217, 217, 255);</string>
        </property>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="widget_7" native="true">
-     <property name="geometry">
-      <rect>
-       <x>729</x>
-       <y>33</y>
-       <width>301</width>
-       <height>865</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(235, 235, 235);</string>
-     </property>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>18</x>
-        <y>15</y>
-        <width>136</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;В процессе&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QScrollArea" name="scrollArea_2">
-      <property name="geometry">
-       <rect>
-        <x>12</x>
-        <y>51</y>
-        <width>280</width>
-        <height>790</height>
-       </rect>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents_2">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>278</width>
-         <height>788</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="widget_8" native="true">
-     <property name="geometry">
-      <rect>
-       <x>1116</x>
-       <y>33</y>
-       <width>301</width>
-       <height>862</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(235, 235, 235);</string>
-     </property>
-     <widget class="QLabel" name="label_8">
-      <property name="geometry">
-       <rect>
-        <x>18</x>
-        <y>15</y>
-        <width>136</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Выполнено&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QScrollArea" name="scrollArea_3">
-      <property name="geometry">
-       <rect>
-        <x>12</x>
-        <y>51</y>
-        <width>280</width>
-        <height>790</height>
-       </rect>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents_3">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>278</width>
-         <height>788</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="widget_5" native="true">
-     <property name="geometry">
-      <rect>
-       <x>1248</x>
-       <y>3</y>
-       <width>301</width>
-       <height>916</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgba(217, 217, 217, 165);</string>
-     </property>
-     <widget class="QLabel" name="date_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>450</y>
-        <width>73</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Создано:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="User_task_creator_pic">
-      <property name="geometry">
-       <rect>
-        <x>258</x>
-        <y>342</y>
-        <width>30</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(0, 0, 0);
+       <widget class="QLabel" name="date_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>450</y>
+          <width>73</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Создано:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="User_task_creator_pic">
+        <property name="geometry">
+         <rect>
+          <x>258</x>
+          <y>342</y>
+          <width>30</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 0, 0);
 border-radius: 15px;</string>
-      </property>
-      <property name="text">
-       <string>User_task_creator_pic</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="task_status">
-      <property name="geometry">
-       <rect>
-        <x>75</x>
-        <y>180</y>
-        <width>221</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Task_status</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="date">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>420</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Дата</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="project_name_task_id">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>261</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Project_name / task_id</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="people_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>345</y>
-        <width>88</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Создатель:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="status_3">
-      <property name="geometry">
-       <rect>
-        <x>93</x>
-        <y>200</y>
-        <width>151</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Task_priotity</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="people">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>275</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Люди</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton">
-      <property name="geometry">
-       <rect>
-        <x>12</x>
-        <y>13</y>
-        <width>30</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>-&gt;</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="status_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>200</y>
-        <width>76</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Приоритет:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="details">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>160</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Детали</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="User_task_worker_pic">
-      <property name="geometry">
-       <rect>
-        <x>258</x>
-        <y>300</y>
-        <width>30</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(0, 0, 0);
+        </property>
+        <property name="text">
+         <string>User_task_creator_pic</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="task_status">
+        <property name="geometry">
+         <rect>
+          <x>75</x>
+          <y>180</y>
+          <width>221</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Task_status</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="date">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>420</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Дата</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="project_name_task_id">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>261</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Project_name</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="people_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>345</y>
+          <width>88</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Создатель:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="status_3">
+        <property name="geometry">
+         <rect>
+          <x>93</x>
+          <y>200</y>
+          <width>151</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Task_priotity</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="people">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>275</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Люди</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>12</x>
+          <y>13</y>
+          <width>30</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>-&gt;</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="status_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>200</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Приоритет:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="details">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>160</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Детали</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="User_task_worker_pic">
+        <property name="geometry">
+         <rect>
+          <x>258</x>
+          <y>300</y>
+          <width>30</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 0, 0);
 border-radius: 15px;</string>
-      </property>
-      <property name="text">
-       <string>User_task_worker_pic</string>
-      </property>
+        </property>
+        <property name="text">
+         <string>User_task_worker_pic</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="task_date">
+        <property name="geometry">
+         <rect>
+          <x>93</x>
+          <y>450</y>
+          <width>190</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Task_date</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="status">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>180</y>
+          <width>52</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Статус:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="task_name">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>271</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Task name</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="descr">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>657</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Описание</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="people_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>305</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Назначенный:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="User_task_worker">
+        <property name="geometry">
+         <rect>
+          <x>99</x>
+          <y>303</y>
+          <width>151</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>User_task_worker</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="User_task_creator">
+        <property name="geometry">
+         <rect>
+          <x>99</x>
+          <y>345</y>
+          <width>151</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>User_task_creator</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="delete_task_button">
+        <property name="geometry">
+         <rect>
+          <x>285</x>
+          <y>21</y>
+          <width>58</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Удалить</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPlainTextEdit" name="descr_2">
+        <property name="geometry">
+         <rect>
+          <x>12</x>
+          <y>696</y>
+          <width>337</width>
+          <height>199</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="date_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>501</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Файлы</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="widget_8" native="true">
+       <property name="geometry">
+        <rect>
+         <x>645</x>
+         <y>3</y>
+         <width>301</width>
+         <height>862</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(235, 235, 235);</string>
+       </property>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>18</x>
+          <y>15</y>
+          <width>136</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Выполнено&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QScrollArea" name="scrollArea_3">
+        <property name="geometry">
+         <rect>
+          <x>12</x>
+          <y>51</y>
+          <width>280</width>
+          <height>790</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>278</width>
+           <height>788</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="widget_7" native="true">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>3</y>
+         <width>301</width>
+         <height>865</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(235, 235, 235);</string>
+       </property>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>18</x>
+          <y>15</y>
+          <width>136</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;В процессе&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QScrollArea" name="scrollArea_2">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>51</y>
+          <width>283</width>
+          <height>790</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>281</width>
+           <height>788</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="widget_6" native="true">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>6</y>
+         <width>301</width>
+         <height>865</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(235, 235, 235);</string>
+       </property>
+       <widget class="QLabel" name="label_6">
+        <property name="geometry">
+         <rect>
+          <x>18</x>
+          <y>15</y>
+          <width>136</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;В процессе&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>51</y>
+          <width>283</width>
+          <height>790</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>281</width>
+           <height>788</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <zorder>widget_8</zorder>
+      <zorder>widget_5</zorder>
+      <zorder>widget_7</zorder>
+      <zorder>widget_6</zorder>
      </widget>
-     <widget class="QLabel" name="task_date">
-      <property name="geometry">
-       <rect>
-        <x>93</x>
-        <y>450</y>
-        <width>190</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Task_date</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="status">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>180</y>
-        <width>52</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Статус:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="task_name">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>110</y>
-        <width>271</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Task name</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="descr">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>520</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Описание</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="people_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>305</y>
-        <width>91</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>Назначенный:</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="User_task_worker">
-      <property name="geometry">
-       <rect>
-        <x>99</x>
-        <y>303</y>
-        <width>151</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>User_task_worker</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="User_task_creator">
-      <property name="geometry">
-       <rect>
-        <x>99</x>
-        <y>345</y>
-        <width>151</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string>User_task_creator</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="delete_task_button">
-      <property name="geometry">
-       <rect>
-        <x>227</x>
-        <y>21</y>
-        <width>58</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Удалить</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPlainTextEdit" name="descr_2">
-      <property name="geometry">
-       <rect>
-        <x>9</x>
-        <y>552</y>
-        <width>286</width>
-        <height>190</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="loading_label_2">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>351</y>
-        <width>250</width>
-        <height>163</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
+     <widget class="QWidget" name="search_page"/>
     </widget>
-    <widget class="QLabel" name="loading_label">
+    <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>775</x>
-       <y>420</y>
-       <width>100</width>
-       <height>100</height>
+       <x>1155</x>
+       <y>18</y>
+       <width>154</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>User</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>1005</x>
+       <y>18</y>
+       <width>75</width>
+       <height>23</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>На месте</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>57</y>
+       <width>1351</width>
+       <height>1</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(217, 217, 217);</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="projectname_combo_box">
+     <property name="geometry">
+      <rect>
+       <x>27</x>
+       <y>18</y>
+       <width>175</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgba(255, 255, 255, 255);</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="profile_button">
+     <property name="geometry">
+      <rect>
+       <x>1098</x>
+       <y>12</y>
+       <width>35</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
    <zorder>widget_4</zorder>
    <zorder>left_menu</zorder>
-   <zorder>top_menu</zorder>
   </widget>
  </widget>
  <resources/>

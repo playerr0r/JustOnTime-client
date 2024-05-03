@@ -118,13 +118,18 @@ class Card(QWidget):
         super().__init__()
 
         self.drag_start_position = None
+        self.task_id = task_id
+        self.task_id = str(self.task_id)
 
         # Загрузите шаблон из файла .ui
         uic.loadUi(app_dir + 'ui/card.ui', self)
 
+        self.card.setObjectName("Card")
+        self.setStyleSheet("#Card { background-color: rgb(255, 255, 255); border-radius: 3px; border: 1px solid rgb(217, 217, 217);}")
+
         self.label.setText(name)
         self.label_2.setText(status)
-        self.task_id.setText('task-'+str(task_id))
+        # self.task_id.setText('task-'+str(task_id))
         # Если предоставлены имя и описание, установите их и покажите карточку
         if avatar is not None:
             avatar = base64.b64decode(avatar)
@@ -160,7 +165,7 @@ class Card(QWidget):
         mimedata = QMimeData()
 
         # Set the data for the drag operation
-        mimedata.setText(self.task_id.text())
+        mimedata.setText(str(self.task_id))
 
         # Create a pixmap of the card
         pixmap = self.grab()
@@ -172,7 +177,7 @@ class Card(QWidget):
         drag.setHotSpot(pixmap.rect().center())
 
         drag.setMimeData(mimedata)
-        QTimer.singleShot(100, lambda: drag.exec_(Qt.MoveAction))
+        drag.exec_(Qt.MoveAction)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasFormat('text/plain'):
@@ -226,10 +231,10 @@ class MainWin(QtWidgets.QMainWindow):
 
         uic.loadUi(app_dir + 'ui/main_window.ui', self)
         self.setWindowIcon(QtGui.QIcon(app_dir + 'resources/winicon.png'))
-        self.homepage_button.setStyleSheet(f"image: url({app_dir}/resources/homepage.svg);")
-        self.stats_button.setStyleSheet(f"image: url({app_dir}/resources/stats.svg);")
-        self.refresh_button.setStyleSheet(f"image: url({app_dir}/resources/refresh.svg);")
-        self.profile_button.setStyleSheet(f"image: url({app_dir}/resources/profile.svg);")
+        # self.homepage_button.setStyleSheet(f"image: url({app_dir}/resources/homepage.svg);")
+        # self.stats_button.setStyleSheet(f"image: url({app_dir}/resources/stats.svg);")
+        # self.refresh_button.setStyleSheet(f"image: url({app_dir}/resources/refresh.svg);")
+        # self.profile_button.setStyleSheet(f"image: url({app_dir}/resources/profile.svg);")
         self.setWindowTitle('Just on time')
 
         self.role = role
@@ -255,17 +260,15 @@ class MainWin(QtWidgets.QMainWindow):
             mask = QRegion(self.profile_button.rect(), QRegion.Ellipse)
             self.profile_button.setMask(mask)
 
-        self.loading_movie = QtGui.QMovie(app_dir + 'resources/22.gif')
-        self.loading_movie_2 = QtGui.QMovie(app_dir + 'resources/22.gif')
-        self.loading_label.setMovie(self.loading_movie)
-        self.loading_label_2.setMovie(self.loading_movie_2)
+        # self.loading_movie = QtGui.QMovie(app_dir + 'resources/22.gif')
+        # self.loading_movie_2 = QtGui.QMovie(app_dir + 'resources/22.gif')
+        # self.loading_label.setMovie(self.loading_movie)
+        # self.loading_label_2.setMovie(self.loading_movie_2)
 
-        if self.role != 'admin':
-            self.new_project_button.hide()
+        self.projectname_combo_box.hide()
 
-        # TODO: добавить функционал для кнопок
-        self.reports_button.hide()
-        self.search_button.hide()
+        # if self.role != 'admin':
+        #     self.new_project_button.hide()
             
         self.widget_5.hide()
 
@@ -293,11 +296,26 @@ class MainWin(QtWidgets.QMainWindow):
         self.pushButton.clicked.connect(lambda: self.close_card_info())
         self.profile_button.clicked.connect(lambda: self.open_profile(self.id))
         self.projectname_combo_box.currentTextChanged.connect(self.refresh_lists)
+        self.dashboard_button.clicked.connect(lambda: self.open_dashboard())
+        self.kanban_button.clicked.connect(lambda: self.open_kanban())
+        # TODO: add search functionality
+        self.search_button.clicked.connect(lambda: self.open_search())
 
         self.darkening_widget = QWidget(self)
         self.darkening_widget.hide()
         self.profile_window = Profile()
         self.profile_window.hide()
+
+    def open_search(self):
+        self.stackedWidget.setCurrentIndex(2)
+
+    def open_kanban(self):
+        self.projectname_combo_box.show()
+        self.stackedWidget.setCurrentIndex(1)
+
+    def open_dashboard(self):
+        self.projectname_combo_box.hide()
+        self.stackedWidget.setCurrentIndex(0)
 
     def cards_area_setter(self):
         # Создайте новый виджет для содержимого прокрутки
@@ -346,21 +364,22 @@ class MainWin(QtWidgets.QMainWindow):
         self.widget_5_on_screen = False
 
     def widgets_stylesheet_setter(self):
-        self.left_menu.setStyleSheet("background-color: rgba(235, 235, 235, 255);")
-        self.widget_4.setStyleSheet("")
-        self.widget_4.setObjectName("widget_4")
-        # self.widget_4.setStyleSheet("#widget_4 { background-image: \
-                    # url(" + app_dir + "resources/main_background.jpg);\
-                    # background-repeat: no-repeat; background-size: cover; }")
+        ...
+        # self.left_menu.setStyleSheet("background-color: rgba(235, 235, 235, 255);")
+        # self.widget_4.setStyleSheet("")
+        # self.widget_4.setObjectName("widget_4")
+        # # self.widget_4.setStyleSheet("#widget_4 { background-image: \
+        #             # url(" + app_dir + "resources/main_background.jpg);\
+        #             # background-repeat: no-repeat; background-size: cover; }")
 
-        self.widget_6.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
-        self.widget_7.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
-        self.widget_8.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
-        self.widget_5.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
+        # self.widget_6.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
+        # self.widget_7.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
+        # self.widget_8.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
+        # self.widget_5.setStyleSheet("background-color: rgba(235, 235, 235, 220);")
 
-        self.scrollArea.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
-        self.scrollArea_2.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
-        self.scrollArea_3.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
+        # self.scrollArea.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
+        # self.scrollArea_2.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
+        # self.scrollArea_3.setStyleSheet("background-color: rgba(235, 235, 235, 0);")
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasText():
@@ -370,54 +389,37 @@ class MainWin(QtWidgets.QMainWindow):
         if event.mimeData().hasText():
             event.acceptProposedAction()
 
+    def update_task_status(self, task_id, status):
+        data = {'status': status}
+        response = requests.post(f"{url}tasks/{task_id}/updateStatus", json=data)
+        if response.status_code == 200:
+            print(response.json())
+            self.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
+
     def card_moved(self, task_id, dropped_in_column):
-        if dropped_in_column is not None:
-            # Найдите карточку и переместите ее в новый столбец
-            for layout in [self.cards_layout, self.cards_layout2, self.cards_layout3]:
-                for i in range(layout.count()):
-                    item = layout.itemAt(i)
-                    widget = item.widget()
-                    if widget is not None and isinstance(widget, Card) and widget.task_id.text() == task_id:
-                        layout.takeAt(i)
-                        if self.widget_5_on_screen == True and \
-                            self.project_name_task_id.text().split(' / ')[1].split('-')[1] \
-                                == task_id.split('-')[1]:
-                            QTimer.singleShot(100, lambda: \
-                                              self.show_card_info(task_id=task_id.split('-')[1]))
-                    
-                        widget.setParent(None)
-                        if dropped_in_column == self.scroll_content:
-                            data = {'status': 'todo'}
-                            response = requests.post(url + "tasks/" + task_id.split('-')[1] + "/updateStatus", json=data)
+        status_map = {
+            self.scroll_content: 'todo',
+            self.scroll_content2: 'in progress',
+            self.scroll_content3: 'done'
+        }
+        status = status_map.get(dropped_in_column)
+        if status is None:
+            return  # Если столбец не найден, выходим из функции
 
-                            if response.status_code == 200:
-                                print(response.json())
-                                self.refresh_lists()
-                            else:
-                                print(f'Request failed with status code {response.status_code}')
-
-                        elif dropped_in_column == self.scroll_content2:
-                            data = {'status': 'in progress'}
-                            response = requests.post(url + "tasks/" + task_id.split('-')[1] + "/updateStatus", json=data)
-
-                            if response.status_code == 200:
-                                print(response.json())
-                                self.refresh_lists()
-                            else:
-                                print(f'Request failed with status code {response.status_code}')
-
-                        elif dropped_in_column == self.scroll_content3:
-                            data = {'status': 'done'}
-                            response = requests.post(url + "tasks/" + task_id.split('-')[1] + "/updateStatus", json=data)
-
-                            if response.status_code == 200:
-                                print(response.json())
-                                self.refresh_lists()
-                            else:
-                                print(f'Request failed with status code {response.status_code}')
-                        break
-
-                QApplication.processEvents()
+        for layout in [self.cards_layout, self.cards_layout2, self.cards_layout3]:
+            for i in range(layout.count()):
+                item = layout.itemAt(i)
+                widget = item.widget()
+                if widget is not None and isinstance(widget, Card) and widget.task_id == task_id:
+                    layout.takeAt(i)
+                    widget.setParent(None)
+                    if self.widget_5_on_screen and self.project_name_task_id.text().split(' / ')[1].split('-')[1] == task_id.split('-')[1]:
+                        QTimer.singleShot(100, lambda task_id=task_id: self.show_card_info(task_id=task_id.split('-')[1]))
+                    self.update_task_status(task_id, status)
+                    break  # Прерываем цикл после обработки карточки
+            QApplication.processEvents()  # Обновляем интерфейс
 
     def close_card_info(self):
         self.group = QtCore.QParallelAnimationGroup()
@@ -497,6 +499,11 @@ class MainWin(QtWidgets.QMainWindow):
         empl_id = None
         print(task_id)
 
+        try:
+            self.delete_task_button.disconnect()
+        except TypeError:
+            pass
+
         self.delete_task_button.clicked.connect(lambda: self.delete_task(task_id))
 
         try:
@@ -505,7 +512,7 @@ class MainWin(QtWidgets.QMainWindow):
             pass
         
         if card is not None:
-            task_id = card.task_id.text().split('-')[1]
+            task_id = card.task_id
 
         self.project_name_task_id.setText(self.projectname_combo_box.currentText() \
                                           + ' / task-' + task_id)
@@ -685,14 +692,14 @@ class MainWin(QtWidgets.QMainWindow):
 
     def refresh_lists(self):
         # self.widget_5.hide()
-        self.loading_label.show()
-        self.loading_movie.start()
+        # self.loading_label.show()
+        # self.loading_movie.start()
         print('REFRESHING LISTS')
         self.scroll_content.hide()
         self.scroll_content2.hide()
         self.scroll_content3.hide()
         self.clear_column(self.cards_layout)
-        self.clear_column(self.cards_layout2)   
+        self.clear_column(self.cards_layout2)
         self.clear_column(self.cards_layout3)
 
         # query for tasks of project
@@ -755,8 +762,8 @@ class MainWin(QtWidgets.QMainWindow):
         self.scroll_content.show()
         self.scroll_content2.show()
         self.scroll_content3.show()
-        self.loading_movie.stop()
-        self.loading_label.hide()
+        # self.loading_movie.stop()
+        # self.loading_label.hide()
 
     def new_task(self, adder_task, project_id, status):
         adder_task.new_task_button.hide()
