@@ -225,7 +225,440 @@ border-radius: 2px;</string>
      <property name="currentIndex">
       <number>1</number>
      </property>
-     <widget class="QWidget" name="dashboard_page"/>
+     <widget class="QWidget" name="dashboard_page">
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>54</x>
+         <y>24</y>
+         <width>79</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Проекты</string>
+       </property>
+      </widget>
+      <widget class="QScrollArea" name="dashboard_tasks_scrollArea">
+       <property name="geometry">
+        <rect>
+         <x>57</x>
+         <y>198</y>
+         <width>484</width>
+         <height>256</height>
+        </rect>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_4">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>482</width>
+          <height>254</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>57</x>
+         <y>165</y>
+         <width>79</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Задачи</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>57</x>
+         <y>504</y>
+         <width>79</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>На месте</string>
+       </property>
+      </widget>
+      <widget class="QScrollArea" name="dashboard_users_scrollArea">
+       <property name="geometry">
+        <rect>
+         <x>57</x>
+         <y>537</y>
+         <width>484</width>
+         <height>271</height>
+        </rect>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_5">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>482</width>
+          <height>269</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_date">
+       <property name="geometry">
+        <rect>
+         <x>927</x>
+         <y>27</y>
+         <width>205</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(7, 17, 166);</string>
+       </property>
+       <property name="text">
+        <string>Дата</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_10">
+       <property name="geometry">
+        <rect>
+         <x>927</x>
+         <y>78</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Пн</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_11">
+       <property name="geometry">
+        <rect>
+         <x>963</x>
+         <y>78</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Вт</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_12">
+       <property name="geometry">
+        <rect>
+         <x>1032</x>
+         <y>78</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Чт</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_13">
+       <property name="geometry">
+        <rect>
+         <x>996</x>
+         <y>78</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Ср</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_14">
+       <property name="geometry">
+        <rect>
+         <x>1065</x>
+         <y>78</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Пт</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_15">
+       <property name="geometry">
+        <rect>
+         <x>1098</x>
+         <y>78</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Сб</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>1134</x>
+         <y>78</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Вс</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_date_2">
+       <property name="geometry">
+        <rect>
+         <x>963</x>
+         <y>114</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Вт</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_date_6">
+       <property name="geometry">
+        <rect>
+         <x>1098</x>
+         <y>114</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Сб</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_date_3">
+       <property name="geometry">
+        <rect>
+         <x>996</x>
+         <y>114</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Ср</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_date_7">
+       <property name="geometry">
+        <rect>
+         <x>1134</x>
+         <y>114</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Вс</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_date_4">
+       <property name="geometry">
+        <rect>
+         <x>1032</x>
+         <y>114</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Чт</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_date_5">
+       <property name="geometry">
+        <rect>
+         <x>1065</x>
+         <y>114</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Пт</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_date_1">
+       <property name="geometry">
+        <rect>
+         <x>927</x>
+         <y>114</y>
+         <width>19</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Пн</string>
+       </property>
+      </widget>
+      <widget class="QScrollArea" name="dashboard_tasks_scrollArea_2">
+       <property name="geometry">
+        <rect>
+         <x>807</x>
+         <y>153</y>
+         <width>484</width>
+         <height>256</height>
+        </rect>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_6">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>482</width>
+          <height>254</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QPushButton" name="new_date_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>996</x>
+         <y>420</y>
+         <width>112</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Новое событие</string>
+       </property>
+      </widget>
+      <widget class="QScrollArea" name="dashboard_tasks_scrollArea_3">
+       <property name="geometry">
+        <rect>
+         <x>54</x>
+         <y>57</y>
+         <width>484</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_7">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>482</width>
+          <height>89</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
      <widget class="QWidget" name="kanban_page">
       <property name="styleSheet">
        <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -649,7 +1082,7 @@ border-radius: 15px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(235, 235, 235);</string>
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
        </property>
        <widget class="QLabel" name="label_8">
         <property name="geometry">
@@ -677,7 +1110,7 @@ border-radius: 15px;</string>
          <rect>
           <x>12</x>
           <y>51</y>
-          <width>280</width>
+          <width>283</width>
           <height>790</height>
          </rect>
         </property>
@@ -689,7 +1122,7 @@ border-radius: 15px;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>278</width>
+           <width>281</width>
            <height>788</height>
           </rect>
          </property>
@@ -709,7 +1142,7 @@ border-radius: 15px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(235, 235, 235);</string>
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
        </property>
        <widget class="QLabel" name="label_7">
         <property name="geometry">
@@ -737,7 +1170,7 @@ border-radius: 15px;</string>
          <rect>
           <x>9</x>
           <y>51</y>
-          <width>283</width>
+          <width>286</width>
           <height>790</height>
          </rect>
         </property>
@@ -749,7 +1182,7 @@ border-radius: 15px;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>281</width>
+           <width>284</width>
            <height>788</height>
           </rect>
          </property>
@@ -769,7 +1202,7 @@ border-radius: 15px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(235, 235, 235);</string>
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
        </property>
        <widget class="QLabel" name="label_6">
         <property name="geometry">
@@ -795,9 +1228,9 @@ border-radius: 15px;</string>
        <widget class="QScrollArea" name="scrollArea">
         <property name="geometry">
          <rect>
-          <x>9</x>
+          <x>12</x>
           <y>51</y>
-          <width>283</width>
+          <width>277</width>
           <height>790</height>
          </rect>
         </property>
@@ -809,12 +1242,9 @@ border-radius: 15px;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>281</width>
+           <width>275</width>
            <height>788</height>
           </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
          </property>
         </widget>
        </widget>

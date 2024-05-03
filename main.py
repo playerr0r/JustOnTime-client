@@ -4,6 +4,7 @@ import datetime
 import hashlib
 import requests
 import base64
+import locale
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QGridLayout
@@ -288,6 +289,8 @@ class MainWin(QtWidgets.QMainWindow):
             self.project_name = self.projectname_combo_box.currentText()
             self.project_id = self.projects[0]
 
+        self.open_dashboard()
+
         self.widgets_stylesheet_setter()
         self.cards_area_setter()
 
@@ -307,14 +310,56 @@ class MainWin(QtWidgets.QMainWindow):
         self.profile_window.hide()
 
     def open_search(self):
+        self.projectname_combo_box.hide()
+        self.search_button.setStyleSheet("color: rgb(7, 71, 166); background-color: rgba(255, 255, 255, 0);")
+        self.kanban_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
+        self.dashboard_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
+        self.widget.move(self.widget.x(), 171)
         self.stackedWidget.setCurrentIndex(2)
 
     def open_kanban(self):
+        self.widget.move(self.widget.x(), 125)
+        self.kanban_button.setStyleSheet("color: rgb(7, 71, 166); background-color: rgba(255, 255, 255, 0);")
+        self.search_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
+        self.dashboard_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
         self.projectname_combo_box.show()
         self.stackedWidget.setCurrentIndex(1)
 
     def open_dashboard(self):
+        self.widget.move(self.widget.x(), 75)
+        self.dashboard_button.setStyleSheet("color: rgb(7, 71, 166); background-color: rgba(255, 255, 255, 0);")
+        self.search_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
+        self.kanban_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
         self.projectname_combo_box.hide()
+
+        # Дата в "Месяц, год" формате на русском языке
+        self.label_date.setText(datetime.datetime.now().strftime("%B, %Y"))
+
+        # Получаем текущую дату
+        today = datetime.date.today()
+        # Определяем день недели текущей даты (0 - понедельник, 6 - воскресенье)
+        weekday = today.weekday()
+
+        # Вычисляем дату последнего понедельника (начало текущей недели)
+        start_of_week = today - datetime.timedelta(days=weekday)
+
+        # Цикл для установки дат в лейблы
+        for i in range(7):
+            # Вычисляем дату для каждого дня недели
+            day = start_of_week + datetime.timedelta(days=i)
+            # Получаем число месяца для дня недели
+            day_number = day.day
+
+            if day_number == today.day:
+                getattr(self, f'label_date_{i+1}').setStyleSheet("background-color: rgb(7, 71, 166); color: rgb(255, 255, 255); border-radius: 9px;")
+            else:
+                getattr(self, f'label_date_{i+1}').setStyleSheet("color: rgb(0, 0, 0);")
+
+            getattr(self, f'label_date_{i+1}').setAlignment(Qt.AlignCenter)
+            
+            # Установка числа в соответствующий лейбл
+            getattr(self, f'label_date_{i+1}').setText(str(day_number))
+
         self.stackedWidget.setCurrentIndex(0)
 
     def cards_area_setter(self):
@@ -356,6 +401,8 @@ class MainWin(QtWidgets.QMainWindow):
         self.scroll_content.setAcceptDrops(True)
         self.scroll_content2.setAcceptDrops(True)
         self.scroll_content3.setAcceptDrops(True)
+
+        self.scroll_content.setContentsMargins(10, 0, 0 ,0)
 
         self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
@@ -710,15 +757,6 @@ class MainWin(QtWidgets.QMainWindow):
             response = requests.get(url+ "projects/" + self.project_id + "/tasks")
 
             data = {}
-
-            if response.status_code == 200:
-                data = response.json()
-                if data['tasks'] != None:
-                    for data in data['tasks']:
-                        self.add_card(data['name'], data['status'], data['id'], data['avatar'])
-            else:
-                print(f'Request failed with status code {response.status_code}')
-
             adder_task = NewTask()
             self.cards_layout.addWidget(adder_task, self.cards_layout.rowCount(), 0)
             adder_task.show()
@@ -754,6 +792,15 @@ class MainWin(QtWidgets.QMainWindow):
             self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
             adder_task3.new_task_button.clicked.connect(lambda:\
                         self.new_task(adder_task3, self.project_id, 'done'))
+
+            if response.status_code == 200:
+                data = response.json()
+                if data['tasks'] != None:
+                    for data in data['tasks']:
+                        self.add_card(data['name'], data['status'], data['id'], data['avatar'])
+            else:
+                print(f'Request failed with status code {response.status_code}')
+
 
             self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
             self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
@@ -1272,14 +1319,15 @@ class SignIn(QtWidgets.QDialog):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])
+    locale.setlocale(locale.LC_TIME, 'Russian_Russia')
     app.setStyleSheet("""
     QScrollBar:vertical {
-        background: rgba(128, 128, 128, 255); /* Полупрозрачный серый фон */
+        background: rgba(128, 128, 128, 0); /* Полупрозрачный серый фон */
         width: 8px; /* Ширина скроллбара */
     }
 
     QScrollBar::handle:vertical {
-        background: rgba(255, 255, 255, 210); /* Полупрозрачная белая ручка */
+        background: rgba(7, 71, 166, 255); /* Полупрозрачная белая ручка */
         border-radius: 4px; /* Скругление углов */
         min-height: 20px; /* Минимальная высота ручки */
     }
