@@ -472,30 +472,32 @@ class MainWin(QtWidgets.QMainWindow):
         self.group = QtCore.QParallelAnimationGroup()
         self.animation = QtCore.QPropertyAnimation(self.widget_5, b"geometry")
         self.animation.setDuration(150)
-        self.animation.setStartValue(QtCore.QRect(1255, -3, 301, 916))
-        self.animation.setEndValue(QtCore.QRect(1557, -3, 301, 916))
-        self.delete_task_button.clicked.disconnect()
+        self.animation.setStartValue(QtCore.QRect(990, 0, self.widget_5.width(), self.widget_5.height()))
+        self.widget_5.show()
+        self.widget_5_on_screen = True
+        self.animation.setEndValue(QtCore.QRect(1350, 0, self.widget_5.width(), self.widget_5.height()))
+        self.delete_task_button.disconnect()
         self.widget_5_on_screen = False
 
-        self.animation2 = QtCore.QPropertyAnimation(self.widget_6, b"geometry")
-        self.animation2.setDuration(150)
-        self.animation2.setStartValue(QtCore.QRect(250, 30, 301, 868))
-        self.animation2.setEndValue(QtCore.QRect(340, 30, 301, 868))
+        # self.animation2 = QtCore.QPropertyAnimation(self.widget_6, b"geometry")
+        # self.animation2.setDuration(150)
+        # self.animation2.setStartValue(QtCore.QRect(250, 30, 301, 868))
+        # self.animation2.setEndValue(QtCore.QRect(340, 30, 301, 868))
 
-        self.animation3 = QtCore.QPropertyAnimation(self.widget_7, b"geometry")
-        self.animation3.setDuration(150)
-        self.animation3.setStartValue(QtCore.QRect(580, 30, 301, 868))
-        self.animation3.setEndValue(QtCore.QRect(727, 30, 301, 868))
+        # self.animation3 = QtCore.QPropertyAnimation(self.widget_7, b"geometry")
+        # self.animation3.setDuration(150)
+        # self.animation3.setStartValue(QtCore.QRect(580, 30, 301, 868))
+        # self.animation3.setEndValue(QtCore.QRect(727, 30, 301, 868))
     
-        self.animation4 = QtCore.QPropertyAnimation(self.widget_8, b"geometry")
-        self.animation4.setDuration(150)
-        self.animation4.setStartValue(QtCore.QRect(910, 30, 301, 868))
-        self.animation4.setEndValue(QtCore.QRect(1102, 30, 301, 868))
+        # self.animation4 = QtCore.QPropertyAnimation(self.widget_8, b"geometry")
+        # self.animation4.setDuration(150)
+        # self.animation4.setStartValue(QtCore.QRect(910, 30, 301, 868))
+        # self.animation4.setEndValue(QtCore.QRect(1102, 30, 301, 868))
 
         self.group.addAnimation(self.animation)
-        self.group.addAnimation(self.animation2)
-        self.group.addAnimation(self.animation3)
-        self.group.addAnimation(self.animation4)
+        # self.group.addAnimation(self.animation2)
+        # self.group.addAnimation(self.animation3)
+        # self.group.addAnimation(self.animation4)
         self.group.start()
 
     def add_card(self, name, status, task_id, avatar = None):
@@ -534,9 +536,9 @@ class MainWin(QtWidgets.QMainWindow):
             self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
 
     def show_card_info(self, card = None, task_id = None):
-        self.widget_6.setGeometry(250, 30, 301, 868)
-        self.widget_7.setGeometry(580, 30, 301, 868)
-        self.widget_8.setGeometry(910, 30, 301, 868)
+        # self.widget_6.setGeometry(250, 30, 301, 868)
+        # self.widget_7.setGeometry(580, 30, 301, 868)
+        # self.widget_8.setGeometry(910, 30, 301, 868)
 
         try:
             self.delete_task_button.disconnect()
@@ -621,31 +623,31 @@ class MainWin(QtWidgets.QMainWindow):
         if self.widget_5_on_screen == False:
             self.animation = QtCore.QPropertyAnimation(self.widget_5, b"geometry")
             self.animation.setDuration(150)
-            self.animation.setStartValue(QtCore.QRect(1557, -3, 301, 916))
+            self.animation.setStartValue(QtCore.QRect(1350, 0, self.widget_5.width(), self.widget_5.height()))
             self.widget_5.show()
             self.widget_5_on_screen = True
-            self.animation.setEndValue(QtCore.QRect(1255, -3, 301, 916))
+            self.animation.setEndValue(QtCore.QRect(990, 0, self.widget_5.width(), self.widget_5.height()))
 
-            self.animation2 = QtCore.QPropertyAnimation(self.widget_6, b"geometry")
-            self.animation2.setDuration(150)
-            self.animation2.setStartValue(QtCore.QRect(340, 30, 301, 868))
-            self.animation2.setEndValue(QtCore.QRect(250, 30, 301, 868))
+            # self.animation2 = QtCore.QPropertyAnimation(self.widget_6, b"geometry")
+            # self.animation2.setDuration(150)
+            # self.animation2.setStartValue(QtCore.QRect(340, 30, 301, 868))
+            # self.animation2.setEndValue(QtCore.QRect(250, 30, 301, 868))
 
-            self.animation3 = QtCore.QPropertyAnimation(self.widget_7, b"geometry")
-            self.animation3.setDuration(150)
-            self.animation3.setStartValue(QtCore.QRect(727, 30, 301, 868))
-            self.animation3.setEndValue(QtCore.QRect(580, 30, 301, 868))
+            # self.animation3 = QtCore.QPropertyAnimation(self.widget_7, b"geometry")
+            # self.animation3.setDuration(150)
+            # self.animation3.setStartValue(QtCore.QRect(727, 30, 301, 868))
+            # self.animation3.setEndValue(QtCore.QRect(580, 30, 301, 868))
 
-            self.animation4 = QtCore.QPropertyAnimation(self.widget_8, b"geometry")
-            self.animation4.setDuration(150)
-            self.animation4.setStartValue(QtCore.QRect(1102, 30, 301, 868))
-            self.animation4.setEndValue(QtCore.QRect(910, 30, 301, 868))
+            # self.animation4 = QtCore.QPropertyAnimation(self.widget_8, b"geometry")
+            # self.animation4.setDuration(150)
+            # self.animation4.setStartValue(QtCore.QRect(1102, 30, 301, 868))
+            # self.animation4.setEndValue(QtCore.QRect(910, 30, 301, 868))
 
             self.group = QtCore.QParallelAnimationGroup()
             self.group.addAnimation(self.animation)
-            self.group.addAnimation(self.animation2)
-            self.group.addAnimation(self.animation3)
-            self.group.addAnimation(self.animation4)
+            # self.group.addAnimation(self.animation2)
+            # self.group.addAnimation(self.animation3)
+            # self.group.addAnimation(self.animation4)
             self.group.start()
 
     def delete_task(self, task_id):
