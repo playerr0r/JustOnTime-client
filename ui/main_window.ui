@@ -265,6 +265,17 @@ border-radius: 2px;</string>
           <height>254</height>
          </rect>
         </property>
+        <widget class="QWidget" name="verticalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>481</width>
+           <height>253</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="tasks_Layout"/>
+        </widget>
        </widget>
       </widget>
       <widget class="QLabel" name="label_4">
@@ -324,6 +335,17 @@ border-radius: 2px;</string>
           <height>269</height>
          </rect>
         </property>
+        <widget class="QWidget" name="verticalLayoutWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>481</width>
+           <height>268</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="users_Layout"/>
+        </widget>
        </widget>
       </widget>
       <widget class="QLabel" name="label_date">
@@ -599,7 +621,7 @@ border-radius: 2px;</string>
         <string>Пн</string>
        </property>
       </widget>
-      <widget class="QScrollArea" name="dashboard_tasks_scrollArea_2">
+      <widget class="QScrollArea" name="dashboard_dates_scrollArea">
        <property name="geometry">
         <rect>
          <x>807</x>
@@ -620,6 +642,17 @@ border-radius: 2px;</string>
           <height>254</height>
          </rect>
         </property>
+        <widget class="QWidget" name="verticalLayoutWidget_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>481</width>
+           <height>253</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout"/>
+        </widget>
        </widget>
       </widget>
       <widget class="QPushButton" name="new_date_pushButton">
@@ -635,7 +668,7 @@ border-radius: 2px;</string>
         <string>Новое событие</string>
        </property>
       </widget>
-      <widget class="QScrollArea" name="dashboard_tasks_scrollArea_3">
+      <widget class="QScrollArea" name="dashboard_projects_scrollArea">
        <property name="geometry">
         <rect>
          <x>54</x>
@@ -656,6 +689,17 @@ border-radius: 2px;</string>
           <height>89</height>
          </rect>
         </property>
+        <widget class="QWidget" name="horizontalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>481</width>
+           <height>88</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="projects_Layout"/>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -1087,22 +1131,22 @@ border-radius: 15px;</string>
        <widget class="QLabel" name="label_8">
         <property name="geometry">
          <rect>
-          <x>18</x>
-          <y>15</y>
+          <x>33</x>
+          <y>24</y>
           <width>136</width>
           <height>22</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <pointsize>10</pointsize>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Выполнено&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Выполнено</string>
         </property>
        </widget>
        <widget class="QScrollArea" name="scrollArea_3">
@@ -1147,22 +1191,22 @@ border-radius: 15px;</string>
        <widget class="QLabel" name="label_7">
         <property name="geometry">
          <rect>
-          <x>18</x>
-          <y>15</y>
+          <x>30</x>
+          <y>24</y>
           <width>136</width>
           <height>22</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <pointsize>10</pointsize>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;В процессе&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В процессе&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QScrollArea" name="scrollArea_2">
@@ -1207,29 +1251,29 @@ border-radius: 15px;</string>
        <widget class="QLabel" name="label_6">
         <property name="geometry">
          <rect>
-          <x>18</x>
-          <y>15</y>
+          <x>33</x>
+          <y>21</y>
           <width>136</width>
           <height>22</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <pointsize>10</pointsize>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;В процессе&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Нужно сделать</string>
         </property>
        </widget>
        <widget class="QScrollArea" name="scrollArea">
         <property name="geometry">
          <rect>
           <x>12</x>
-          <y>51</y>
+          <y>48</y>
           <width>277</width>
           <height>790</height>
          </rect>
