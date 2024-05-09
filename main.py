@@ -226,6 +226,20 @@ class Profile(QWidget):
         self.profileCloseButton.setText('✖')
         self.show()
 
+class ProfileDashboard(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        uic.loadUi(app_dir + 'ui/profile_dash.ui', self)
+
+class TaskDashboard(QWidget):
+    def __init__(self, name, status, card):
+        super().__init__()
+
+        uic.loadUi(app_dir + 'ui/task_dash.ui', self)
+        self.task_name_dash.setText(name)
+        self.task_status_dash.setText(status)
+
 class MainWin(QtWidgets.QMainWindow):
     def __init__(self, role, id, code, projects_ids, user_name, avatar):
         super().__init__()
@@ -402,13 +416,18 @@ class MainWin(QtWidgets.QMainWindow):
         self.scroll_content2.setAcceptDrops(True)
         self.scroll_content3.setAcceptDrops(True)
 
-        self.scroll_content.setContentsMargins(10, 0, 0 ,0)
+        # self.scroll_content.setContentsMargins(10, 0, 0 ,0)
 
         self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.cards_layout3.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         self.widget_5_on_screen = False
+
+        self.dashboard_tasks_scrollArea.setWidget(self.scrollArea_tasks_dash)
+        self.scrollArea_tasks_dash.setLayout(self.tasks_Layout)
+        self.dashboard_tasks_scrollArea.setWidgetResizable(True)
+
 
     def widgets_stylesheet_setter(self):
         ...
@@ -503,7 +522,16 @@ class MainWin(QtWidgets.QMainWindow):
     def add_card(self, name, status, task_id, avatar = None):
         # Создайте новую карточку
         card = Card(name, status, task_id, avatar, show=False)
-        QApplication.processEvents()
+        card_dashboard = TaskDashboard(name, status, card)
+        # QApplication.processEvents()
+        card_dashboard.show()
+        self.tasks_Layout.addWidget(card_dashboard)
+        self.tasks_Layout.update()
+        
+        self.scrollArea_tasks_dash.adjustSize()
+        self.scrollArea_tasks_dash.update()
+
+        card_dashboard.task_open_dash.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id))
         card.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id))
         # Добавьте карточку в макет
 
@@ -811,6 +839,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.scroll_content.show()
         self.scroll_content2.show()
         self.scroll_content3.show()
+        self.tasks_Layout.update()
         # self.loading_movie.stop()
         # self.loading_label.hide()
 

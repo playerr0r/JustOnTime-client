@@ -223,7 +223,7 @@ border-radius: 2px;</string>
       <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="dashboard_page">
       <widget class="QLabel" name="label_3">
@@ -256,7 +256,7 @@ border-radius: 2px;</string>
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents_4">
+       <widget class="QWidget" name="scrollArea_tasks_dash">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -274,7 +274,11 @@ border-radius: 2px;</string>
            <height>253</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="tasks_Layout"/>
+         <layout class="QVBoxLayout" name="tasks_Layout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetFixedSize</enum>
+          </property>
+         </layout>
         </widget>
        </widget>
       </widget>
