@@ -275,6 +275,9 @@ border-radius: 2px;</string>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="tasks_Layout">
+          <property name="spacing">
+           <number>1</number>
+          </property>
           <property name="sizeConstraint">
            <enum>QLayout::SetFixedSize</enum>
           </property>
@@ -1123,10 +1126,10 @@ border-radius: 15px;</string>
       <widget class="QWidget" name="widget_8" native="true">
        <property name="geometry">
         <rect>
-         <x>645</x>
+         <x>615</x>
          <y>3</y>
          <width>301</width>
-         <height>862</height>
+         <height>910</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -1159,7 +1162,7 @@ border-radius: 15px;</string>
           <x>12</x>
           <y>51</y>
           <width>283</width>
-          <height>790</height>
+          <height>820</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -1171,7 +1174,7 @@ border-radius: 15px;</string>
            <x>0</x>
            <y>0</y>
            <width>281</width>
-           <height>788</height>
+           <height>818</height>
           </rect>
          </property>
          <property name="styleSheet">
@@ -1183,10 +1186,10 @@ border-radius: 15px;</string>
       <widget class="QWidget" name="widget_7" native="true">
        <property name="geometry">
         <rect>
-         <x>330</x>
+         <x>309</x>
          <y>3</y>
          <width>301</width>
-         <height>865</height>
+         <height>910</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -1219,7 +1222,7 @@ border-radius: 15px;</string>
           <x>9</x>
           <y>51</y>
           <width>286</width>
-          <height>790</height>
+          <height>820</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -1231,7 +1234,7 @@ border-radius: 15px;</string>
            <x>0</x>
            <y>0</y>
            <width>284</width>
-           <height>788</height>
+           <height>818</height>
           </rect>
          </property>
          <property name="styleSheet">
@@ -1243,10 +1246,10 @@ border-radius: 15px;</string>
       <widget class="QWidget" name="widget_6" native="true">
        <property name="geometry">
         <rect>
-         <x>15</x>
-         <y>6</y>
+         <x>3</x>
+         <y>3</y>
          <width>301</width>
-         <height>865</height>
+         <height>910</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -1277,9 +1280,9 @@ border-radius: 15px;</string>
         <property name="geometry">
          <rect>
           <x>12</x>
-          <y>48</y>
+          <y>51</y>
           <width>277</width>
-          <height>790</height>
+          <height>820</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -1291,7 +1294,7 @@ border-radius: 15px;</string>
            <x>0</x>
            <y>0</y>
            <width>275</width>
-           <height>788</height>
+           <height>818</height>
           </rect>
          </property>
         </widget>
@@ -1304,7 +1307,7 @@ border-radius: 15px;</string>
      </widget>
      <widget class="QWidget" name="search_page"/>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="profile_name">
      <property name="geometry">
       <rect>
        <x>1155</x>
@@ -1317,7 +1320,7 @@ border-radius: 15px;</string>
       <string>User</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="on_place_user_button">
      <property name="geometry">
       <rect>
        <x>1005</x>

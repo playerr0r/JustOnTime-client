@@ -259,6 +259,8 @@ class MainWin(QtWidgets.QMainWindow):
         self.avatar = avatar
         self.projects = []
 
+        self.profile_name.setText(user_name)
+
         self.avatar = base64.b64decode(self.avatar)
         self.avatar = base64.b64decode(self.avatar)
         byte_array = QByteArray(self.avatar)
@@ -315,7 +317,6 @@ class MainWin(QtWidgets.QMainWindow):
         self.projectname_combo_box.currentTextChanged.connect(self.refresh_lists)
         self.dashboard_button.clicked.connect(lambda: self.open_dashboard())
         self.kanban_button.clicked.connect(lambda: self.open_kanban())
-        # TODO: add search functionality
         self.search_button.clicked.connect(lambda: self.open_search())
 
         self.darkening_widget = QWidget(self)
@@ -426,6 +427,7 @@ class MainWin(QtWidgets.QMainWindow):
 
         self.dashboard_tasks_scrollArea.setWidget(self.scrollArea_tasks_dash)
         self.scrollArea_tasks_dash.setLayout(self.tasks_Layout)
+        self.dashboard_tasks_scrollArea.setFrameShape(QFrame.NoFrame)
         self.dashboard_tasks_scrollArea.setWidgetResizable(True)
 
 
@@ -531,8 +533,8 @@ class MainWin(QtWidgets.QMainWindow):
         self.scrollArea_tasks_dash.adjustSize()
         self.scrollArea_tasks_dash.update()
 
-        card_dashboard.task_open_dash.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id))
-        card.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id))
+        card_dashboard.task_open_dash.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id, page = "dashboard"))
+        card.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id, page = "kanban"))
         # Добавьте карточку в макет
 
         if status == 'todo':
@@ -563,10 +565,13 @@ class MainWin(QtWidgets.QMainWindow):
             self.scrollArea_3.update()
             self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
 
-    def show_card_info(self, card = None, task_id = None):
+    def show_card_info(self, card = None, task_id = None, page = None):
         # self.widget_6.setGeometry(250, 30, 301, 868)
         # self.widget_7.setGeometry(580, 30, 301, 868)
         # self.widget_8.setGeometry(910, 30, 301, 868)
+
+        if page == "dashboard":
+            self.open_kanban()
 
         try:
             self.delete_task_button.disconnect()
@@ -722,7 +727,6 @@ class MainWin(QtWidgets.QMainWindow):
             data = data['user']
             self.profile_window.profileName.setText(data['name'])
             self.profile_window.profileJobTitle.setText(data['role']) 
-            # profile_window.role.setText(data['role'])
             avatar = data['avatar']
             avatar = base64.b64decode(avatar)
             byte_array = QByteArray(avatar)
@@ -768,9 +772,6 @@ class MainWin(QtWidgets.QMainWindow):
         darkening_widget.hide()
 
     def refresh_lists(self):
-        # self.widget_5.hide()
-        # self.loading_label.show()
-        # self.loading_movie.start()
         print('REFRESHING LISTS')
         self.scroll_content.hide()
         self.scroll_content2.hide()
@@ -840,8 +841,6 @@ class MainWin(QtWidgets.QMainWindow):
         self.scroll_content2.show()
         self.scroll_content3.show()
         self.tasks_Layout.update()
-        # self.loading_movie.stop()
-        # self.loading_label.hide()
 
     def new_task(self, adder_task, project_id, status):
         adder_task.new_task_button.hide()
@@ -1081,29 +1080,28 @@ if __name__ == '__main__':
     locale.setlocale(locale.LC_TIME, 'Russian_Russia')
     app.setStyleSheet("""
     QScrollBar:vertical {
-        background: rgba(128, 128, 128, 0); /* Полупрозрачный серый фон */
-        width: 8px; /* Ширина скроллбара */
+        background: rgba(128, 128, 128, 0);
+        width: 8px;
     }
 
     QScrollBar::handle:vertical {
-        background: rgba(7, 71, 166, 255); /* Полупрозрачная белая ручка */
-        border-radius: 4px; /* Скругление углов */
-        min-height: 20px; /* Минимальная высота ручки */
+        background: rgba(7, 71, 166, 255);
+        border-radius: 4px;
+        min-height: 20px;
     }
 
     QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-        background: none; /* Убираем кнопки вверху и внизу скроллбара */
+        background: none;
     }
 
     QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,
     QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-        width: 0px; height: 0px; /* Убираем стрелки и неиспользуемые элементы */
+        width: 0px; height: 0px;
         background: none;
     }
     """)
     fontId = QtGui.QFontDatabase.addApplicationFont(app_dir + "resources/Rubik-Regular.ttf")
     if fontId != -1:
-        # Шрифт успешно загружен, получаем его семейство
         fontFamilies = QtGui.QFontDatabase.applicationFontFamilies(fontId)
         if fontFamilies:
             font = QtGui.QFont(fontFamilies[0], 10)
