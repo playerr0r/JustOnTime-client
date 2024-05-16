@@ -223,7 +223,7 @@ border-radius: 2px;</string>
       <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="dashboard_page">
       <widget class="QLabel" name="label_3">
@@ -1305,7 +1305,42 @@ border-radius: 15px;</string>
       <zorder>widget_7</zorder>
       <zorder>widget_6</zorder>
      </widget>
-     <widget class="QWidget" name="search_page"/>
+     <widget class="QWidget" name="search_page">
+      <widget class="QScrollArea" name="scrollArea_columns">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1348</width>
+         <height>913</height>
+        </rect>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="columns_scrollarea_contents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1346</width>
+          <height>911</height>
+         </rect>
+        </property>
+        <widget class="QWidget" name="horizontalLayoutWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>1345</width>
+           <height>910</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="columns_layout"/>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
     </widget>
     <widget class="QLabel" name="profile_name">
      <property name="geometry">
@@ -1354,7 +1389,7 @@ border-radius: 15px;</string>
       <rect>
        <x>27</x>
        <y>18</y>
-       <width>175</width>
+       <width>214</width>
        <height>25</height>
       </rect>
      </property>

@@ -216,7 +216,7 @@ class DropArea(QWidget):
         if event.mimeData().hasText():
             self.card_moved_signal.moved.emit(event.mimeData().text(), self)
             event.acceptProposedAction()
-    
+
 class Profile(QWidget):
     def __init__(self):
         super().__init__()
@@ -239,6 +239,50 @@ class TaskDashboard(QWidget):
         uic.loadUi(app_dir + 'ui/task_dash.ui', self)
         self.task_name_dash.setText(name)
         self.task_status_dash.setText(status)
+class Column(QWidget):
+    def __init__(self, name):
+        super().__init__()
+
+        uic.loadUi(app_dir + 'ui/column.ui', self)
+
+        self.name = name
+
+        # column_name is qlineedit
+        self.column_name.setText(name)
+
+        self.cards = []
+
+        self.card_moved_signal = CardMovedSignal()
+        self.scroll_content = DropArea()
+        self.cards_layout = QGridLayout()
+        self.scroll_content.setLayout(self.cards_layout)
+        self.scrollArea.setWidget(self.scroll_content)
+        self.scrollArea.setFrameShape(QFrame.NoFrame)
+        self.scroll_content.setAcceptDrops(True)
+        self.cards_layout.addWidget(NewTask(), self.cards_layout.rowCount(), 0)
+
+
+    def add_card(self, name, status, task_id, avatar = None):
+        print(f'ADDING CARD: {name}, {status}, {task_id}, {avatar}')
+        card = Card(name, status, task_id, avatar)
+        self.cards.append(card)
+        self.cards_layout.addWidget(card, self.cards_layout.rowCount(), 0)
+        card.show()
+        self.scroll_content.updateGeometry()
+        self.scroll_content.adjustSize()
+        self.cards_layout.update()
+        self.scrollArea.update()
+
+    def add_spacer(self):
+        self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+
+class NewColumn(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        uic.loadUi(app_dir + 'ui/new_column.ui', self)
+
+        self.create_column_button.setStyleSheet("background-color: rgb(217, 217, 217); color: rgb(7, 71, 166); border: none; border-radius: 3px;")
 
 class MainWin(QtWidgets.QMainWindow):
     def __init__(self, role, id, code, projects_ids, user_name, avatar):
@@ -321,6 +365,8 @@ class MainWin(QtWidgets.QMainWindow):
 
         self.darkening_widget = QWidget(self)
         self.darkening_widget.hide()
+        self.darkening_widget.setGeometry(0, 0, self.width(), self.height())
+        self.darkening_widget.setStyleSheet("background-color: rgba(0, 0, 0, 127);")
         self.profile_window = Profile()
         self.profile_window.hide()
 
@@ -422,6 +468,11 @@ class MainWin(QtWidgets.QMainWindow):
         self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.cards_layout3.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+
+        self.columns_layout.setAlignment(Qt.AlignLeft)
+        self.columns_layout.setSpacing(0)
+        self.columns_scrollarea_contents.setLayout(self.columns_layout)
+        self.scrollArea_columns.setWidgetResizable(True)
 
         self.widget_5_on_screen = False
 
@@ -750,11 +801,6 @@ class MainWin(QtWidgets.QMainWindow):
         self.profile_window.profileCloseButton.clicked.connect(lambda: \
                     self.close_profile(self.profile_window, self.darkening_widget))
 
-        # Создание виджета для затемнения
-
-        self.darkening_widget.setGeometry(0, 0, self.width(), self.height())
-        self.darkening_widget.setStyleSheet("background-color: rgba(0, 0, 0, 127);")
-
         self.profile_window.setGeometry(
             self.width() // 2 - self.profile_window.width() // 2,
             self.height() // 2 - self.profile_window.height() // 2,
@@ -823,14 +869,39 @@ class MainWin(QtWidgets.QMainWindow):
             self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
             adder_task3.new_task_button.clicked.connect(lambda:\
                         self.new_task(adder_task3, self.project_id, 'done'))
+            
+            columns = {
+                'todo': Column('To do'),
+                'in progress': Column('In progress'),
+                'done': Column('Done'),
+                'column1': Column('Column 1'),
+                'column2': Column('Column 2'),
+                'column3': Column('Column 3'),
+            }
+
+            for column in columns.values():
+                self.columns_layout.addWidget(column)
+                self.columns_layout.update()
+                self.columns_scrollarea_contents.updateGeometry()
+                self.columns_scrollarea_contents.adjustSize()
+                self.scrollArea_columns.update()
+                self.scrollArea_columns.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+                self.scrollArea_columns.horizontalScrollBar().setFocusPolicy(Qt.StrongFocus)
+                self.scrollArea_columns.horizontalScrollBar().setValue(self.scrollArea_columns.horizontalScrollBar().maximum())
 
             if response.status_code == 200:
                 data = response.json()
                 if data['tasks'] != None:
                     for data in data['tasks']:
                         self.add_card(data['name'], data['status'], data['id'], data['avatar'])
+                        columns[data['status']].add_card(data['name'], data['status'], data['id'], data['avatar'])
             else:
                 print(f'Request failed with status code {response.status_code}')
+
+            for column in columns.values():
+                column.add_spacer()
+
+            self.columns_layout.addWidget(NewColumn())
 
 
             self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
@@ -1096,6 +1167,27 @@ if __name__ == '__main__':
 
     QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,
     QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+        width: 0px; height: 0px;
+        background: none;
+    }
+                      
+    QScrollBar:horizontal {
+        background: rgba(128, 128, 128, 0);
+        height: 8px;
+    }
+                      
+    QScrollBar::handle:horizontal {
+        background: rgba(7, 71, 166, 255);
+        border-radius: 4px;
+        min-width: 20px;
+    }
+                      
+    QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+        background: none;
+    }
+                      
+    QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal,
+    QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
         width: 0px; height: 0px;
         background: none;
     }
