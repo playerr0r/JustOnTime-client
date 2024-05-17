@@ -438,28 +438,27 @@ class MainWin(QtWidgets.QMainWindow):
         else:
             print(f'Request failed with status code {response.status_code}')
 
-    def card_moved(self, task_id, dropped_in_column):
-        status_map = {
-            self.scroll_content: 'todo',
-            self.scroll_content2: 'in progress',
-            self.scroll_content3: 'done'
-        }
-        status = status_map.get(dropped_in_column)
-        if status is None:
-            return  # Если столбец не найден, выходим из функции
+    # def card_moved(self, task_id, dropped_in_column):
+    #     print(f'Card {task_id} was dropped in column {dropped_in_column}')
+    #     status_map = self.columns.keys()
 
-        for layout in [self.cards_layout, self.cards_layout2, self.cards_layout3]:
-            for i in range(layout.count()):
-                item = layout.itemAt(i)
-                widget = item.widget()
-                if widget is not None and isinstance(widget, Card) and widget.task_id == task_id:
-                    layout.takeAt(i)
-                    widget.setParent(None)
-                    if self.widget_5_on_screen and self.project_name_task_id.text().split(' / ')[1].split('-')[1] == task_id:
-                        QTimer.singleShot(100, lambda task_id=task_id: self.show_card_info(task_id=task_id))
-                    self.update_task_status(task_id, status)
-                    break  # Прерываем цикл после обработки карточки
-            QApplication.processEvents()  # Обновляем интерфейс
+    #     status = status_map.get(dropped_in_column)
+    #     print(f'Moved card {task_id} to {status}')
+    #     if status is None:
+    #         return  # Если столбец не найден, выходим из функции
+
+    #     for layout in self.columns_layout.children():
+    #         for i in range(layout.count()):
+    #             item = layout.itemAt(i)
+    #             widget = item.widget()
+    #             if widget is not None and isinstance(widget, Card) and widget.task_id == task_id:
+    #                 layout.takeAt(i)
+    #                 widget.setParent(None)
+    #                 if self.widget_5_on_screen and self.project_name_task_id.text().split(' / ')[1].split('-')[1] == task_id:
+    #                     QTimer.singleShot(100, lambda task_id=task_id: self.show_card_info(task_id=task_id))
+    #                 self.update_task_status(task_id, status)
+    #                 break  # Прерываем цикл после обработки карточки
+    #         QApplication.processEvents()  # Обновляем интерфейс
 
     def close_card_info(self):
         self.group = QtCore.QParallelAnimationGroup()
@@ -516,6 +515,7 @@ class MainWin(QtWidgets.QMainWindow):
 
         self.delete_task_button.clicked.connect(lambda: self.delete_task(task_id))
 
+
         try:
             self.User_task_worker.clicked.disconnect()
         except TypeError:
@@ -543,6 +543,9 @@ class MainWin(QtWidgets.QMainWindow):
             empl_id = data['empl_id']
         else:
             print(f'Request failed with status code {response.status_code}')
+
+        self.left_button.clicked.connect(lambda: self.move_task_button(task_id, self.task_status.text(), 'left'))
+        self.right_button.clicked.connect(lambda: self.move_task_button(task_id, self.task_status.text(), 'right'))
 
         if empl_id != '':
             response = requests.get(url + "profile/" + str(empl_id))
@@ -595,6 +598,35 @@ class MainWin(QtWidgets.QMainWindow):
             # self.group.addAnimation(self.animation3)
             # self.group.addAnimation(self.animation4)
             self.group.start()
+
+    def move_task_button(self, task_id, status, direction):
+        status_map = {
+            'todo': 0,
+            'in progress': 1,
+            'done': 2,
+            'column1': 3,
+            'column2': 4,
+            'column3': 5,
+        }
+
+        if direction == 'left':
+            if status_map[status] == 0:
+                return
+            else:
+                status = list(status_map.keys())[list(status_map.values()).index(status_map[status] - 1)]
+        else:
+            if status_map[status] == 5:
+                return
+            else:
+                status = list(status_map.keys())[list(status_map.values()).index(status_map[status] + 1)]
+
+        data = {'status': status}
+        response = requests.post(f"{url}tasks/{task_id}/updateStatus", json=data)
+        if response.status_code == 200:
+            print(response.json())
+            self.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
 
     def delete_task(self, task_id):
         response = requests.delete(url + "tasks/" + task_id)
@@ -679,7 +711,7 @@ class MainWin(QtWidgets.QMainWindow):
 
             data = {}
             
-            columns = {
+            self.columns = {
                 'todo': Column('todo', self.project_id),
                 'in progress': Column('in progress', self.project_id),
                 'done': Column('done', self.project_id),
@@ -688,10 +720,11 @@ class MainWin(QtWidgets.QMainWindow):
                 'column3': Column('Column 3', self.project_id),
             }
 
-            for column in columns.values():
+            for column in self.columns.values():
                 Column.clear(column)
+            self.delete_columns()
 
-            for column in columns.values():
+            for column in self.columns.values():
                 self.columns_layout.addWidget(column)
                 self.columns_layout.update()
                 self.columns_scrollarea_contents.updateGeometry()
@@ -706,7 +739,7 @@ class MainWin(QtWidgets.QMainWindow):
                 data = response.json()
                 if data['tasks'] != None:
                     for data in data['tasks']:
-                        columns[data['status']].add_card(data['name'], data['status'], data['id'], data['avatar'], self)
+                        self.columns[data['status']].add_card(data['name'], data['status'], data['id'], data['avatar'], self)
                         self.tasks_Layout.update()
                         self.scrollArea_tasks_dash.adjustSize()
                         self.scrollArea_tasks_dash.update()
@@ -714,7 +747,7 @@ class MainWin(QtWidgets.QMainWindow):
             else:
                 print(f'Request failed with status code {response.status_code}')
 
-            for column in columns.values():
+            for column in self.columns.values():
                 column.add_spacer()
 
             self.columns_layout.addWidget(NewColumn())
@@ -772,28 +805,6 @@ class Column(QWidget):
 
         card_dashboard.task_open_dash.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "dashboard"))
         card.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "kanban"))
-
-    def card_moved(self, task_id, dropped_in_column):
-        self._window.card_moved(task_id, dropped_in_column)
-
-    def move_card(self, task_id, dropped_in_column):
-        status_map = {
-            self.scroll_content: 'todo',
-            self.scroll_content2: 'in progress',
-            self.scroll_content3: 'done'
-        }
-        status = status_map.get(dropped_in_column)
-        if status is None:
-            return
-        
-        for i in range(self.cards_layout.count()):
-            item = self.cards_layout.itemAt(i)
-            widget = item.widget()
-            if widget is not None and isinstance(widget, Card) and widget.task_id == task_id:
-                self.cards_layout.takeAt(i)
-                widget.setParent(None)
-                self._window.update_task_status(task_id, status)
-                break
 
     def add_task_adder(self):
         task_adder = NewTask()

@@ -1122,6 +1122,32 @@ border-radius: 15px;</string>
          <string>Файлы</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="left_button">
+        <property name="geometry">
+         <rect>
+          <x>276</x>
+          <y>177</y>
+          <width>31</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="right_button">
+        <property name="geometry">
+         <rect>
+          <x>309</x>
+          <y>177</y>
+          <width>31</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&gt;</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QScrollArea" name="scrollArea_columns">
        <property name="geometry">
