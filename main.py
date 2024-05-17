@@ -1,3 +1,4 @@
+import stat
 import sys
 import os
 import datetime
@@ -311,7 +312,6 @@ class MainWin(QtWidgets.QMainWindow):
                 self.projectname_combo_box.addItem(name)
 
             self.projects = list(data['projects'].keys())
-            print(self.projects)
             self.project_name = self.projectname_combo_box.currentText()
             self.project_id = self.projects[0]
 
@@ -433,8 +433,8 @@ class MainWin(QtWidgets.QMainWindow):
         data = {'status': status}
         response = requests.post(f"{url}tasks/{task_id}/updateStatus", json=data)
         if response.status_code == 200:
-            print(response.json())
-            self.refresh_lists()
+            # self.refresh_lists()
+            ...
         else:
             print(f'Request failed with status code {response.status_code}')
 
@@ -506,7 +506,6 @@ class MainWin(QtWidgets.QMainWindow):
             pass
         
         empl_id = None
-        print(task_id)
 
         try:
             self.delete_task_button.disconnect()
@@ -531,7 +530,6 @@ class MainWin(QtWidgets.QMainWindow):
 
         if response.status_code == 200:
             data = response.json()
-            print(data)
             data = data['task']
             # self.project_name.setText(self.projectname_combo_box.currentText() + ' / task-' + data['id'])
             self.task_name.setText(data['name'])
@@ -552,7 +550,6 @@ class MainWin(QtWidgets.QMainWindow):
 
             if response.status_code == 200:
                 data = response.json()
-                print(data)
                 data = data['user']
                 self.User_task_worker.setStyleSheet("text-align: left; \
                                                     border: none; color: rgb(7, 71, 166); \
@@ -600,25 +597,11 @@ class MainWin(QtWidgets.QMainWindow):
             self.group.start()
 
     def move_task_button(self, task_id, status, direction):
-        status_map = {
-            'todo': 0,
-            'in progress': 1,
-            'done': 2,
-            'column1': 3,
-            'column2': 4,
-            'column3': 5,
-        }
+        status_map = {i+1: column for i, column in enumerate(self.columns.keys())}
 
+        print(status_map)
         if direction == 'left':
-            if status_map[status] == 0:
-                return
-            else:
-                status = list(status_map.keys())[list(status_map.values()).index(status_map[status] - 1)]
-        else:
-            if status_map[status] == 5:
-                return
-            else:
-                status = list(status_map.keys())[list(status_map.values()).index(status_map[status] + 1)]
+            ...
 
         data = {'status': status}
         response = requests.post(f"{url}tasks/{task_id}/updateStatus", json=data)
@@ -630,7 +613,6 @@ class MainWin(QtWidgets.QMainWindow):
 
     def delete_task(self, task_id):
         response = requests.delete(url + "tasks/" + task_id)
-        print(task_id)
 
         if response.status_code == 200:
             print(response.json())
@@ -657,7 +639,6 @@ class MainWin(QtWidgets.QMainWindow):
 
         if response.status_code == 200:
             data = response.json()
-            print(data)
             data = data['user']
             self.profile_window.profileName.setText(data['name'])
             self.profile_window.profileJobTitle.setText(data['role']) 
@@ -706,23 +687,39 @@ class MainWin(QtWidgets.QMainWindow):
         if self.projectname_combo_box.currentIndex() != -1:
             self.project_name = self.projectname_combo_box.currentText()
             self.project_id = self.projects[self.projectname_combo_box.currentIndex()]
-            print(self.project_name + " " + self.project_id)
             response = requests.get(url+ "projects/" + self.project_id + "/tasks")
 
             data = {}
             
-            self.columns = {
-                'todo': Column('todo', self.project_id),
-                'in progress': Column('in progress', self.project_id),
-                'done': Column('done', self.project_id),
-                'column1': Column('Column 1', self.project_id),
-                'column2': Column('Column 2', self.project_id),
-                'column3': Column('Column 3', self.project_id),
-            }
+            # self.columns = {
+            #     'todo': Column('todo', self.project_id),
+            #     'in progress': Column('in progress', self.project_id),
+            #     'done': Column('done', self.project_id),
+            #     'column1': Column('Column 1', self.project_id),
+            #     'column2': Column('Column 2', self.project_id),
+            #     'column3': Column('Column 3', self.project_id),
+            # }
 
-            for column in self.columns.values():
+            self.columns = {}
+
+            for column in self.columns_layout.children():
                 Column.clear(column)
             self.delete_columns()
+
+            if response.status_code == 200:
+                data = response.json()
+                if data['tasks'] != None:
+                    for data in data['tasks']:
+                        status = data['status']
+                        if status not in self.columns:
+                            self.columns[status] = Column(status, self.project_id)
+                        self.columns[data['status']].add_card(data['name'], data['status'], data['id'], data['avatar'], self)
+                        self.tasks_Layout.update()
+                        self.scrollArea_tasks_dash.adjustSize()
+                        self.scrollArea_tasks_dash.update()
+
+            else:
+                print(f'Request failed with status code {response.status_code}')
 
             for column in self.columns.values():
                 self.columns_layout.addWidget(column)
@@ -734,18 +731,6 @@ class MainWin(QtWidgets.QMainWindow):
                 self.scrollArea_columns.horizontalScrollBar().setFocusPolicy(Qt.StrongFocus)
                 self.scrollArea_columns.horizontalScrollBar().setValue(self.scrollArea_columns.horizontalScrollBar().maximum())
                 column.add_task_adder()
-
-            if response.status_code == 200:
-                data = response.json()
-                if data['tasks'] != None:
-                    for data in data['tasks']:
-                        self.columns[data['status']].add_card(data['name'], data['status'], data['id'], data['avatar'], self)
-                        self.tasks_Layout.update()
-                        self.scrollArea_tasks_dash.adjustSize()
-                        self.scrollArea_tasks_dash.update()
-
-            else:
-                print(f'Request failed with status code {response.status_code}')
 
             for column in self.columns.values():
                 column.add_spacer()
@@ -787,7 +772,6 @@ class Column(QWidget):
 
     def add_card(self, name, status, task_id, avatar = None, MainWin = None):
         self._window = MainWin
-        print(f'ADDING CARD: {name}, {status}, {task_id}, {avatar}')
         card = Card(name, status, task_id, avatar)
         self.cards.append(card)
         self.cards_layout.addWidget(card, self.cards_layout.rowCount(), 0)
