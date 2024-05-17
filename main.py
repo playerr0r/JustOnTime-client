@@ -95,12 +95,13 @@ class Login(QtWidgets.QDialog):
         self.close()
 
 class NewTask(QWidget):
-    def __init__(self):
+    def __init__(self, column=None):
         super().__init__()
         uic.loadUi(app_dir + 'ui/new_task.ui', self)
         self.new_task_button.setStyleSheet("background-color: rgb(7, 71, 166);\n"
         "color: white; border: none; border-radius: 3px;")
         self.new_task_name.hide()
+        self.column = column
         # self.show()
 
     def dragEnterEvent(self, event):
@@ -239,42 +240,7 @@ class TaskDashboard(QWidget):
         uic.loadUi(app_dir + 'ui/task_dash.ui', self)
         self.task_name_dash.setText(name)
         self.task_status_dash.setText(status)
-class Column(QWidget):
-    def __init__(self, name):
-        super().__init__()
 
-        uic.loadUi(app_dir + 'ui/column.ui', self)
-
-        self.name = name
-
-        # column_name is qlineedit
-        self.column_name.setText(name)
-
-        self.cards = []
-
-        self.card_moved_signal = CardMovedSignal()
-        self.scroll_content = DropArea()
-        self.cards_layout = QGridLayout()
-        self.scroll_content.setLayout(self.cards_layout)
-        self.scrollArea.setWidget(self.scroll_content)
-        self.scrollArea.setFrameShape(QFrame.NoFrame)
-        self.scroll_content.setAcceptDrops(True)
-        self.cards_layout.addWidget(NewTask(), self.cards_layout.rowCount(), 0)
-
-
-    def add_card(self, name, status, task_id, avatar = None):
-        print(f'ADDING CARD: {name}, {status}, {task_id}, {avatar}')
-        card = Card(name, status, task_id, avatar)
-        self.cards.append(card)
-        self.cards_layout.addWidget(card, self.cards_layout.rowCount(), 0)
-        card.show()
-        self.scroll_content.updateGeometry()
-        self.scroll_content.adjustSize()
-        self.cards_layout.update()
-        self.scrollArea.update()
-
-    def add_spacer(self):
-        self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
 class NewColumn(QWidget):
     def __init__(self):
@@ -424,51 +390,6 @@ class MainWin(QtWidgets.QMainWindow):
         self.stackedWidget.setCurrentIndex(0)
 
     def cards_area_setter(self):
-        # Создайте новый виджет для содержимого прокрутки
-        self.scroll_content = DropArea()
-        self.scroll_content2 = DropArea()
-        self.scroll_content3 = DropArea()
-
-        self.scroll_content.card_moved_signal.moved.connect(self.card_moved)
-        self.scroll_content2.card_moved_signal.moved.connect(self.card_moved)
-        self.scroll_content3.card_moved_signal.moved.connect(self.card_moved)
-
-        # Создайте макет для карточек
-        self.cards_layout = QGridLayout()
-        self.cards_layout2 = QGridLayout()
-        self.cards_layout3 = QGridLayout()
-
-        self.scroll_content.setLayout(self.cards_layout)
-        self.scroll_content2.setLayout(self.cards_layout2)
-        self.scroll_content3.setLayout(self.cards_layout3)
-
-        # Установите scroll_content в качестве виджета прокрутки для scrollArea
-        self.scrollArea.setWidget(self.scroll_content)
-        self.scrollArea.setFrameShape(QFrame.NoFrame)
-        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-
-        self.scrollArea_2.setWidget(self.scroll_content2)
-        self.scrollArea_2.setFrameShape(QFrame.NoFrame)
-        self.scrollArea_2.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-
-        self.scrollArea_3.setWidget(self.scroll_content3)
-        self.scrollArea_3.setFrameShape(QFrame.NoFrame)
-        self.scrollArea_3.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea_2.setWidgetResizable(True)
-        self.scrollArea_3.setWidgetResizable(True)
-
-        self.scroll_content.setAcceptDrops(True)
-        self.scroll_content2.setAcceptDrops(True)
-        self.scroll_content3.setAcceptDrops(True)
-
-        # self.scroll_content.setContentsMargins(10, 0, 0 ,0)
-
-        self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        self.cards_layout3.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
-
         self.columns_layout.setAlignment(Qt.AlignLeft)
         self.columns_layout.setSpacing(0)
         self.columns_scrollarea_contents.setLayout(self.columns_layout)
@@ -572,50 +493,6 @@ class MainWin(QtWidgets.QMainWindow):
         # self.group.addAnimation(self.animation4)
         self.group.start()
 
-    def add_card(self, name, status, task_id, avatar = None):
-        # Создайте новую карточку
-        card = Card(name, status, task_id, avatar, show=False)
-        card_dashboard = TaskDashboard(name, status, card)
-        # QApplication.processEvents()
-        card_dashboard.show()
-        self.tasks_Layout.addWidget(card_dashboard)
-        self.tasks_Layout.update()
-        
-        self.scrollArea_tasks_dash.adjustSize()
-        self.scrollArea_tasks_dash.update()
-
-        card_dashboard.task_open_dash.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id, page = "dashboard"))
-        card.clicked.connect(lambda: self.show_card_info(card = card, task_id=task_id, page = "kanban"))
-        # Добавьте карточку в макет
-
-        if status == 'todo':
-            row = self.cards_layout.rowCount()
-            self.cards_layout.addWidget(card, row, 0)
-            card.show()
-            self.scroll_content.updateGeometry()
-            self.scroll_content.adjustSize()
-            self.cards_layout.update()
-            self.scrollArea.update()
-            self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-        elif status == 'in progress':
-            row = self.cards_layout2.rowCount()
-            self.cards_layout2.addWidget(card, row, 0)
-            card.show()
-            self.scroll_content2.updateGeometry()
-            self.scroll_content2.adjustSize()
-            self.cards_layout2.update()
-            self.scrollArea_2.update()
-            self.scrollArea_2.verticalScrollBar().setValue(self.scrollArea_2.verticalScrollBar().maximum())
-        elif status == 'done':
-            row = self.cards_layout3.rowCount()
-            self.cards_layout3.addWidget(card, row, 0)
-            card.show()
-            self.scroll_content3.updateGeometry()
-            self.scroll_content3.adjustSize()
-            self.cards_layout3.update()
-            self.scrollArea_3.update()
-            self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
-
     def show_card_info(self, card = None, task_id = None, page = None):
         # self.widget_6.setGeometry(250, 30, 301, 868)
         # self.widget_7.setGeometry(580, 30, 301, 868)
@@ -712,21 +589,6 @@ class MainWin(QtWidgets.QMainWindow):
             self.widget_5_on_screen = True
             self.animation.setEndValue(QtCore.QRect(990, 0, self.widget_5.width(), self.widget_5.height()))
 
-            # self.animation2 = QtCore.QPropertyAnimation(self.widget_6, b"geometry")
-            # self.animation2.setDuration(150)
-            # self.animation2.setStartValue(QtCore.QRect(340, 30, 301, 868))
-            # self.animation2.setEndValue(QtCore.QRect(250, 30, 301, 868))
-
-            # self.animation3 = QtCore.QPropertyAnimation(self.widget_7, b"geometry")
-            # self.animation3.setDuration(150)
-            # self.animation3.setStartValue(QtCore.QRect(727, 30, 301, 868))
-            # self.animation3.setEndValue(QtCore.QRect(580, 30, 301, 868))
-
-            # self.animation4 = QtCore.QPropertyAnimation(self.widget_8, b"geometry")
-            # self.animation4.setDuration(150)
-            # self.animation4.setStartValue(QtCore.QRect(1102, 30, 301, 868))
-            # self.animation4.setEndValue(QtCore.QRect(910, 30, 301, 868))
-
             self.group = QtCore.QParallelAnimationGroup()
             self.group.addAnimation(self.animation)
             # self.group.addAnimation(self.animation2)
@@ -754,17 +616,6 @@ class MainWin(QtWidgets.QMainWindow):
             self.refresh_lists()
         else:
             print(f'Request failed with status code {response.status_code}')
-
-    def clear_column(self, layout):
-        for i in reversed(range(layout.count())):
-            item = layout.itemAt(i)
-
-            layout.removeItem(item)
-
-            widget = item.widget()
-            if widget is not None:
-                widget.deleteLater()
-                widget.setParent(None)
 
     def open_profile(self, id):
         self.profile_window.show()
@@ -819,13 +670,6 @@ class MainWin(QtWidgets.QMainWindow):
 
     def refresh_lists(self):
         print('REFRESHING LISTS')
-        self.scroll_content.hide()
-        self.scroll_content2.hide()
-        self.scroll_content3.hide()
-        self.clear_column(self.cards_layout)
-        self.clear_column(self.cards_layout2)
-        self.clear_column(self.cards_layout3)
-
         # query for tasks of project
         if self.projectname_combo_box.currentIndex() != -1:
             self.project_name = self.projectname_combo_box.currentText()
@@ -834,50 +678,18 @@ class MainWin(QtWidgets.QMainWindow):
             response = requests.get(url+ "projects/" + self.project_id + "/tasks")
 
             data = {}
-            adder_task = NewTask()
-            self.cards_layout.addWidget(adder_task, self.cards_layout.rowCount(), 0)
-            adder_task.show()
-            adder_task.lower()
-            self.scroll_content.updateGeometry()
-            self.scroll_content.adjustSize()
-            self.cards_layout.update()
-            self.scrollArea.update()
-            self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-            adder_task.new_task_button.clicked.connect(lambda:\
-                        self.new_task(adder_task, self.project_id, 'todo'))
-
-            adder_task2 = NewTask()
-            self.cards_layout2.addWidget(adder_task2, self.cards_layout2.rowCount(), 0)
-            adder_task2.show()
-            adder_task2.lower()
-            self.scroll_content2.updateGeometry()
-            self.scroll_content2.adjustSize()
-            self.cards_layout2.update()
-            self.scrollArea_2.update()
-            self.scrollArea_2.verticalScrollBar().setValue(self.scrollArea_2.verticalScrollBar().maximum())
-            adder_task2.new_task_button.clicked.connect(lambda:\
-                        self.new_task(adder_task2, self.project_id, 'in progress'))
-
-            adder_task3 = NewTask()
-            self.cards_layout3.addWidget(adder_task3, self.cards_layout3.rowCount(), 0)
-            adder_task3.show()
-            adder_task3.lower()
-            self.scroll_content3.updateGeometry()
-            self.scroll_content3.adjustSize()
-            self.cards_layout3.update()
-            self.scrollArea_3.update()
-            self.scrollArea_3.verticalScrollBar().setValue(self.scrollArea_3.verticalScrollBar().maximum())
-            adder_task3.new_task_button.clicked.connect(lambda:\
-                        self.new_task(adder_task3, self.project_id, 'done'))
             
             columns = {
-                'todo': Column('To do'),
-                'in progress': Column('In progress'),
-                'done': Column('Done'),
-                'column1': Column('Column 1'),
-                'column2': Column('Column 2'),
-                'column3': Column('Column 3'),
+                'todo': Column('todo', self.project_id),
+                'in progress': Column('in progress', self.project_id),
+                'done': Column('done', self.project_id),
+                'column1': Column('Column 1', self.project_id),
+                'column2': Column('Column 2', self.project_id),
+                'column3': Column('Column 3', self.project_id),
             }
+
+            for column in columns.values():
+                Column.clear(column)
 
             for column in columns.values():
                 self.columns_layout.addWidget(column)
@@ -888,13 +700,17 @@ class MainWin(QtWidgets.QMainWindow):
                 self.scrollArea_columns.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
                 self.scrollArea_columns.horizontalScrollBar().setFocusPolicy(Qt.StrongFocus)
                 self.scrollArea_columns.horizontalScrollBar().setValue(self.scrollArea_columns.horizontalScrollBar().maximum())
+                column.add_task_adder()
 
             if response.status_code == 200:
                 data = response.json()
                 if data['tasks'] != None:
                     for data in data['tasks']:
-                        self.add_card(data['name'], data['status'], data['id'], data['avatar'])
-                        columns[data['status']].add_card(data['name'], data['status'], data['id'], data['avatar'])
+                        columns[data['status']].add_card(data['name'], data['status'], data['id'], data['avatar'], self)
+                        self.tasks_Layout.update()
+                        self.scrollArea_tasks_dash.adjustSize()
+                        self.scrollArea_tasks_dash.update()
+
             else:
                 print(f'Request failed with status code {response.status_code}')
 
@@ -902,49 +718,128 @@ class MainWin(QtWidgets.QMainWindow):
                 column.add_spacer()
 
             self.columns_layout.addWidget(NewColumn())
-
-
-            self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
-            self.cards_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
-            self.cards_layout3.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
-
-        self.scroll_content.show()
-        self.scroll_content2.show()
-        self.scroll_content3.show()
         self.tasks_Layout.update()
 
-    def new_task(self, adder_task, project_id, status):
-        adder_task.new_task_button.hide()
-        adder_task.new_task_name.show()
+    def delete_columns(self):
+        for i in reversed(range(self.columns_layout.count())):
+            item = self.columns_layout.itemAt(i)
+
+            self.columns_layout.removeItem(item)
+
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+                widget.setParent(None)
+
+class Column(QWidget):
+    def __init__(self, name, project_id):
+        super().__init__()
+
+        uic.loadUi(app_dir + 'ui/column.ui', self)
+
+        self.name = name
+        self.project_id = project_id
+
+        self.column_name.setText(name)
+
+        self.cards = []
+
+        self.card_moved_signal = CardMovedSignal()
+        self.scroll_content = DropArea()
+        self.cards_layout = QGridLayout()
+        self.scroll_content.setLayout(self.cards_layout)
+        self.scrollArea.setWidget(self.scroll_content)
+        self.scrollArea.setFrameShape(QFrame.NoFrame)
+        self.scroll_content.setAcceptDrops(True)
+
+    def add_card(self, name, status, task_id, avatar = None, MainWin = None):
+        self._window = MainWin
+        print(f'ADDING CARD: {name}, {status}, {task_id}, {avatar}')
+        card = Card(name, status, task_id, avatar)
+        self.cards.append(card)
+        self.cards_layout.addWidget(card, self.cards_layout.rowCount(), 0)
+        card.show()
+        self.scroll_content.updateGeometry()
+        self.scroll_content.adjustSize()
+        self.cards_layout.update()
+        self.scrollArea.update()
+
+        card_dashboard = TaskDashboard(name, status, card)
+        MainWin.tasks_Layout.addWidget(card_dashboard)
+        MainWin.tasks_Layout.update()
+        MainWin.scrollArea_tasks_dash.adjustSize()
+        MainWin.scrollArea_tasks_dash.update()
+
+        card_dashboard.task_open_dash.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "dashboard"))
+        card.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "kanban"))
+
+    def card_moved(self, task_id, dropped_in_column):
+        self._window.card_moved(task_id, dropped_in_column)
+
+    def move_card(self, task_id, dropped_in_column):
+        status_map = {
+            self.scroll_content: 'todo',
+            self.scroll_content2: 'in progress',
+            self.scroll_content3: 'done'
+        }
+        status = status_map.get(dropped_in_column)
+        if status is None:
+            return
+        
+        for i in range(self.cards_layout.count()):
+            item = self.cards_layout.itemAt(i)
+            widget = item.widget()
+            if widget is not None and isinstance(widget, Card) and widget.task_id == task_id:
+                self.cards_layout.takeAt(i)
+                widget.setParent(None)
+                self._window.update_task_status(task_id, status)
+                break
+
+    def add_task_adder(self):
+        task_adder = NewTask()
+        self.cards_layout.addWidget(task_adder, self.cards_layout.rowCount(), 0)
+        task_adder.new_task_button.clicked.connect(lambda: self.new_task(task_adder))
+
+    def new_task(self, task_adder):
+        task_adder.new_task_button.hide()
+        task_adder.new_task_name.show()
 
         try:
-            adder_task.new_task_name.returnPressed.disconnect()
+            task_adder.new_task_name.returnPressed.disconnect()
         except TypeError:
             pass
 
-        adder_task.new_task_name.returnPressed.connect(lambda:\
-                     self.add_new_task(adder_task.new_task_name.text(), adder_task, self.project_id, status))
+        task_adder.new_task_name.returnPressed.connect(lambda: self.add_new_task(task_adder.new_task_name.text(), self.name))
 
-    def add_new_task(self, name, adder_task, project_id, status):
-        
+    def add_new_task(self, name, column):
         data = {
             'name': name,
-            'status': status,
+            'status': column,
             'projectId': int(self.project_id),
             'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
-        print(data)
-
         response = requests.post(url+ "tasks/new", json=data)
 
         if response.status_code == 200:
-            adder_task.new_task_name.setText('')
-            adder_task.new_task_name.hide()
-            adder_task.new_task_button.show()
-            self.refresh_lists()
+            self._window.delete_columns()
+            self._window.refresh_lists()
         else:
             print(f'Request failed with status code {response.status_code}')
+
+    def add_spacer(self):
+        self.cards_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+
+    def clear(self):
+        for i in reversed(range(self.cards_layout.count())):
+            item = self.cards_layout.itemAt(i)
+
+            self.cards_layout.removeItem(item)
+
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+                widget.setParent(None)
         
 class SignIn(QtWidgets.QDialog):
     def __init__(self):
@@ -1008,143 +903,6 @@ class SignIn(QtWidgets.QDialog):
         self.login = Login()
         self.login.show()
         self.close()
-
-# class stats(QtWidgets.QDialog, Ui_Stats):
-#     def __init__(self, id, role, project_id, code):
-#         super().__init__()
-#         self.setupUi(self)
-#         self.setWindowIcon(QtGui.QIcon(app_dir + 'resources/winicon.png'))
-#         self.setWindowTitle('Just on time')
-#         self.id = id
-#         self.code = code
-#         self.role = role
-#         self.project_id = project_id
-#         self.active_sprints_button.clicked.connect(self.export)
-#         self.homepage_button.clicked.connect(self.open_main_win)
-#         self.refresh_button.clicked.connect(self.refresh)
-
-#         self.figure = Figure()
-#         self.canvas = FigureCanvas(self.figure)
-#         self.ax = self.figure.add_subplot(111)
-#         # line diagram in widget7 of tasks done by employees in last 7 days if role is admin
-#         if self.role == 'admin':
-#             cur.execute("SELECT name, code FROM users")
-#             self.employees = cur.fetchall()
-#             self.employees_tasks = []
-#             for employee in self.employees:
-#                 cur.execute("SELECT count(id) FROM tasks WHERE empl_code = %s AND status = 'done' AND date_act >= current_date - interval '7 days'", (employee[1],))
-#                 self.employees_tasks.append(cur.fetchall()[0][0])
-#             self.ax.plot([1, 2, 3, 4, 5, 6, 7], self.employees_tasks)
-#             self.ax.set_title('Tasks done by employees in last 7 days')
-#             self.ax.set_xlabel('days')
-#             self.ax.set_ylabel('tasks done')
-#             self.figure.set_facecolor('none')
-#             self.figure.tight_layout()
-#             self.figure.set_alpha(0)
-#             # set size of canvas
-#             self.canvas.resize(750, 340)
-#             # set margins of canvas to make space for label of x axis
-#             self.figure.subplots_adjust(bottom=0.15)
-#             # set x axis to 1-7
-#             self.ax.set_xlim(1, 7)
-#             # draw lines of grid
-#             self.ax.grid(True)
-#             self.canvas.draw()
-#             self.layout = QtWidgets.QVBoxLayout(self.widget_7)
-#             self.layout.addWidget(self.canvas)
-#         # line diagram in widget7 of tasks done by employee in last 7 days if role is employee
-#         else:
-#             # line diagram in widget7 of tasks done by employee in last 7 days
-#             # list of tasks done by employee in last 7 days day by day with 0 if no tasks done
-#             self.employees_tasks = []
-#             cur.execute("SELECT count(id) FROM tasks WHERE empl_code = %s AND status = 'done' AND date_act = current_date - interval '6 days'", (self.id,))
-#             self.employees_tasks.append(cur.fetchall()[0][0])
-#             cur.execute("SELECT count(id) FROM tasks WHERE empl_code = %s AND status = 'done' AND date_act = current_date - interval '5 days'", (self.id,))
-#             self.employees_tasks.append(cur.fetchall()[0][0])
-#             cur.execute("SELECT count(id) FROM tasks WHERE empl_code = %s AND status = 'done' AND date_act = current_date - interval '4 days'", (self.id,))
-#             self.employees_tasks.append(cur.fetchall()[0][0])
-#             cur.execute("SELECT count(id) FROM tasks WHERE empl_code = %s AND status = 'done' AND date_act = current_date - interval '3 days'", (self.id,))
-#             self.employees_tasks.append(cur.fetchall()[0][0])
-#             cur.execute("SELECT count(id) FROM tasks WHERE empl_code = %s AND status = 'done' AND date_act = current_date - interval '2 days'", (self.id,))
-#             self.employees_tasks.append(cur.fetchall()[0][0])
-#             cur.execute("SELECT count(id) FROM tasks WHERE empl_code = %s AND status = 'done' AND date_act = current_date - interval '1 days'", (self.id,))
-#             self.employees_tasks.append(cur.fetchall()[0][0])
-#             cur.execute("SELECT count(id) FROM tasks WHERE empl_code = %s AND status = 'done' AND date_act = current_date", (self.id,))
-#             self.employees_tasks.append(cur.fetchall()[0][0])
-#             print(self.employees_tasks)
-#             self.ax.plot([1, 2, 3, 4, 5, 6, 7], self.employees_tasks)
-#             self.ax.set_title('Tasks done by you in last 7 days')
-#             self.ax.set_xlabel('days')
-#             self.ax.set_ylabel('tasks done')
-#             self.figure.set_facecolor('none')
-#             self.figure.tight_layout()
-#             self.figure.set_alpha(0)
-#             # set size of canvas
-#             self.canvas.resize(750, 340)
-#             # set margins of canvas to make space for label of x axis
-#             self.figure.subplots_adjust(bottom=0.15)
-#             # set x axis to 1-7
-#             self.ax.set_xlim(1, 7)
-#             # draw lines of grid
-#             self.ax.grid(True)
-#             self.canvas.draw()
-#             self.layout = QtWidgets.QVBoxLayout(self.widget_7)
-#             self.layout.addWidget(self.canvas)
-
-#         # pie diagram in widget8 of tasks status if role is admin on project
-
-#         self.figure = Figure()
-#         self.canvas = FigureCanvas(self.figure)
-#         self.ax = self.figure.add_subplot(111)
-#         # set background color of diagram to transparent
-#         self.figure.set_facecolor('none')
-#         if self.role == 'admin':
-#             cur.execute("SELECT count(id) FROM tasks WHERE status = 'todo' AND project_id = %s", (self.project_id))
-#             self.to_do = cur.fetchall()[0][0]
-#             cur.execute("SELECT count(id) FROM tasks WHERE status = 'in progress' AND project_id = %s", (self.project_id))
-#             self.in_progress = cur.fetchall()[0][0]
-#             cur.execute("SELECT count(id) FROM tasks WHERE status = 'done' AND project_id = %s", (self.project_id))
-#             self.done_ = cur.fetchall()[0][0]
-#             self.ax.pie([self.to_do, self.in_progress, self.done_], labels=['todo', 'in progress', 'done'])
-#             self.ax.set_title('Tasks status')
-#             self.figure.set_facecolor('none')
-#             self.figure.set_alpha(0)
-#             self.canvas.draw()
-#             self.layout = QtWidgets.QVBoxLayout(self.widget_8)
-#             self.layout.addWidget(self.canvas)
-#         # pie diagram in widget8 of tasks status if role is employee on project
-#         else:
-#             cur.execute("SELECT count(id) FROM tasks WHERE status = 'todo' AND project_id = %s AND empl_code = %s", (self.project_id, self.id))
-#             self.to_do = cur.fetchall()[0][0]
-#             cur.execute("SELECT count(id) FROM tasks WHERE status = 'in progress' AND project_id = %s AND empl_code = %s", (self.project_id, self.id))
-#             self.in_progress = cur.fetchall()[0][0]
-#             cur.execute("SELECT count(id) FROM tasks WHERE status = 'done' AND project_id = %s AND empl_code = %s", (self.project_id, self.id))
-#             self.done_ = cur.fetchall()[0][0]
-#             print(self.to_do, self.in_progress, self.done_)
-#             if self.to_do == 0 and self.in_progress == 0 and self.done_ == 0:
-#                 self.ax.pie([1], labels=['no tasks'])
-#             else:
-#                 self.ax.pie([self.to_do, self.in_progress, self.done_], labels=['todo', 'in progress', 'done'])
-#                 self.ax.set_title('Tasks status')
-#                 self.figure.set_facecolor('none')
-#                 self.figure.set_alpha(0)
-#             self.canvas.draw()
-#             self.layout = QtWidgets.QVBoxLayout(self.widget_8)
-#             self.layout.addWidget(self.canvas)
-
-    # def open_main_win(self):
-    #     try:
-    #         self.main_win = main_win(code = self.code, role=self.role, id=self.id)
-    #         self.main_win.show()
-    #         self.close()
-    #     except:
-    #         # error message
-    #         print('error')
-
-    # def refresh(self):
-    #     self.stats = stats(id=self.id, role=self.role, project_id=self.project_id, code = self.code)
-    #     self.stats.show()
-    #     self.close()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])
