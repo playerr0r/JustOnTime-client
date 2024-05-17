@@ -187,8 +187,8 @@ class Card(QWidget):
             event.acceptProposedAction()
 
     def dropEvent(self, event):
-        # Здесь вы можете обработать событие drop, например, переместить карточку
-        event.acceptProposedAction()
+        task_id = event.mimeData().text()
+        self.card_moved_signal.moved.emit(task_id, self)
 
     def mouseDoubleClickEvent(self, event):
         self.clicked.emit()
@@ -207,7 +207,7 @@ class DropArea(QWidget):
         self.card_moved_signal = CardMovedSignal()
 
     def dragEnterEvent(self, event):
-        if event.mimeData().hasText():
+        if event.mimeData().hasFormat('text/plain'):
             event.acceptProposedAction()
 
     def dragMoveEvent(self, event):
@@ -250,6 +250,7 @@ class NewColumn(QWidget):
         uic.loadUi(app_dir + 'ui/new_column.ui', self)
 
         self.create_column_button.setStyleSheet("background-color: rgb(217, 217, 217); color: rgb(7, 71, 166); border: none; border-radius: 3px;")
+
 
 class MainWin(QtWidgets.QMainWindow):
     def __init__(self, role, id, code, projects_ids, user_name, avatar):
@@ -438,27 +439,20 @@ class MainWin(QtWidgets.QMainWindow):
         else:
             print(f'Request failed with status code {response.status_code}')
 
-    # def card_moved(self, task_id, dropped_in_column):
-    #     print(f'Card {task_id} was dropped in column {dropped_in_column}')
-    #     status_map = self.columns.keys()
+    def card_moved(self, task_id, dropped_in_column):
+        print(f'Card {task_id} was dropped in column {dropped_in_column}')
+        print(self.drop_areas)
 
-    #     status = status_map.get(dropped_in_column)
-    #     print(f'Moved card {task_id} to {status}')
-    #     if status is None:
-    #         return  # Если столбец не найден, выходим из функции
+        status = None
+        for key, value in self.drop_areas.items():
+            if value == dropped_in_column:
+                status = key
+                break
 
-    #     for layout in self.columns_layout.children():
-    #         for i in range(layout.count()):
-    #             item = layout.itemAt(i)
-    #             widget = item.widget()
-    #             if widget is not None and isinstance(widget, Card) and widget.task_id == task_id:
-    #                 layout.takeAt(i)
-    #                 widget.setParent(None)
-    #                 if self.widget_5_on_screen and self.project_name_task_id.text().split(' / ')[1].split('-')[1] == task_id:
-    #                     QTimer.singleShot(100, lambda task_id=task_id: self.show_card_info(task_id=task_id))
-    #                 self.update_task_status(task_id, status)
-    #                 break  # Прерываем цикл после обработки карточки
-    #         QApplication.processEvents()  # Обновляем интерфейс
+        print(f'moved card {task_id} to {status} column')
+
+        self.update_task_status(task_id, status)
+        self.refresh_lists()
 
     def close_card_info(self):
         self.group = QtCore.QParallelAnimationGroup()
@@ -471,32 +465,10 @@ class MainWin(QtWidgets.QMainWindow):
         self.delete_task_button.disconnect()
         self.widget_5_on_screen = False
 
-        # self.animation2 = QtCore.QPropertyAnimation(self.widget_6, b"geometry")
-        # self.animation2.setDuration(150)
-        # self.animation2.setStartValue(QtCore.QRect(250, 30, 301, 868))
-        # self.animation2.setEndValue(QtCore.QRect(340, 30, 301, 868))
-
-        # self.animation3 = QtCore.QPropertyAnimation(self.widget_7, b"geometry")
-        # self.animation3.setDuration(150)
-        # self.animation3.setStartValue(QtCore.QRect(580, 30, 301, 868))
-        # self.animation3.setEndValue(QtCore.QRect(727, 30, 301, 868))
-    
-        # self.animation4 = QtCore.QPropertyAnimation(self.widget_8, b"geometry")
-        # self.animation4.setDuration(150)
-        # self.animation4.setStartValue(QtCore.QRect(910, 30, 301, 868))
-        # self.animation4.setEndValue(QtCore.QRect(1102, 30, 301, 868))
-
         self.group.addAnimation(self.animation)
-        # self.group.addAnimation(self.animation2)
-        # self.group.addAnimation(self.animation3)
-        # self.group.addAnimation(self.animation4)
         self.group.start()
 
     def show_card_info(self, card = None, task_id = None, page = None):
-        # self.widget_6.setGeometry(250, 30, 301, 868)
-        # self.widget_7.setGeometry(580, 30, 301, 868)
-        # self.widget_8.setGeometry(910, 30, 301, 868)
-
         if page == "dashboard":
             self.open_kanban()
 
@@ -513,7 +485,6 @@ class MainWin(QtWidgets.QMainWindow):
             pass
 
         self.delete_task_button.clicked.connect(lambda: self.delete_task(task_id))
-
 
         try:
             self.User_task_worker.clicked.disconnect()
@@ -533,7 +504,6 @@ class MainWin(QtWidgets.QMainWindow):
             data = data['task']
             # self.project_name.setText(self.projectname_combo_box.currentText() + ' / task-' + data['id'])
             self.task_name.setText(data['name'])
-            # descr_2 is QPlainTextEdit
             self.descr_2.setPlainText(data['descr'])
             self.task_status.setText(data['status'])
             date = data['date'].split('T')
@@ -591,9 +561,6 @@ class MainWin(QtWidgets.QMainWindow):
 
             self.group = QtCore.QParallelAnimationGroup()
             self.group.addAnimation(self.animation)
-            # self.group.addAnimation(self.animation2)
-            # self.group.addAnimation(self.animation3)
-            # self.group.addAnimation(self.animation4)
             self.group.start()
 
     def move_task_button(self, task_id, status, direction):
@@ -690,17 +657,9 @@ class MainWin(QtWidgets.QMainWindow):
             response = requests.get(url+ "projects/" + self.project_id + "/tasks")
 
             data = {}
-            
-            # self.columns = {
-            #     'todo': Column('todo', self.project_id),
-            #     'in progress': Column('in progress', self.project_id),
-            #     'done': Column('done', self.project_id),
-            #     'column1': Column('Column 1', self.project_id),
-            #     'column2': Column('Column 2', self.project_id),
-            #     'column3': Column('Column 3', self.project_id),
-            # }
 
             self.columns = {}
+            self.drop_areas = {}
 
             for column in self.columns_layout.children():
                 Column.clear(column)
@@ -731,6 +690,7 @@ class MainWin(QtWidgets.QMainWindow):
                 self.scrollArea_columns.horizontalScrollBar().setFocusPolicy(Qt.StrongFocus)
                 self.scrollArea_columns.horizontalScrollBar().setValue(self.scrollArea_columns.horizontalScrollBar().maximum())
                 column.add_task_adder()
+                self.drop_areas[column.name] = column.scroll_content
 
             for column in self.columns.values():
                 column.add_spacer()
@@ -748,6 +708,8 @@ class MainWin(QtWidgets.QMainWindow):
             if widget is not None:
                 widget.deleteLater()
                 widget.setParent(None)
+                self.drop_areas = {}
+                self.columns = {}
 
 class Column(QWidget):
     def __init__(self, name, project_id):
@@ -762,8 +724,9 @@ class Column(QWidget):
 
         self.cards = []
 
-        self.card_moved_signal = CardMovedSignal()
         self.scroll_content = DropArea()
+        # self.drop_areas.append(self.scroll_content)
+        self.scroll_content.card_moved_signal.moved.connect(self.card_moved)
         self.cards_layout = QGridLayout()
         self.scroll_content.setLayout(self.cards_layout)
         self.scrollArea.setWidget(self.scroll_content)
@@ -790,9 +753,13 @@ class Column(QWidget):
         card_dashboard.task_open_dash.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "dashboard"))
         card.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "kanban"))
 
+    def card_moved(self, task_id, dropped_in_column):
+        self._window.card_moved(task_id, dropped_in_column)
+
     def add_task_adder(self):
         task_adder = NewTask()
         self.cards_layout.addWidget(task_adder, self.cards_layout.rowCount(), 0)
+        task_adder.lower()
         task_adder.new_task_button.clicked.connect(lambda: self.new_task(task_adder))
 
     def new_task(self, task_adder):
