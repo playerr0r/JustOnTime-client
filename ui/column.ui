@@ -76,6 +76,19 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="del_column_button">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>16</y>
+      <width>30</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Del</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

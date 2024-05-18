@@ -1,4 +1,3 @@
-import stat
 import sys
 import os
 import datetime
@@ -12,20 +11,14 @@ from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QFrame
 from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtWidgets import QSpacerItem
-from PyQt5.QtWidgets import QGraphicsBlurEffect
-from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QPushButton
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
 from PyQt5.QtCore import QMimeData
-from PyQt5.QtCore import QTimer
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtCore import Qt
 
-from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QDrag
 from PyQt5.QtGui import QRegion, QPixmap
 from PyQt5.QtGui import QPixmap
@@ -35,9 +28,6 @@ from PyQt5 import uic
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
-from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
 
 # app dir pat in windows
 app_dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
@@ -667,12 +657,19 @@ class MainWin(QtWidgets.QMainWindow):
 
             if response.status_code == 200:
                 data = response.json()
+                if data['columns'] != None:
+                    columns_string = data['columns'][0]
+                    columns_list = columns_string[1:-1].split(',')
+                    columns_list = [column.strip()[1:-1] if column.strip().startswith('"') else column.strip() for column in columns_list]
+
+                for column in columns_list:
+                    self.columns[column] = Column(column, self.project_id)
+                    self.columns[column].add_task_adder()
+
                 if data['tasks'] != None:
                     for data in data['tasks']:
-                        status = data['status']
-                        if status not in self.columns:
-                            self.columns[status] = Column(status, self.project_id)
-                        self.columns[data['status']].add_card(data['name'], data['status'], data['id'], data['avatar'], self)
+                        column = data['status']
+                        self.columns[column].add_card(data['name'], data['status'], data['id'], data['avatar'], self)
                         self.tasks_Layout.update()
                         self.scrollArea_tasks_dash.adjustSize()
                         self.scrollArea_tasks_dash.update()
@@ -689,13 +686,14 @@ class MainWin(QtWidgets.QMainWindow):
                 self.scrollArea_columns.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
                 self.scrollArea_columns.horizontalScrollBar().setFocusPolicy(Qt.StrongFocus)
                 self.scrollArea_columns.horizontalScrollBar().setValue(self.scrollArea_columns.horizontalScrollBar().maximum())
-                column.add_task_adder()
                 self.drop_areas[column.name] = column.scroll_content
 
             for column in self.columns.values():
                 column.add_spacer()
 
-            self.columns_layout.addWidget(NewColumn())
+            new_column = NewColumn()
+            self.columns_layout.addWidget(new_column)
+            new_column.create_column_button.clicked.connect(lambda: self.create_column(self.project_id))
         self.tasks_Layout.update()
 
     def delete_columns(self):
@@ -710,6 +708,21 @@ class MainWin(QtWidgets.QMainWindow):
                 widget.setParent(None)
                 self.drop_areas = {}
                 self.columns = {}
+
+    def create_column(self, project_id):
+        # data = {
+        #     'name': 'New column',
+        #     'projectId': int(project_id)
+        # }
+
+        # response = requests.post(url+ "columns/new", json=data)
+
+        # if response.status_code == 200:
+        #     self.delete_columns()
+        #     self.refresh_lists()
+        # else:
+        #     print(f'Request failed with status code {response.status_code}')
+        print('Creating new column')
 
 class Column(QWidget):
     def __init__(self, name, project_id):
@@ -732,6 +745,21 @@ class Column(QWidget):
         self.scrollArea.setWidget(self.scroll_content)
         self.scrollArea.setFrameShape(QFrame.NoFrame)
         self.scroll_content.setAcceptDrops(True)
+        self.del_column_button.clicked.connect(lambda: self.delete_column(self.project_id, self.name))
+
+    def delete_column(self, project_id, column_name):
+        data = {
+            'name': column_name,
+        }
+
+        # response = requests.delete(f"{url}{project_id}/column", json=data)
+
+        # if response.status_code == 200:
+        #     self._window.refresh_lists()
+        # else:
+        #     print(f'Request failed with status code {response.status_code}')
+
+        print(f'Deleting column {data} on url {url}{project_id}/column')
 
     def add_card(self, name, status, task_id, avatar = None, MainWin = None):
         self._window = MainWin
