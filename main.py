@@ -655,6 +655,9 @@ class MainWin(QtWidgets.QMainWindow):
                 Column.clear(column)
             self.delete_columns()
 
+            self.scrollArea_columns.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.scrollArea_columns.horizontalScrollBar().setFocusPolicy(Qt.StrongFocus)
+
             if response.status_code == 200:
                 data = response.json()
                 if data['columns'] != None:
@@ -665,6 +668,13 @@ class MainWin(QtWidgets.QMainWindow):
                 for column in columns_list:
                     self.columns[column] = Column(column, self.project_id)
                     self.columns[column].add_task_adder()
+                    self.columns_layout.addWidget(self.columns[column])
+                    self.columns_layout.update()
+                    self.columns_scrollarea_contents.updateGeometry()
+                    self.columns_scrollarea_contents.adjustSize()
+                    self.scrollArea_columns.update()
+                    self.drop_areas[column] = self.columns[column].scroll_content
+
 
                 if data['tasks'] != None:
                     for data in data['tasks']:
@@ -677,16 +687,16 @@ class MainWin(QtWidgets.QMainWindow):
             else:
                 print(f'Request failed with status code {response.status_code}')
 
-            for column in self.columns.values():
-                self.columns_layout.addWidget(column)
-                self.columns_layout.update()
-                self.columns_scrollarea_contents.updateGeometry()
-                self.columns_scrollarea_contents.adjustSize()
-                self.scrollArea_columns.update()
-                self.scrollArea_columns.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-                self.scrollArea_columns.horizontalScrollBar().setFocusPolicy(Qt.StrongFocus)
-                self.scrollArea_columns.horizontalScrollBar().setValue(self.scrollArea_columns.horizontalScrollBar().maximum())
-                self.drop_areas[column.name] = column.scroll_content
+            # for column in self.columns.values():
+            #     self.columns_layout.addWidget(column)
+            #     self.columns_layout.update()
+            #     self.columns_scrollarea_contents.updateGeometry()
+            #     self.columns_scrollarea_contents.adjustSize()
+            #     self.scrollArea_columns.update()
+            #     self.scrollArea_columns.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            #     self.scrollArea_columns.horizontalScrollBar().setFocusPolicy(Qt.StrongFocus)
+            #     self.scrollArea_columns.horizontalScrollBar().setValue(self.scrollArea_columns.horizontalScrollBar().maximum())
+            #     self.drop_areas[column.name] = column.scroll_content
 
             for column in self.columns.values():
                 column.add_spacer()
@@ -710,18 +720,17 @@ class MainWin(QtWidgets.QMainWindow):
                 self.columns = {}
 
     def create_column(self, project_id):
-        # data = {
-        #     'name': 'New column',
-        #     'projectId': int(project_id)
-        # }
+        data = {
+            'name': 'New column'
+        }
 
-        # response = requests.post(url+ "columns/new", json=data)
+        response = requests.post(f"{url}projects/{project_id}/column", json=data)
 
-        # if response.status_code == 200:
-        #     self.delete_columns()
-        #     self.refresh_lists()
-        # else:
-        #     print(f'Request failed with status code {response.status_code}')
+        if response.status_code == 200:
+            self.delete_columns()
+            self.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
         print('Creating new column')
 
 class Column(QWidget):
@@ -752,12 +761,12 @@ class Column(QWidget):
             'name': column_name,
         }
 
-        # response = requests.delete(f"{url}{project_id}/column", json=data)
+        response = requests.delete(f"{url}projects/{project_id}/column", json=data)
 
-        # if response.status_code == 200:
-        #     self._window.refresh_lists()
-        # else:
-        #     print(f'Request failed with status code {response.status_code}')
+        if response.status_code == 200:
+            self._window.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
 
         print(f'Deleting column {data} on url {url}{project_id}/column')
 
