@@ -1,3 +1,9 @@
+# TODO:
+# 1. доделать работу колонок -
+# 2. сделать создание проектов
+# 3. все фичи проекта(удаление, добавление новых людей, удаление людей)
+# 4. гранты в дашборде
+
 import sys
 import os
 import datetime
@@ -666,7 +672,7 @@ class MainWin(QtWidgets.QMainWindow):
                     columns_list = [column.strip()[1:-1] if column.strip().startswith('"') else column.strip() for column in columns_list]
 
                 for column in columns_list:
-                    self.columns[column] = Column(column, self.project_id)
+                    self.columns[column] = Column(column, self.project_id, self)
                     self.columns[column].add_task_adder()
                     self.columns_layout.addWidget(self.columns[column])
                     self.columns_layout.update()
@@ -727,20 +733,21 @@ class MainWin(QtWidgets.QMainWindow):
         response = requests.post(f"{url}projects/{project_id}/column", json=data)
 
         if response.status_code == 200:
+            print('Creating new column')
             self.delete_columns()
             self.refresh_lists()
         else:
             print(f'Request failed with status code {response.status_code}')
-        print('Creating new column')
 
 class Column(QWidget):
-    def __init__(self, name, project_id):
+    def __init__(self, name, project_id, MainWin = None):
         super().__init__()
 
         uic.loadUi(app_dir + 'ui/column.ui', self)
 
         self.name = name
         self.project_id = project_id
+        self._window = MainWin
 
         self.column_name.setText(name)
 
@@ -754,7 +761,26 @@ class Column(QWidget):
         self.scrollArea.setWidget(self.scroll_content)
         self.scrollArea.setFrameShape(QFrame.NoFrame)
         self.scroll_content.setAcceptDrops(True)
+
         self.del_column_button.clicked.connect(lambda: self.delete_column(self.project_id, self.name))
+        self.column_name.returnPressed.connect(lambda: self.rename_column(self.project_id, self.name, self.column_name.text()))
+
+    def rename_column(self, project_id, column_name, new_name):
+        if column_name == new_name:
+            return
+        
+        data = {
+            'old_name': column_name,
+            'new_name': new_name
+        }
+
+        response = requests.post(f"{url}projects/{project_id}/column/update", json=data)
+        if response.status_code == 200:
+            print(f'Renaming column {column_name} to {new_name}')
+            self.name = new_name
+            self._window.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
 
     def delete_column(self, project_id, column_name):
         data = {
@@ -767,8 +793,6 @@ class Column(QWidget):
             self._window.refresh_lists()
         else:
             print(f'Request failed with status code {response.status_code}')
-
-        print(f'Deleting column {data} on url {url}{project_id}/column')
 
     def add_card(self, name, status, task_id, avatar = None, MainWin = None):
         self._window = MainWin
