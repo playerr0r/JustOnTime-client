@@ -18,6 +18,7 @@ from PyQt5.QtWidgets import QFrame
 from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtWidgets import QSpacerItem
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QListWidgetItem
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
@@ -248,6 +249,12 @@ class NewColumn(QWidget):
         self.create_column_button.setStyleSheet("background-color: rgb(217, 217, 217); color: rgb(7, 71, 166); border: none; border-radius: 3px;")
 
 
+class NewProject(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        uic.loadUi(app_dir + 'ui/new_project.ui', self)
+
 class MainWin(QtWidgets.QMainWindow):
     def __init__(self, role, id, code, projects_ids, user_name, avatar):
         super().__init__()
@@ -307,6 +314,9 @@ class MainWin(QtWidgets.QMainWindow):
 
             for id, name in data['projects'].items():
                 self.projectname_combo_box.addItem(name)
+                self.dashboard_projects_combobox.addItem(name)
+
+            self.projectname_combo_box.addItem('Создать проект')
 
             self.projects = list(data['projects'].keys())
             self.project_name = self.projectname_combo_box.currentText()
@@ -321,10 +331,12 @@ class MainWin(QtWidgets.QMainWindow):
 
         self.pushButton.clicked.connect(lambda: self.close_card_info())
         self.profile_button.clicked.connect(lambda: self.open_profile(self.id))
-        self.projectname_combo_box.currentTextChanged.connect(self.refresh_lists)
+        self.projectname_combo_box.currentTextChanged.connect(self.project_name_changed)
+        self.dashboard_projects_combobox.currentTextChanged.connect(self.refresh_dashboard)
         self.dashboard_button.clicked.connect(lambda: self.open_dashboard())
         self.kanban_button.clicked.connect(lambda: self.open_kanban())
         self.search_button.clicked.connect(lambda: self.open_search())
+        self.logout_button.clicked.connect(lambda: self.logout())
 
         self.darkening_widget = QWidget(self)
         self.darkening_widget.hide()
@@ -385,6 +397,80 @@ class MainWin(QtWidgets.QMainWindow):
             getattr(self, f'label_date_{i+1}').setText(str(day_number))
 
         self.stackedWidget.setCurrentIndex(0)
+
+    def refresh_dashboard(self):
+        for i in reversed(range(self.tasks_Layout.count())):
+            item = self.tasks_Layout.itemAt(i)
+
+            self.tasks_Layout.removeItem(item)
+
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+                widget.setParent(None)
+        self.refresh_lists()
+
+    def logout(self):
+        self.login = Login()
+        self.login.show()
+        self.close()
+
+    def project_name_changed(self):
+        count = self.projectname_combo_box.count()
+        if self.projectname_combo_box.currentIndex() != count - 1:
+            self.project_name = self.projectname_combo_box.currentText()
+            self.project_id = self.projects[self.projectname_combo_box.currentIndex()]
+            self.refresh_lists()
+        else:
+            self.create_project()
+
+    def create_project(self):
+        self.new_project = NewProject()
+        self.new_project.setParent(self)
+
+        self.new_project.setGeometry(
+            self.width() // 2 - self.new_project.width() // 2,
+            self.height() // 2 - self.new_project.height() // 2,
+            self.new_project.width(),
+            self.new_project.height()
+        )
+
+        self.new_project.create_new_project_button.clicked.connect(lambda: self.create_new_project())
+        self.new_project.cancel_new_project_button.clicked.connect(lambda: self.cancel_new_project())
+        self.new_project.add_login.clicked.connect(lambda: self.add_login())
+        self.new_project.del_login.clicked.connect(lambda: self.new_project.logins_list.takeItem(self.new_project.logins_list.currentRow()))
+
+        self.darkening_widget.show()
+        self.new_project.show()
+
+    def add_login(self):
+        item = QListWidgetItem("Введите логин")
+        item.setFlags(item.flags() | Qt.ItemIsEditable)
+        self.new_project.logins_list.addItem(item)
+
+    def create_new_project(self):
+        logins = []
+        items_to_remove = []
+        for i in range(self.new_project.logins_list.count()):
+            item = self.new_project.logins_list.item(i)
+            if item.text() == 'Введите логин':
+                items_to_remove.append(i)
+            else:
+                logins.append(item.text())
+
+        for i in reversed(items_to_remove):
+            self.new_project.logins_list.takeItem(i)
+
+        print(logins)
+
+
+    def cancel_new_project(self):
+        self.new_project.hide()
+        self.new_project.new_project_name.clear()
+        self.new_project.logins_list.clear()
+        self.darkening_widget.hide()
+        self.projectname_combo_box.setCurrentIndex(0)
+        self.refresh_lists()
 
     def cards_area_setter(self):
         self.columns_layout.setAlignment(Qt.AlignLeft)
@@ -647,7 +733,8 @@ class MainWin(QtWidgets.QMainWindow):
     def refresh_lists(self):
         print('REFRESHING LISTS')
         # query for tasks of project
-        if self.projectname_combo_box.currentIndex() != -1:
+        count = self.projectname_combo_box.count()
+        if self.projectname_combo_box.currentIndex() != count - 1:
             self.project_name = self.projectname_combo_box.currentText()
             self.project_id = self.projects[self.projectname_combo_box.currentIndex()]
             response = requests.get(url+ "projects/" + self.project_id + "/tasks")
@@ -672,7 +759,7 @@ class MainWin(QtWidgets.QMainWindow):
                     columns_list = [column.strip()[1:-1] if column.strip().startswith('"') else column.strip() for column in columns_list]
 
                 for column in columns_list:
-                    self.columns[column] = Column(column, self.project_id, self)
+                    self.columns[column] = Column(column, self.project_id, self, self.project_name)
                     self.columns[column].add_task_adder()
                     self.columns_layout.addWidget(self.columns[column])
                     self.columns_layout.update()
@@ -710,6 +797,10 @@ class MainWin(QtWidgets.QMainWindow):
             new_column = NewColumn()
             self.columns_layout.addWidget(new_column)
             new_column.create_column_button.clicked.connect(lambda: self.create_column(self.project_id))
+        elif self.projectname_combo_box.currentIndex() == count - 1:
+            self.projectname_combo_box.setCurrentIndex(0)
+            self.create_project()
+
         self.tasks_Layout.update()
 
     def delete_columns(self):
@@ -740,7 +831,7 @@ class MainWin(QtWidgets.QMainWindow):
             print(f'Request failed with status code {response.status_code}')
 
 class Column(QWidget):
-    def __init__(self, name, project_id, MainWin = None):
+    def __init__(self, name, project_id, MainWin = None, project_name = None):
         super().__init__()
 
         uic.loadUi(app_dir + 'ui/column.ui', self)
@@ -748,6 +839,7 @@ class Column(QWidget):
         self.name = name
         self.project_id = project_id
         self._window = MainWin
+        self.project_name = project_name
 
         self.column_name.setText(name)
 
@@ -762,6 +854,9 @@ class Column(QWidget):
         self.scrollArea.setFrameShape(QFrame.NoFrame)
         self.scroll_content.setAcceptDrops(True)
 
+        bin_icon = QtGui.QIcon()
+        bin_icon.addPixmap(QtGui.QPixmap(app_dir + "resources/bin.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.del_column_button.setIcon(bin_icon)
         self.del_column_button.clicked.connect(lambda: self.delete_column(self.project_id, self.name))
         self.column_name.returnPressed.connect(lambda: self.rename_column(self.project_id, self.name, self.column_name.text()))
 
@@ -805,13 +900,17 @@ class Column(QWidget):
         self.cards_layout.update()
         self.scrollArea.update()
 
-        card_dashboard = TaskDashboard(name, status, card)
-        MainWin.tasks_Layout.addWidget(card_dashboard)
-        MainWin.tasks_Layout.update()
-        MainWin.scrollArea_tasks_dash.adjustSize()
-        MainWin.scrollArea_tasks_dash.update()
+        print(self.project_name)
 
-        card_dashboard.task_open_dash.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "dashboard"))
+        if MainWin.dashboard_projects_combobox.currentText() == self.project_name:
+            card_dashboard = TaskDashboard(name, status, card)
+            MainWin.tasks_Layout.addWidget(card_dashboard)
+            MainWin.tasks_Layout.update()
+            MainWin.scrollArea_tasks_dash.adjustSize()
+            MainWin.scrollArea_tasks_dash.update()
+            card_dashboard.task_open_dash.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "dashboard"))
+
+
         card.clicked.connect(lambda: MainWin.show_card_info(card = card, task_id=task_id, page = "kanban"))
 
     def card_moved(self, task_id, dropped_in_column):

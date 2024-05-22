@@ -1,201 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>688</width>
-    <height>466</height>
+    <width>500</width>
+    <height>370</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>688</width>
-    <height>466</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>688</width>
-    <height>466</height>
-   </size>
-  </property>
-  <property name="font">
-   <font>
-    <family>Tahoma</family>
-   </font>
-  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Form</string>
   </property>
-  <widget class="QLabel" name="label_3">
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QLineEdit" name="new_project_name">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>10</y>
-     <width>111</width>
-     <height>41</height>
+     <y>40</y>
+     <width>181</width>
+     <height>21</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <family>Tahoma</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255, 0);
-color: rgb(0, 0, 0);</string>
-   </property>
-   <property name="text">
-    <string>Project name</string>
-   </property>
   </widget>
-  <widget class="QLineEdit" name="project_name_input">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>50</y>
-     <width>281</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Tahoma</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border: 1px;
-border-color: rgb(119, 119, 119);
-border-style: outset;
-border-radius: 8px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>432</y>
-     <width>141</width>
+     <y>15</y>
+     <width>151</width>
      <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Tahoma</family>
-    </font>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="listWidget">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>50</y>
-     <width>341</width>
-     <height>401</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>1</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>2</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>3</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>10</y>
-     <width>131</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Tahoma</family>
      <pointsize>12</pointsize>
     </font>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255, 0);
-color: rgb(0, 0, 0);</string>
-   </property>
    <property name="text">
-    <string>Project members</string>
+    <string>Название проекта</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QListWidget" name="logins_list">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>110</y>
-     <width>131</width>
-     <height>41</height>
+     <y>100</y>
+     <width>220</width>
+     <height>221</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <family>Tahoma</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255, 0);
-color: rgb(0, 0, 0);</string>
-   </property>
-   <property name="text">
-    <string>Selected members</string>
-   </property>
   </widget>
-  <widget class="QLabel" name="selected_members">
+  <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>150</y>
-     <width>271</width>
-     <height>261</height>
+     <y>70</y>
+     <width>191</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Tahoma</family>
      <pointsize>12</pointsize>
     </font>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255, 0);
-color: rgb(0, 0, 0);</string>
-   </property>
    <property name="text">
-    <string>Selected members</string>
+    <string>Приглашения в проект</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="add_login">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>330</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>+</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="del_login">
+   <property name="geometry">
+    <rect>
+     <x>165</x>
+     <y>330</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>-</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cancel_new_project_button">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>340</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Отмена</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="create_new_project_button">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>340</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ОК</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>500</width>
+     <height>370</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 4px;</string>
+   </property>
+  </widget>
+  <zorder>widget</zorder>
+  <zorder>new_project_name</zorder>
+  <zorder>label</zorder>
+  <zorder>logins_list</zorder>
+  <zorder>label_2</zorder>
+  <zorder>add_login</zorder>
+  <zorder>del_login</zorder>
+  <zorder>cancel_new_project_button</zorder>
+  <zorder>create_new_project_button</zorder>
  </widget>
  <resources/>
  <connections/>

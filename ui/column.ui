@@ -86,7 +86,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Del</string>
+     <string/>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
