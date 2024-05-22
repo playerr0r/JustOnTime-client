@@ -1,6 +1,6 @@
 # TODO:
 # 1. доделать работу колонок -
-# 2. сделать создание проектов
+# 2. сделать создание проектов -
 # 3. все фичи проекта(удаление, добавление новых людей, удаление людей)
 # 4. гранты в дашборде
 
@@ -72,7 +72,7 @@ class Login(QtWidgets.QDialog):
             self.name = user_data['name']
             self.avatar = user_data['avatar']
             print('Login successful')
-            self.main_win = MainWin(self.role, self.id, self.code, self.projects_ids, self.name, self.avatar)
+            self.main_win = MainWin(self.role, self.id, self.code, self.projects_ids, self.name, self.avatar, self.login)
             self.main_win.show()
             self.close()
         else:
@@ -256,7 +256,7 @@ class NewProject(QWidget):
         uic.loadUi(app_dir + 'ui/new_project.ui', self)
 
 class MainWin(QtWidgets.QMainWindow):
-    def __init__(self, role, id, code, projects_ids, user_name, avatar):
+    def __init__(self, role, id, code, projects_ids, user_name, avatar, login):
         super().__init__()
 
         uic.loadUi(app_dir + 'ui/main_window.ui', self)
@@ -273,6 +273,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.projects_ids = projects_ids
         self.avatar = avatar
         self.projects = []
+        self.login = login
 
         self.profile_name.setText(user_name)
 
@@ -461,8 +462,26 @@ class MainWin(QtWidgets.QMainWindow):
         for i in reversed(items_to_remove):
             self.new_project.logins_list.takeItem(i)
 
-        print(logins)
+        if self.login not in logins:
+            logins.append(self.login)
 
+        data = {
+            'name': self.new_project.new_project_name.text(),
+            'logins': logins
+        }
+
+        response = requests.post(url + "projects/new", json=data)
+        print(data)
+
+        if response.status_code == 200:
+            self.new_project.hide()
+            self.new_project.new_project_name.clear()
+            self.new_project.logins_list.clear()
+            self.darkening_widget.hide()
+            self.projectname_combo_box.setCurrentIndex(0)
+            self.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
 
     def cancel_new_project(self):
         self.new_project.hide()
