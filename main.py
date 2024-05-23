@@ -38,8 +38,8 @@ from PyQt5 import QtGui
 
 # app dir pat in windows
 app_dir = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') + '/'
-url = "https://justontime-backend.onrender.com/"
-# url = "http://localhost:8080/"
+# url = "https://justontime-backend.onrender.com/"
+url = "http://localhost:8080/"
 
 class Login(QtWidgets.QDialog):
     def __init__(self):
@@ -274,6 +274,13 @@ class MainWin(QtWidgets.QMainWindow):
         # self.profile_button.setStyleSheet(f"image: url({app_dir}/resources/profile.svg);")
         self.setWindowTitle('Just on time')
 
+        self.darkening_widget = QWidget(self)
+        self.darkening_widget.hide()
+        self.darkening_widget.setGeometry(0, 0, self.width(), self.height())
+        self.darkening_widget.setStyleSheet("background-color: rgba(0, 0, 0, 127);")
+        self.profile_window = Profile()
+        self.profile_window.hide()
+
         self.role = role
         self.id = id
         self.code = code
@@ -335,6 +342,8 @@ class MainWin(QtWidgets.QMainWindow):
         self.widgets_stylesheet_setter()
         self.cards_area_setter()
 
+        self.refresh_projects_combobox()
+
         self.refresh_lists()
 
         self.pushButton.clicked.connect(lambda: self.close_card_info())
@@ -347,12 +356,6 @@ class MainWin(QtWidgets.QMainWindow):
         self.logout_button.clicked.connect(lambda: self.logout())
         self.edit_project_button.clicked.connect(lambda: self.editor_project())
 
-        self.darkening_widget = QWidget(self)
-        self.darkening_widget.hide()
-        self.darkening_widget.setGeometry(0, 0, self.width(), self.height())
-        self.darkening_widget.setStyleSheet("background-color: rgba(0, 0, 0, 127);")
-        self.profile_window = Profile()
-        self.profile_window.hide()
 
     def open_search(self):
         self.projectname_combo_box.hide()
@@ -495,6 +498,9 @@ class MainWin(QtWidgets.QMainWindow):
         self.new_project.logins_list.addItem(item)
 
     def create_new_project(self):
+        if self.new_project.new_project_name.text() == '':
+            return
+
         logins = []
         items_to_remove = []
         for i in range(self.new_project.logins_list.count()):
@@ -864,8 +870,25 @@ class MainWin(QtWidgets.QMainWindow):
         elif self.projectname_combo_box.currentIndex() == count - 1:
             self.projectname_combo_box.setCurrentIndex(0)
             self.create_project()
-
+        
         self.tasks_Layout.update()
+
+    def refresh_projects_combobox(self):
+        response = requests.get(url + "profile/" + str(self.id) + "/projects")
+
+        if response.status_code == 200:
+            data = response.json()
+            self.projectname_combo_box.clear()
+            self.dashboard_projects_combobox.clear()
+            for project in data['projects']:
+                self.dashboard_projects_combobox.addItem(project)
+                self.projectname_combo_box.addItem(project)
+        else:
+            print(f'Request failed with status code {response.status_code}')
+        
+        self.projectname_combo_box.addItem('Создать проект')
+
+        print("refresh project combobox")
 
     def delete_columns(self):
         for i in reversed(range(self.columns_layout.count())):
