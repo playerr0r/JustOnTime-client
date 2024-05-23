@@ -246,7 +246,8 @@ class NewColumn(QWidget):
 
         uic.loadUi(app_dir + 'ui/new_column.ui', self)
 
-        self.create_column_button.setStyleSheet("background-color: rgb(217, 217, 217); color: rgb(7, 71, 166); border: none; border-radius: 3px;")
+        self.create_column_button.setStyleSheet("background-color: rgb(217, 217, 217); color: rgb(7, 71, 166);\
+                                                 border: none; border-radius: 3px;")
 
 
 class NewProject(QWidget):
@@ -254,6 +255,12 @@ class NewProject(QWidget):
         super().__init__()
 
         uic.loadUi(app_dir + 'ui/new_project.ui', self)
+
+class EditProject(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        uic.loadUi(app_dir + 'ui/edit_project.ui', self)
 
 class MainWin(QtWidgets.QMainWindow):
     def __init__(self, role, id, code, projects_ids, user_name, avatar, login):
@@ -338,6 +345,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.kanban_button.clicked.connect(lambda: self.open_kanban())
         self.search_button.clicked.connect(lambda: self.open_search())
         self.logout_button.clicked.connect(lambda: self.logout())
+        self.edit_project_button.clicked.connect(lambda: self.editor_project())
 
         self.darkening_widget = QWidget(self)
         self.darkening_widget.hide()
@@ -348,6 +356,7 @@ class MainWin(QtWidgets.QMainWindow):
 
     def open_search(self):
         self.projectname_combo_box.hide()
+        self.edit_project_button.hide()
         self.search_button.setStyleSheet("color: rgb(7, 71, 166); background-color: rgba(255, 255, 255, 0);")
         self.kanban_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
         self.dashboard_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
@@ -360,10 +369,12 @@ class MainWin(QtWidgets.QMainWindow):
         self.search_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
         self.dashboard_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
         self.projectname_combo_box.show()
+        self.edit_project_button.show()
         self.stackedWidget.setCurrentIndex(1)
 
     def open_dashboard(self):
         self.widget.move(self.widget.x(), 75)
+        self.edit_project_button.hide()
         self.dashboard_button.setStyleSheet("color: rgb(7, 71, 166); background-color: rgba(255, 255, 255, 0);")
         self.search_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
         self.kanban_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
@@ -415,6 +426,40 @@ class MainWin(QtWidgets.QMainWindow):
         self.login = Login()
         self.login.show()
         self.close()
+
+    def editor_project(self):
+        self.edit_project = EditProject()
+        self.edit_project.setParent(self)
+
+        self.edit_project.setGeometry(
+            self.width() // 2 - self.edit_project.width() // 2,
+            self.height() // 2 - self.edit_project.height() // 2,
+            self.edit_project.width(),
+            self.edit_project.height()
+        )
+
+        self.edit_project.edit_project_name.setText(self.project_name)
+
+        response = requests.get(url + "projects/" + self.project_id + "/users")
+
+        if response.status_code == 200:
+            data = response.json()
+            for user in data['users']:
+                self.edit_project.edit_profiles_list.addItem(user['name'])
+
+        self.edit_project.edit_ok_button.clicked.connect(lambda: self.edit_project_ok())
+        self.edit_project.edit_cancel_button.clicked.connect(lambda: self.cancel_edit_project())
+
+        self.darkening_widget.show()
+        self.edit_project.show()
+
+    def cancel_edit_project(self):
+        self.edit_project.hide()
+        self.darkening_widget.hide()
+
+    def edit_project_ok(self):
+        self.edit_project.hide()
+        self.darkening_widget.hide()
 
     def project_name_changed(self):
         count = self.projectname_combo_box.count()

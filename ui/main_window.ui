@@ -223,7 +223,7 @@ border-radius: 2px;</string>
       <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="dashboard_page">
       <widget class="QLabel" name="label_3">
@@ -1187,10 +1187,14 @@ border-radius: 15px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">border: 1px solid rgb(217, 217, 217);
+border-radius: 2px;</string>
      </property>
      <property name="text">
       <string>На месте</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QWidget" name="widget_2" native="true">
@@ -1233,6 +1237,26 @@ border-radius: 15px;</string>
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="edit_project_button">
+     <property name="geometry">
+      <rect>
+       <x>294</x>
+       <y>18</y>
+       <width>133</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid rgb(217, 217, 217);
+border-radius: 2px;</string>
+     </property>
+     <property name="text">
+      <string>Настройки проекта</string>
      </property>
      <property name="flat">
       <bool>true</bool>
