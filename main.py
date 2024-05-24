@@ -2,14 +2,11 @@
 # 1. доделать работу колонок -
 # 2. сделать создание проектов -
 # 3. все фичи проекта(удаление, добавление новых людей, удаление людей) -
-# 4. переделать задачи в дашборде
+# 4. переделать задачи в дашборде -
 # 5. гранты в дашборде
 # 6. нахождение на месте
 # 7. мероприятия в дашборде
 
-# баг с названием проекта
-
-from re import T
 import sys
 import os
 import datetime
@@ -18,28 +15,17 @@ import requests
 import base64
 import locale
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QGridLayout
-from PyQt5.QtWidgets import QFrame
-from PyQt5.QtWidgets import QSizePolicy
-from PyQt5.QtWidgets import QSpacerItem
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtWidgets import QWidget, QGridLayout, QFrame, QSizePolicy, QSpacerItem, QApplication, QListWidgetItem
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
-from PyQt5.QtCore import QMimeData
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal, QByteArray, QBuffer, QIODevice, QMimeData
 
-from PyQt5.QtGui import QDrag
-from PyQt5.QtGui import QRegion, QPixmap
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QDrag, QRegion, QPixmap
 
-from PyQt5 import QtCore
-from PyQt5 import uic
-from PyQt5 import QtWidgets
-from PyQt5 import QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
+
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtCore import QStringListModel
+from PyQt5.QtWidgets import QTableWidgetItem
 
 
 # app dir pat in windows
@@ -58,6 +44,8 @@ class Login(QtWidgets.QDialog):
         self.setWindowTitle('Just on time')
         self.login_button.clicked.connect(self.open_main_win)
         self.create_acc_button.clicked.connect(self.open_sign_in)
+        self.create_acc_button_2.hide()
+        self.pushButton_3.hide()
 
     def open_main_win(self):
         self.login = self.login_input.text()
@@ -229,7 +217,6 @@ class Profile(QWidget):
         uic.loadUi(app_dir + 'ui/profile.ui', self)
         self.setStyleSheet("QWidget { border-radius: 3px; }")
         self.profileCloseButton.setText('✖')
-        self.show()
 
 class ProfileDashboard(QWidget):
     def __init__(self):
@@ -267,6 +254,12 @@ class EditProject(QWidget):
         super().__init__()
 
         uic.loadUi(app_dir + 'ui/edit_project.ui', self)
+
+class Grants(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        uic.loadUi(app_dir + 'ui/grants.ui', self)
 
 class MainWin(QtWidgets.QMainWindow):
     def __init__(self, role, id, code, projects_ids, user_name, avatar, login):
@@ -322,6 +315,13 @@ class MainWin(QtWidgets.QMainWindow):
         self.dashboard_projects_combobox.hide()
         self.label_3.hide()
 
+        self.right_button.hide()
+        self.left_button.hide()
+        self.search_button.hide()
+
+        self.dashboard_dates_scrollArea.hide()
+        self.new_date_pushButton.hide()
+
         # if self.role != 'admin':
         #     self.new_project_button.hide()
             
@@ -340,12 +340,9 @@ class MainWin(QtWidgets.QMainWindow):
             #     self.dashboard_projects_combobox.addItem(name)
 
             # self.projectname_combo_box.addItem('Создать проект')
-            
-            print(data)
 
             self.projects = list(data['projects'].keys())
             self.project_name = data['projects'][self.projects[0]]
-            print(self.projects)
             self.project_id = self.projects[0]
 
         self.open_dashboard()
@@ -364,6 +361,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.search_button.clicked.connect(lambda: self.open_search())
         self.logout_button.clicked.connect(lambda: self.logout())
         self.edit_project_button.clicked.connect(lambda: self.editor_project())
+        self.grants_project_button.clicked.connect(lambda: self.open_grants())
 
 
     def open_search(self):
@@ -422,6 +420,54 @@ class MainWin(QtWidgets.QMainWindow):
 
         self.stackedWidget.setCurrentIndex(0)
 
+    def open_grants(self):
+        self.grants = Grants()
+        self.grants.setParent(self)
+
+        self.grants.setGeometry(
+            self.width() // 2 - self.grants.width() // 2,
+            self.height() // 2 - self.grants.height() // 2,
+            self.grants.width(),
+            self.grants.height()
+        )
+
+        self.grants.grants_table.setColumnCount(3)
+        self.grants.grants_table.setHorizontalHeaderLabels(['Название', 'Номер', 'Сумма'])
+        self.grants.grants_table.setColumnWidth(0, 195)
+        self.grants.grants_table.setColumnWidth(1, 125)
+        self.grants.grants_table.setColumnWidth(2, 140)
+
+        self.grants.grants_ok_button.clicked.connect(lambda: self.send_grants())
+        self.grants.new_grant_table.clicked.connect(lambda: self.add_grant())
+        self.grants.grants_cancel_button.clicked.connect(lambda: self.close_grants())
+
+        self.grants.grants_table.itemChanged.connect(lambda: self.grant_changed(self.grants.grants_table.currentItem()))
+
+        self.grants.show()
+        self.darkening_widget.show()
+
+    def grant_changed(self, item):
+        if item.column() == 2:
+            if item.text() not in '0123456789':
+                item.setText('0')
+            try:
+                int(item.text())
+            except ValueError:
+                item.setText('0')
+            self.grants.grants_total_sum_label.setText(str(sum([int(self.grants.grants_table.item(i, 2).text()) for i in range(self.grants.grants_table.rowCount())])))
+
+    def add_grant(self):
+        self.grants.grants_table.setRowCount(self.grants.grants_table.rowCount() + 1)
+
+    def send_grants(self):
+        self.grants.hide()
+        self.darkening_widget.hide()
+
+    def close_grants(self):
+        self.grants.hide()
+        self.grants.grants_table.clear()
+        self.darkening_widget.hide()
+
     def refresh_dashboard(self):
         self.clear_dashboard()
         
@@ -464,24 +510,67 @@ class MainWin(QtWidgets.QMainWindow):
 
         self.edit_project.edit_ok_button.clicked.connect(lambda: self.edit_project_ok())
         self.edit_project.edit_cancel_button.clicked.connect(lambda: self.cancel_edit_project())
+        self.edit_project.edit_send_button.clicked.connect(lambda: self.edit_project_send())
+        self.edit_project.edit_del_profile.clicked.connect(lambda: self.edit_project_del_profile())
 
         self.darkening_widget.show()
         self.edit_project.show()
+
+    def edit_project_del_profile(self):
+        if self.edit_project.edit_profiles_list.currentItem() is not None:
+            data = {
+                'name': self.edit_project.edit_profiles_list.currentItem().text()
+            }
+
+            response = requests.delete(url + "projects/" + str(self.project_id) + "/removeUser", json=data)
+
+            if response.status_code == 200:
+                self.edit_project.edit_profiles_list.takeItem(self.edit_project.edit_profiles_list.currentRow())
+            else:
+                print(f'Request failed with status code {response.status_code}')
+
+    def edit_project_send(self):
+        if self.edit_project.edit_new_user_line.text() == '':
+            return
+        
+        data = {
+            'login': self.edit_project.edit_new_user_line.text()
+        }
+
+        response = requests.post(url + "projects/" + str(self.project_id) + "/addUser", json=data)
+
+        if response.status_code == 200:
+            self.edit_project.hide()
+            self.darkening_widget.hide()
+            self.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
+            self.edit_project.edit_new_user_line.setStyleSheet("border: 1px solid red; border-radius: 3px;")
+            self.edit_project.edit_new_user_line.setText('')
 
     def cancel_edit_project(self):
         self.edit_project.hide()
         self.darkening_widget.hide()
 
     def edit_project_ok(self):
-        self.edit_project.hide()
-        self.darkening_widget.hide()
+        data = {
+            'name': self.edit_project.edit_project_name.text()
+        }
+
+        response = requests.post(url + "projects/" + str(self.project_id) + "/rename", json=data)
+
+        if response.status_code == 200:
+            self.edit_project.hide()
+            self.darkening_widget.hide()
+            self.refresh_lists()
+        else:
+            print(f'Request failed with status code {response.status_code}')
 
     def project_name_changed(self):
         count = self.projectname_combo_box.count()
         if self.projectname_combo_box.currentIndex() != count - 1:
             self.project_name = self.projectname_combo_box.currentText()
             self.project_id = self.projects[self.project_name]
-            print(self.project_name)
             self.refresh_lists()
         elif self.projectname_combo_box.currentIndex() == count - 1 and self.projectname_combo_box.currentText() == 'Создать проект':
             self.create_project()
@@ -535,7 +624,6 @@ class MainWin(QtWidgets.QMainWindow):
         }
 
         response = requests.post(url + "projects/new", json=data)
-        print(data)
 
         if response.status_code == 200:
             self.new_project.hide()
@@ -606,7 +694,6 @@ class MainWin(QtWidgets.QMainWindow):
 
     def card_moved(self, task_id, dropped_in_column):
         print(f'Card {task_id} was dropped in column {dropped_in_column}')
-        print(self.drop_areas)
 
         status = None
         for key, value in self.drop_areas.items():
@@ -731,7 +818,6 @@ class MainWin(QtWidgets.QMainWindow):
     def move_task_button(self, task_id, status, direction):
         status_map = {i+1: column for i, column in enumerate(self.columns.keys())}
 
-        print(status_map)
         if direction == 'left':
             ...
 
@@ -855,7 +941,6 @@ class MainWin(QtWidgets.QMainWindow):
                 if data['tasks'] != None:
                     for data in data['tasks']:
                         column = data['status']
-                        print(data)
                         self.columns[column].add_card(data['name'], data['status'], data['id'], data['avatar'], self, data['empl_id'])
                         self.tasks_Layout.update()
                         self.scrollArea_tasks_dash.adjustSize()
@@ -873,7 +958,12 @@ class MainWin(QtWidgets.QMainWindow):
         elif self.project_name == 'Создать проект':
             self.create_project()
         self.tasks_Layout.update()
-        print(self.project_name)
+
+        if self.tasks_Layout.count() == 0:
+            self.no_tasks_label.show()
+        else:
+            self.no_tasks_label.hide()
+
         self.refresh_projects_combobox()
 
     def refresh_projects_combobox(self):
@@ -901,7 +991,6 @@ class MainWin(QtWidgets.QMainWindow):
         except TypeError:
             pass
 
-        print(self.project_name)
 
         for i in range(self.projectname_combo_box.count()):
             if self.projectname_combo_box.itemText(i) == self.project_name:

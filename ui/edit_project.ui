@@ -95,7 +95,7 @@
     <string>Отправить</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="edit_new_user_line">
    <property name="geometry">
     <rect>
      <x>290</x>
@@ -186,7 +186,7 @@ border-radius: 4px;</string>
   <zorder>label_3</zorder>
   <zorder>edit_del_profile</zorder>
   <zorder>edit_send_button</zorder>
-  <zorder>lineEdit</zorder>
+  <zorder>edit_new_user_line</zorder>
   <zorder>label_4</zorder>
   <zorder>edit_ok_button</zorder>
   <zorder>edit_delete_project_button</zorder>

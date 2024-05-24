@@ -223,7 +223,7 @@ border-radius: 2px;</string>
       <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="dashboard_page">
       <widget class="QLabel" name="label_3">
@@ -358,8 +358,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_date">
        <property name="geometry">
         <rect>
-         <x>927</x>
-         <y>27</y>
+         <x>930</x>
+         <y>42</y>
          <width>205</width>
          <height>31</height>
         </rect>
@@ -379,8 +379,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_10">
        <property name="geometry">
         <rect>
-         <x>927</x>
-         <y>78</y>
+         <x>930</x>
+         <y>93</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -397,8 +397,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_11">
        <property name="geometry">
         <rect>
-         <x>963</x>
-         <y>78</y>
+         <x>966</x>
+         <y>93</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -415,8 +415,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_12">
        <property name="geometry">
         <rect>
-         <x>1032</x>
-         <y>78</y>
+         <x>1035</x>
+         <y>93</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -433,8 +433,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_13">
        <property name="geometry">
         <rect>
-         <x>996</x>
-         <y>78</y>
+         <x>999</x>
+         <y>93</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -451,8 +451,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_14">
        <property name="geometry">
         <rect>
-         <x>1065</x>
-         <y>78</y>
+         <x>1068</x>
+         <y>93</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -469,8 +469,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_15">
        <property name="geometry">
         <rect>
-         <x>1098</x>
-         <y>78</y>
+         <x>1101</x>
+         <y>93</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -487,8 +487,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_16">
        <property name="geometry">
         <rect>
-         <x>1134</x>
-         <y>78</y>
+         <x>1137</x>
+         <y>93</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -505,8 +505,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_date_2">
        <property name="geometry">
         <rect>
-         <x>963</x>
-         <y>114</y>
+         <x>966</x>
+         <y>129</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -523,8 +523,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_date_6">
        <property name="geometry">
         <rect>
-         <x>1098</x>
-         <y>114</y>
+         <x>1101</x>
+         <y>129</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -541,8 +541,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_date_3">
        <property name="geometry">
         <rect>
-         <x>996</x>
-         <y>114</y>
+         <x>999</x>
+         <y>129</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -559,8 +559,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_date_7">
        <property name="geometry">
         <rect>
-         <x>1134</x>
-         <y>114</y>
+         <x>1137</x>
+         <y>129</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -577,8 +577,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_date_4">
        <property name="geometry">
         <rect>
-         <x>1032</x>
-         <y>114</y>
+         <x>1035</x>
+         <y>129</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -595,8 +595,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_date_5">
        <property name="geometry">
         <rect>
-         <x>1065</x>
-         <y>114</y>
+         <x>1068</x>
+         <y>129</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -613,8 +613,8 @@ border-radius: 2px;</string>
       <widget class="QLabel" name="label_date_1">
        <property name="geometry">
         <rect>
-         <x>927</x>
-         <y>114</y>
+         <x>930</x>
+         <y>129</y>
          <width>19</width>
          <height>19</height>
         </rect>
@@ -631,8 +631,8 @@ border-radius: 2px;</string>
       <widget class="QScrollArea" name="dashboard_dates_scrollArea">
        <property name="geometry">
         <rect>
-         <x>807</x>
-         <y>153</y>
+         <x>810</x>
+         <y>174</y>
          <width>484</width>
          <height>256</height>
         </rect>
@@ -666,7 +666,7 @@ border-radius: 2px;</string>
        <property name="geometry">
         <rect>
          <x>996</x>
-         <y>420</y>
+         <y>441</y>
          <width>112</width>
          <height>25</height>
         </rect>
@@ -683,6 +683,24 @@ border-radius: 2px;</string>
          <width>229</width>
          <height>25</height>
         </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="no_tasks_label">
+       <property name="geometry">
+        <rect>
+         <x>57</x>
+         <y>159</y>
+         <width>172</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Задачи отсутствуют</string>
        </property>
       </widget>
      </widget>
@@ -1257,6 +1275,26 @@ border-radius: 2px;</string>
      </property>
      <property name="text">
       <string>Настройки проекта</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="grants_project_button">
+     <property name="geometry">
+      <rect>
+       <x>438</x>
+       <y>18</y>
+       <width>109</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid rgb(217, 217, 217);
+border-radius: 2px;</string>
+     </property>
+     <property name="text">
+      <string>Гранты проекта</string>
      </property>
      <property name="flat">
       <bool>true</bool>
