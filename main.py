@@ -15,17 +15,13 @@ import requests
 import base64
 import locale
 
-from PyQt5.QtWidgets import QWidget, QGridLayout, QFrame, QSizePolicy, QSpacerItem, QApplication, QListWidgetItem
+from PyQt5.QtWidgets import QWidget, QGridLayout, QFrame, QSizePolicy, QSpacerItem, QApplication, QListWidgetItem, QTableWidgetItem
 
 from PyQt5.QtCore import Qt, pyqtSignal, QByteArray, QBuffer, QIODevice, QMimeData
 
 from PyQt5.QtGui import QDrag, QRegion, QPixmap
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-
-from PyQt5.QtWidgets import QHeaderView
-from PyQt5.QtCore import QStringListModel
-from PyQt5.QtWidgets import QTableWidgetItem
 
 
 # app dir pat in windows
@@ -431,35 +427,81 @@ class MainWin(QtWidgets.QMainWindow):
             self.grants.height()
         )
 
-        self.grants.grants_table.setColumnCount(3)
-        self.grants.grants_table.setHorizontalHeaderLabels(['Название', 'Номер', 'Сумма'])
-        self.grants.grants_table.setColumnWidth(0, 195)
-        self.grants.grants_table.setColumnWidth(1, 125)
-        self.grants.grants_table.setColumnWidth(2, 140)
+        self.grants.grants_table.setColumnCount(4)
+        self.grants.grants_table.setHorizontalHeaderLabels(['ID', 'Название', 'Описание', 'Сумма'])
+        self.grants.grants_table.setColumnWidth(0, 20)
+        self.grants.grants_table.setColumnWidth(1, 190)
+        self.grants.grants_table.setColumnWidth(2, 95)
+        self.grants.grants_table.setColumnWidth(3, 140)
 
         self.grants.grants_ok_button.clicked.connect(lambda: self.send_grants())
         self.grants.new_grant_table.clicked.connect(lambda: self.add_grant())
         self.grants.grants_cancel_button.clicked.connect(lambda: self.close_grants())
 
-        self.grants.grants_table.itemChanged.connect(lambda: self.grant_changed(self.grants.grants_table.currentItem()))
 
+        response = requests.get(url + "projects/" + str(self.project_id) + "/grants")
+
+        sum = 0
+
+        if response.status_code == 200:
+            data = response.json()
+            print(data)
+            if data['grants'] is not None:
+                for grant in data['grants']:
+                    row = self.grants.grants_table.rowCount()
+                    self.grants.grants_table.setRowCount(row + 1)
+                    self.grants.grants_table.setItem(row, 0, QTableWidgetItem(str(grant['id'])))
+                    self.grants.grants_table.setItem(row, 1, QTableWidgetItem(grant['name']))
+                    self.grants.grants_table.setItem(row, 2, QTableWidgetItem(grant['descr']))
+                    self.grants.grants_table.setItem(row, 3, QTableWidgetItem(str(grant['num'])))
+                    sum = self.grants.grants_total_sum_label.text()
+                    sum = int(sum) + grant['num']
+                    self.grants.grants_total_sum_label.setText(str(sum))
+        else:
+            print(f'Request failed with status code {response.status_code}')
+
+        self.grants.grants_table.itemChanged.connect(lambda: self.grant_changed(self.grants.grants_table.currentItem()))
         self.grants.show()
         self.darkening_widget.show()
 
     def grant_changed(self, item):
-        if item.column() == 2:
-            if item.text() not in '0123456789':
-                item.setText('0')
-            try:
-                int(item.text())
-            except ValueError:
-                item.setText('0')
-            self.grants.grants_total_sum_label.setText(str(sum([int(self.grants.grants_table.item(i, 2).text()) for i in range(self.grants.grants_table.rowCount())])))
+        if item.column() == 3:
+            # print(item.text())
+            # try:
+            #     int(item.text())
+            # except ValueError:
+            #     item.setText('0')
+            
+            self.grants.grants_total_sum_label.setText(str(sum([int(self.grants.grants_table.item(i, 3).text()) for i in range(self.grants.grants_table.rowCount())])))
 
     def add_grant(self):
         self.grants.grants_table.setRowCount(self.grants.grants_table.rowCount() + 1)
 
     def send_grants(self):
+        grants = []
+        new_grants = []
+        for i in range(self.grants.grants_table.rowCount()):
+            if self.grants.grants_table.item(i, 0) is None:
+                data = {
+                    'name': self.grants.grants_table.item(i, 1).text(),
+                    'descr': self.grants.grants_table.item(i, 2).text(),
+                    'num': int(self.grants.grants_table.item(i, 3).text())
+                }
+                response = requests.post(url + "projects/" + str(self.project_id) + "/addGrant", json=data)
+                if response.status_code == 200:
+                    new_grants.append(response.json())
+            else:
+                data = {
+                    'id': self.grants.grants_table.item(i, 0).text(),
+                    'name': self.grants.grants_table.item(i, 1).text(),
+                    'descr': self.grants.grants_table.item(i, 2).text(),
+                    'num': int(self.grants.grants_table.item(i, 3).text())
+                }
+                response = requests.post(url + "projects/" + str(self.project_id) + "/editGrant", json=data)
+                if response.status_code == 200:
+                    grants.append(response.json())
+
+
         self.grants.hide()
         self.darkening_widget.hide()
 
