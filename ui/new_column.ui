@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>100</width>
-    <height>880</height>
+    <height>850</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>100</width>
-    <height>880</height>
+    <height>850</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>100</width>
-    <height>880</height>
+    <height>850</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -30,9 +30,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>101</width>
-     <height>901</height>
+     <width>100</width>
+     <height>850</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-color: rgb(217, 217, 217);
+border: 1px;</string>
    </property>
    <property name="text">
     <string>+</string>
