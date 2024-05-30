@@ -333,7 +333,7 @@ border-radius: 2px;</string>
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents_5">
+       <widget class="QWidget" name="scrollArea_users_dash">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -701,6 +701,24 @@ border-radius: 2px;</string>
        </property>
        <property name="text">
         <string>Задачи отсутствуют</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="no_users_label">
+       <property name="geometry">
+        <rect>
+         <x>57</x>
+         <y>504</y>
+         <width>214</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Нет сотрудников на месте</string>
        </property>
       </widget>
      </widget>
@@ -1295,6 +1313,26 @@ border-radius: 2px;</string>
      </property>
      <property name="text">
       <string>Гранты проекта</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="not_on_place_user_button">
+     <property name="geometry">
+      <rect>
+       <x>1025</x>
+       <y>18</y>
+       <width>37</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid rgb(217, 217, 217);
+border-radius: 2px;</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
      <property name="flat">
       <bool>true</bool>

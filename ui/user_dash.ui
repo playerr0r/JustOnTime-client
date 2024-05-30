@@ -10,6 +10,18 @@
     <height>50</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>470</width>
+    <height>50</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>470</width>
+    <height>50</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -36,7 +48,39 @@
     </rect>
    </property>
    <property name="text">
-    <string>Аватар</string>
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="user_dash_open_profile">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>470</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>49</y>
+     <width>470</width>
+     <height>1</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(217, 217, 217, 255);</string>
    </property>
   </widget>
  </widget>

@@ -1,12 +1,3 @@
-# TODO:
-# 1. доделать работу колонок -
-# 2. сделать создание проектов -
-# 3. все фичи проекта(удаление, добавление новых людей, удаление людей) -
-# 4. переделать задачи в дашборде -
-# 5. гранты в дашборде
-# 6. нахождение на месте
-# 7. мероприятия в дашборде
-
 import sys
 import os
 import datetime
@@ -61,8 +52,9 @@ class Login(QtWidgets.QDialog):
             self.projects_ids = user_data['projects_ids']
             self.name = user_data['name']
             self.avatar = user_data['avatar']
+            self.status = user_data['status']
             print('Login successful')
-            self.main_win = MainWin(self.role, self.id, self.code, self.projects_ids, self.name, self.avatar, self.login)
+            self.main_win = MainWin(self.role, self.id, self.code, self.projects_ids, self.name, self.avatar, self.login, self.status)
             self.main_win.show()
             self.close()
         else:
@@ -218,7 +210,7 @@ class ProfileDashboard(QWidget):
     def __init__(self):
         super().__init__()
 
-        uic.loadUi(app_dir + 'ui/profile_dash.ui', self)
+        uic.loadUi(app_dir + 'ui/user_dash.ui', self)
 
 class TaskDashboard(QWidget):
     def __init__(self, name, status, card):
@@ -258,7 +250,7 @@ class Grants(QWidget):
         uic.loadUi(app_dir + 'ui/grants.ui', self)
 
 class MainWin(QtWidgets.QMainWindow):
-    def __init__(self, role, id, code, projects_ids, user_name, avatar, login):
+    def __init__(self, role, id, code, projects_ids, user_name, avatar, login, status):
         super().__init__()
 
         uic.loadUi(app_dir + 'ui/main_window.ui', self)
@@ -284,6 +276,13 @@ class MainWin(QtWidgets.QMainWindow):
         self.projects = []
         self.login = login
 
+        if status == 'online':
+            self.on_place_user_button.hide()
+            self.not_on_place_user_button.show()
+        else:
+            self.on_place_user_button.show()
+            self.not_on_place_user_button.hide()
+
         self.profile_name.setText(user_name)
 
         self.avatar = base64.b64decode(self.avatar)
@@ -301,6 +300,10 @@ class MainWin(QtWidgets.QMainWindow):
             self.profile_button.setIconSize(QtCore.QSize(40, 40))
             mask = QRegion(self.profile_button.rect(), QRegion.Ellipse)
             self.profile_button.setMask(mask)
+
+        not_on_place_icon = QtGui.QIcon()
+        not_on_place_icon.addPixmap(QtGui.QPixmap(app_dir + 'resources/exit.svg'), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.not_on_place_user_button.setIcon(not_on_place_icon)
 
         # self.loading_movie = QtGui.QMovie(app_dir + 'resources/22.gif')
         # self.loading_movie_2 = QtGui.QMovie(app_dir + 'resources/22.gif')
@@ -340,6 +343,8 @@ class MainWin(QtWidgets.QMainWindow):
             self.projects = list(data['projects'].keys())
             self.project_name = data['projects'][self.projects[0]]
             self.project_id = self.projects[0]
+        else:
+            self.project_name = 'Создать проект'
 
         self.open_dashboard()
 
@@ -358,6 +363,8 @@ class MainWin(QtWidgets.QMainWindow):
         self.logout_button.clicked.connect(lambda: self.logout())
         self.edit_project_button.clicked.connect(lambda: self.editor_project())
         self.grants_project_button.clicked.connect(lambda: self.open_grants())
+        self.on_place_user_button.clicked.connect(lambda: self.on_place())
+        self.not_on_place_user_button.clicked.connect(lambda: self.not_on_place())
 
 
     def open_search(self):
@@ -385,6 +392,52 @@ class MainWin(QtWidgets.QMainWindow):
         self.search_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
         self.kanban_button.setStyleSheet("color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0);")
         # self.projectname_combo_box.hide()
+
+        for i in reversed(range(self.users_Layout.count())):
+            item = self.users_Layout.itemAt(i)
+
+            self.users_Layout.removeItem(item)
+
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+                widget.setParent(None)
+
+        response = requests.get(url + "projects/" + str(self.project_id) + "/usersOnline")
+
+        if response.status_code == 200:
+            data = response.json()
+            print(data)
+            if data['users'] is not None:
+                self.no_users_label.hide()
+                for user in data['users']:
+                    profile = ProfileDashboard()
+                    profile.user_dash_name.setText(user['name'])
+                    if user['avatar'] is not None:
+                        avatar = base64.b64decode(user['avatar'])
+                        byte_array = QByteArray(avatar)
+                        buffer = QBuffer(byte_array)
+                        buffer.open(QIODevice.ReadOnly)
+
+                        user_avatar = QPixmap()
+                        if not user_avatar.loadFromData(buffer.readAll()):
+                            print("Failed to load the image.")
+                        else:
+                            profile.user_dash_avatar.setPixmap(user_avatar)
+                            profile.user_dash_avatar.setScaledContents(True)
+                            mask = QRegion(profile.user_dash_avatar.rect(), QRegion.Ellipse)
+                            profile.user_dash_avatar.setMask(mask)
+                    
+                    profile.user_dash_open_profile.clicked.connect(lambda: self.open_profile(user['id']))
+                    self.users_Layout.addWidget(profile)
+            else:
+                print('No users online')
+                self.no_users_label.show()
+        else:
+            print(f'Request failed with status code {response.status_code}')
+
+
+            self.users_Layout.addItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         # Дата в "Месяц, год" формате на русском языке
         self.label_date.setText(datetime.datetime.now().strftime("%B, %Y"))
@@ -415,6 +468,38 @@ class MainWin(QtWidgets.QMainWindow):
             getattr(self, f'label_date_{i+1}').setText(str(day_number))
 
         self.stackedWidget.setCurrentIndex(0)
+
+    def on_place(self):
+        data = {
+            'status': 'online'
+        }
+
+        response = requests.post(url + "profile/" + str(self.id) + "/updateOnlineStatus", json=data)
+
+        if response.status_code == 200:
+            print('User is online')
+            self.on_place_user_button.hide()
+            self.not_on_place_user_button.show()
+            if self.stackedWidget.currentIndex() == 0:
+                self.open_dashboard()
+        else:
+            print(f'Request failed with status code {response.status_code}')
+
+    def not_on_place(self):
+        data = {
+            'status': 'offline'
+        }
+
+        response = requests.post(url + "profile/" + str(self.id) + "/updateOnlineStatus", json=data)
+
+        if response.status_code == 200:
+            print('User is offline')
+            self.on_place_user_button.show()
+            self.not_on_place_user_button.hide()
+            if self.stackedWidget.currentIndex() == 0:
+                self.open_dashboard()
+        else:
+            print(f'Request failed with status code {response.status_code}')
 
     def open_grants(self):
         self.grants = Grants()
@@ -698,6 +783,12 @@ class MainWin(QtWidgets.QMainWindow):
         self.dashboard_tasks_scrollArea.setFrameShape(QFrame.NoFrame)
         self.dashboard_tasks_scrollArea.setWidgetResizable(True)
 
+        self.users_Layout.setAlignment(Qt.AlignTop)
+        self.users_Layout.setSpacing(0)
+        self.scrollArea_users_dash.setLayout(self.users_Layout)
+        self.dashboard_users_scrollArea.setWidgetResizable(True)
+        self.dashboard_users_scrollArea.setFrameShape(QFrame.NoFrame)
+
 
     def widgets_stylesheet_setter(self):
         ...
@@ -820,20 +911,22 @@ class MainWin(QtWidgets.QMainWindow):
                                                     text-decoration: underline;")
                 self.User_task_worker.setText(data['name'])
                 self.User_task_worker.clicked.connect(lambda: self.open_profile(empl_id))
-                avatar = data['avatar']
-                avatar = base64.b64decode(avatar)
-                byte_array = QByteArray(avatar)
-                buffer = QBuffer(byte_array)
-                buffer.open(QIODevice.ReadOnly)
+                print(data)
+                if data['avatar'] is not None:
+                    avatar = data['avatar']
+                    avatar = base64.b64decode(avatar)
+                    byte_array = QByteArray(avatar)
+                    buffer = QBuffer(byte_array)
+                    buffer.open(QIODevice.ReadOnly)
 
-                user_avatar = QPixmap()
-                if not user_avatar.loadFromData(buffer.readAll()):
-                    print("Failed to load the image.")
-                else:
-                    self.User_task_worker_pic.setPixmap(user_avatar)
-                    self.User_task_worker_pic.setScaledContents(True)
-                    mask = QRegion(self.User_task_worker_pic.rect(), QRegion.Ellipse)
-                    self.User_task_worker_pic.setMask(mask)
+                    user_avatar = QPixmap()
+                    if not user_avatar.loadFromData(buffer.readAll()):
+                        print("Failed to load the image.")
+                    else:
+                        self.User_task_worker_pic.setPixmap(user_avatar)
+                        self.User_task_worker_pic.setScaledContents(True)
+                        mask = QRegion(self.User_task_worker_pic.rect(), QRegion.Ellipse)
+                        self.User_task_worker_pic.setMask(mask)
         else:
             self.User_task_worker.setText('Назначить себя')
             self.User_task_worker_pic.setText('')
@@ -902,20 +995,21 @@ class MainWin(QtWidgets.QMainWindow):
             data = data['user']
             self.profile_window.profileName.setText(data['name'])
             self.profile_window.profileJobTitle.setText(data['role']) 
-            avatar = data['avatar']
-            avatar = base64.b64decode(avatar)
-            byte_array = QByteArray(avatar)
-            buffer = QBuffer(byte_array)
-            buffer.open(QIODevice.ReadOnly)
+            if data['avatar'] is not None:
+                avatar = data['avatar']
+                avatar = base64.b64decode(avatar)
+                byte_array = QByteArray(avatar)
+                buffer = QBuffer(byte_array)
+                buffer.open(QIODevice.ReadOnly)
 
-            user_avatar = QPixmap()
-            if not user_avatar.loadFromData(buffer.readAll()):
-                print("Failed to load the image.")
-            else:
-                self.profile_window.profileAvatar.setPixmap(user_avatar)
-                self.profile_window.profileAvatar.setScaledContents(True)
-                mask = QRegion(self.profile_window.profileAvatar.rect(), QRegion.Ellipse)
-                self.profile_window.profileAvatar.setMask(mask)
+                user_avatar = QPixmap()
+                if not user_avatar.loadFromData(buffer.readAll()):
+                    print("Failed to load the image.")
+                else:
+                    self.profile_window.profileAvatar.setPixmap(user_avatar)
+                    self.profile_window.profileAvatar.setScaledContents(True)
+                    mask = QRegion(self.profile_window.profileAvatar.rect(), QRegion.Ellipse)
+                    self.profile_window.profileAvatar.setMask(mask)
 
         try:
             self.profile_window.profileCloseButton.clicked.disconnect()
@@ -1222,6 +1316,10 @@ class SignIn(QtWidgets.QDialog):
                  background-size: cover; }")
         self.setWindowIcon(QtGui.QIcon(app_dir + 'resources/winicon.png'))
         self.setWindowTitle('Just on time')
+
+        self.label_5.hide()
+        self.empl_code_input.hide()
+
         self.signin_button.clicked.connect(self.input_checker)
         self.back_button.clicked.connect(self.open_login)
 
@@ -1244,11 +1342,6 @@ class SignIn(QtWidgets.QDialog):
                 "border-color: rgb(255, 0, 0);\n"
                 "border-style: outset;\n"
                 "border-radius: 3px;")
-            elif self.empl_code_input.text() == '':
-                self.empl_code_input.setStyleSheet("border: 1px;\n"
-                "border-color: rgb(255, 0, 0);\n"
-                "border-style: outset;\n"
-                "border-radius: 3px;")
             elif self.name_input.text() == '':
                 self.name_input.setStyleSheet("border: 1px;\n"
                 "border-color: rgb(255, 0, 0);\n"
@@ -1259,7 +1352,7 @@ class SignIn(QtWidgets.QDialog):
                         'login': self.login_input.text(), 
                         'password': self.password, 
                         'role': 'employee', 
-                        'code': self.empl_code_input.text()}
+                        'code': '1'}
                 response = requests.post(url + "auth/register", json=data)
                 if response.status_code == 200:
                     print(response.json())
